@@ -119,7 +119,7 @@ command: ## Créer une commande | symfony console make:command
 	$(SYMFONY) make:command
 
 # --------------------
-# Commandes de tests
+# Commandes de t.ests
 # --------------------
 ## ********** 🧪 TESTS 🧪 ******************************************************************
 tests: ## Lancer les tests | php bin/phpunit
