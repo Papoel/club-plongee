@@ -1,6 +1,6 @@
 # Paramètre du Makefile
 # --------------------
-PROJECT = Club de Plongée
+PROJECT = ./backend
 AUTHOR = Papoel
 HTTP_PORT = 8500
 HOST_NAME = 127.0.0.1
@@ -24,6 +24,8 @@ SYMFONY = $(PHP) bin/console
 YARN = yarn
 # Binaire de Symfony
 SYMFONY_BIN = symfony
+# Linter de Symfony
+SYMFONY_LINT = $(SYMFONY) lint:
 
 # --------------------
 # Commandes locales
@@ -36,6 +38,19 @@ DOCKER_RUN = $(DOCKER) run
 PHP_CS_FIXER = php-cs-fixer
 BIN_VENDOR = vendor/bin/
 MAKE = make
+
+# --------------------
+# PHPQA
+# --------------------
+PHPQA = jakzal/phpqa:php8.2
+PHPQA_RUN = $(DOCKER_RUN) --init --rm -v $(PWD):/project -w /project $(PHPQA)
+# --------------------
+
+# --------------------
+# PHPUNIT
+# --------------------
+PHPUNIT = APP_ENV=test $(SYMFONY_BIN) php bin/phpunit
+# --------------------
 
 # --------------------
 # Afficher l'aide avec du style en utilisant @agrep
@@ -108,7 +123,7 @@ command: ## Créer une commande | symfony console make:command
 # --------------------
 ## ********** 🧪 TESTS 🧪 ******************************************************************
 tests: ## Lancer les tests | php bin/phpunit
-	$(PHP) bin/phpunit
+	$(PHPUNIT) --testdox
 
 test-watch: ## Lancer les tests en mode watch | php bin/phpunit --watch
 	$(PHP) bin/phpunit --watch
@@ -169,6 +184,7 @@ db-s-u-test: ## Mettre à jour le schéma de la base de données de test | symfo
 
 schema-load-db: ## Charger le schéma de la base de données | schema-validate-db + schema-update-db
 	schema-validate-db schema-update-db
+
 doctrine-help: ## Afficher toutes les commandes de Doctrine | doctrine
 	$(SYMFONY) doctrine
 
@@ -198,18 +214,14 @@ init-db:
 		exit 0; \
 	fi
 
-# Cible db-drop
 db-drop: ## Supprimer la base de données | symfony console doctrine:database:drop --force
 	$(SYMFONY) doctrine:database:drop --if-exists --force
 
-# Cible db-create
 db-create: ## Créer la base de données | symfony console doctrine:database:create
 	$(SYMFONY) doctrine:database:create
 
-# Cible fixtures-load
 fixtures-load:
 	$(SYMFONY) doctrine:fixtures:load --no-interaction
-
 .PHONY: init-db db-drop db-create fixtures-load
 
 delete-db: ## Supprimer la base de données | db-drop-schema + db-drop
@@ -266,6 +278,56 @@ cc-warmup: ## Précharger le cache | symfony console cache:warmup
 # Qualité du code
 # --------------------
 ## ********** 📝 QUALITÉ DU CODE 📝 ******************************************************************
+# --------------------
+# Utilisation de PHPQA
+# --------------------
+qa-cs-fixer-dry-run: ## Execute php-cs-fixer in dry-run mode.
+	$(PHPQA_RUN) php-cs-fixer fix ./src --rules=@Symfony --verbose --dry-run
+.PHONY: qa-cs-fixer-dry-run
+
+qa-cs-fixer: ## Execute php-cs-fixer.
+	$(PHPQA_RUN) php-cs-fixer fix ./src --rules=@Symfony --verbose
+.PHONY: qa-cs-fixer
+
+qa-phpstan: ## Execute phpstan.
+	$(PHPQA_RUN) phpstan analyse ./src --level=9
+.PHONY: qa-phpstan
+
+qa-security-checker: ## Vériier les dépendances avec security-checker.
+	$(SYMFONY_BIN) security:check
+.PHONY: qa-security-checker
+
+qa-phpcpd: ## Execute phpcpd (Copier/Coller Detector).
+	$(PHPQA_RUN) phpcpd ./src
+.PHONY: qa-phpcpd
+
+qa-php-metrics: ## Execute phpmetrics, génère un rapport html dans var/phpmetrics.
+	$(PHPQA_RUN) phpmetrics --report-html=var/phpmetrics ./src
+.PHONY: qa-php-metrics
+
+qa-lint-twigs: ## Vérifier la syntaxe des fichiers twig.
+	$(SYMFONY_LINT)twig templates
+.PHONY: qa-lint-twigs
+
+qa-lint-yaml: ## Vérifier la syntaxe des fichiers yaml.
+	$(SYMFONY_LINT)yaml config
+.PHONY: qa-lint-yaml
+
+qa-lint-container: ## Vérifier la configuration du container.
+	$(SYMFONY_LINT)container
+.PHONY: qa-lint-container
+
+qa-lint-schema: ## Vérifier la validité du schéma de la base de données.
+	$(SYMFONY) doctrine:schema:validate --skip-sync -vvv --no-interaction
+.PHONY: qa-lint-schema
+
+qa-audit: ## Faire un audit de sécurité avec composer.
+	$(COMPOSER) audit
+.PHONY: qa-audit
+
+# --------------------
+# Sans utiliser PHPQA
+# --------------------
 fix: ## Vérifier la qualité du code | php-cs-fixer fix
 	$(PHP_CS_FIXER) fix
 
@@ -283,6 +345,14 @@ pint: ## Vérifier la qualité du code |
 lint: ## Vérifier la qualité du code | symfony console lint:twig, yaml (ignore vendor)
 	$(SYMFONY) lint:twig templates
 	$(SYMFONY) lint:yaml ./*.yaml config
+# --------------------
+
+# --------------------
+# Commandes pratique
+# --------------------
+before-commit: qa-cs-fixer qa-phpstan qa-security-checker qa-phpcpd qa-lint-twigs qa-lint-yaml qa-lint-container qa-lint-schema tests ## Run before commit.
+.PHONY: before-commit
+# --------------------
 
 # --------------------
 # Commandes du projet
