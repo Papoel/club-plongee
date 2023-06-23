@@ -1,0 +1,24 @@
+grumphp:
+    tasks:
+        make:
+            make_file: Makefile
+            task: before-commit
+            triggered_by: [php, yml, md] # Les fichiers qui déclenchent la tâche
+        git_commit_message:
+            allow_empty_message: false # Accepte les commits sans message
+            enforce_capitalized_subject: false # Accepte les commits dont le sujet n'est pas en majuscule
+            enforce_no_subject_punctuations: false # Accepte les commits dont le sujet se termine par un point
+            enforce_no_subject_trailing_period: true # Accepte les commits dont le sujet ne se termine pas par un point
+            enforce_single_lined_subject: true # Accepte les commits dont le sujet est sur une seule ligne
+            type_scope_conventions:
+                types: # Chaque commit doit commencer par un de ces types
+                    - 📦 NEW # Une nouvelle fonctionnalité
+                    - 👌 IMPROVE # Une amélioration d'une fonctionnalité existante
+                    - 🐛 FIX # Une correction de bug
+                    - 📖 DOCS # Une modification ou un ajout de la documentation
+                    - 🚀 RELEASE # Une nouvelle version
+                    - 🤖 TEST # Une modification ou un ajout de test
+                    - 💥️ BREAKING # Une modification qui casse la compatibilité
+                scopes: ~
+                subject_pattern: >-
+                    ([a-zA-Zа-яА-Я0-9-_ #@'\/\"]+)
