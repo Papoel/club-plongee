@@ -4,12 +4,13 @@ PROJECT = ./backend
 AUTHOR = Papoel
 HTTP_PORT = 8500
 HOST_NAME = 127.0.0.1
-DB_NAME = db_club-plongee
+DB_NAME = db_plongee
 DB_USER = root
 DB_PASS = password
 DB_PORT = 3306
-DB_SERVER = MariaDB-11.1.1&charset=utf8mb4
+DB_SERVER = MariaDB-10.8.3&charset=utf8mb4
 DATABASE_URL = mysql://$(DB_USER):$(DB_PASS)@$(HOST_NAME):$(DB_PORT)/$(DB_NAME)
+#?serverVersion=$(DB_VERSION)&charset=utf8mb4
 
 # --------------------
 # Commandes
@@ -361,8 +362,8 @@ before-commit: qa-cs-fixer qa-phpstan qa-security-checker qa-phpcpd qa-lint-twig
 # Création copie .env et le nommé en .en.local ne garder que les variables d'environnement du projet
 create-env: ## Créer le fichier .env.local | cp .env .env.local
 	sed -n -e '/^APP_ENV/p' -e '/^APP_SECRET/p' -e '/^MESSENGER_TRANSPORT_DSN/p' .env > .env.local \
-    	&& printf "\n###> Database ###\nDATABASE_URL=mysql://%s:%s@%s:%s/%s\n###< Database ###\n" \
-		"$(DB_USER)" "$(DB_PASS)" "$(HOST_NAME)" "$(DB_PORT)" "$(DB_NAME)" >> .env.local
+    	&& printf "\n###> Database ###\nDATABASE_URL=mysql://%s:@%s:%s/%s\n###< Database ###\n" \
+		"$(DB_USER)" "$(HOST_NAME)" "$(DB_PORT)" "$(DB_NAME)?serverVersion=$(DB_SERVER)" >> .env.local
 
 start: up serve open ## Lancer le projet | up + serve + open
 
