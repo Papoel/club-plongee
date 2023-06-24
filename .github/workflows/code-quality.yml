@@ -20,10 +20,11 @@ jobs:
         uses: actions/cache@v2
         with:
           path: backend/vendor
-          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('backend/composer.lock') }}
 
       - name: Install Composer dependencies
         run: composer install --no-progress
+        working-directory: backend
 
       - name: Run local-php-security-checker
         run: local-php-security-checker backend/composer.lock
@@ -41,10 +42,11 @@ jobs:
         uses: actions/cache@v2
         with:
           path: backend/vendor
-          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('backend/composer.lock') }}
 
       - name: Install Composer dependencies
         run: composer install --no-progress
+        working-directory: backend
 
       - name: PHP Coding Standards
         run: |
@@ -66,10 +68,11 @@ jobs:
         uses: actions/cache@v2
         with:
           path: backend/vendor
-          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('backend/composer.lock') }}
 
       - name: Install Composer dependencies
         run: composer install --no-progress
+        working-directory: backend
 
       - name: PHP Lint
         run: |
