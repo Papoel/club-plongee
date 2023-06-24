@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  security-checker:
+    runs-on: ubuntu-latest
+    container:
+      image: jakzal/phpqa:php8.2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Cache Composer dependencies
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: backend/vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+
+      - name: Install Composer dependencies
+        run: composer install --no-progress
+
+      - name: Run local-php-security-checker
+        run: local-php-security-checker backend/composer.lock
+
+  php-code-standard:
+    runs-on: ubuntu-latest
+    container:
+      image: jakzal/phpqa:php8.2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Cache Composer dependencies
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: backend/vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+
+      - name: Install Composer dependencies
+        run: composer install --no-progress
+
+      - name: PHP Coding Standards
+        run: |
+          php-cs-fixer fix backend/src --dry-run --rules=@Symfony --verbose
+          phpstan analyse backend/src -l3
+          phpdd backend/src
+          phpcpd backend/src --exclude 'backend/src/Controller/Admin/' --exclude 'backend/src/Entity'
+
+  lint:
+    runs-on: ubuntu-latest
+    container:
+      image: jakzal/phpqa:php8.2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Cache Composer dependencies
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: backend/vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+
+      - name: Install Composer dependencies
+        run: composer install --no-progress
+
+      - name: PHP Lint
+        run: |
+          backend/bin/console lint:twig templates --env=prod
+          backend/bin/console lint:yaml config --parse-tags
+          backend/bin/console doctrine:schema:validate --skip-sync -vvv --no-interaction
