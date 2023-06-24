@@ -43,22 +43,18 @@ jobs:
         uses: actions/cache@v2
         with:
           path: vendor
-          key: ${{ runner.os }}-composer-${{ hashFiles('backend/composer.lock') }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
 
       - name: Install Composer dependencies
         run: composer install --no-progress
         working-directory: backend
 
-      - name: Debug backend/src directory
-        run: ls -al
-        working-directory: backend
-
       - name: PHP Coding Standards
         run: |
-          php-cs-fixer fix backend/src --dry-run --rules=@Symfony --verbose
-          phpstan analyse backend/src -l3
-          phpdd backend/src
-          phpcpd backend/src --exclude 'backend/src/Controller/Admin/' --exclude 'backend/src/Entity'
+          php-cs-fixer fix src --dry-run --rules=@Symfony --verbose
+          phpstan analyse src -l3
+          phpdd src
+          phpcpd src --exclude 'src/Controller/Admin/' --exclude 'src/Entity'
         working-directory: backend
 
   lint:
@@ -73,8 +69,8 @@ jobs:
         id: composer-cache
         uses: actions/cache@v2
         with:
-          path: backend/vendor
-          key: ${{ runner.os }}-composer-${{ hashFiles('backend/composer.lock') }}
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
 
       - name: Install Composer dependencies
         run: composer install --no-progress
@@ -82,7 +78,7 @@ jobs:
 
       - name: PHP Lint
         run: |
-          backend/bin/console lint:twig templates --env=prod
-          backend/bin/console lint:yaml config --parse-tags
-          backend/bin/console doctrine:schema:validate --skip-sync -vvv --no-interaction
+          bin/console lint:twig templates --env=prod
+          bin/console lint:yaml config --parse-tags
+          bin/console doctrine:schema:validate --skip-sync -vvv --no-interaction
         working-directory: backend
