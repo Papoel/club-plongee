@@ -42,7 +42,7 @@ jobs:
         id: composer-cache
         uses: actions/cache@v2
         with:
-          path: backend/vendor
+          path: vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('backend/composer.lock') }}
 
       - name: Install Composer dependencies
