@@ -50,7 +50,7 @@ jobs:
         working-directory: backend
 
       - name: Debug backend/src directory
-        run: ls -al backend/src
+        run: ls -al
         working-directory: backend
 
       - name: PHP Coding Standards
