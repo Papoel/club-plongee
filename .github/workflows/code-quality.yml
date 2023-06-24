@@ -28,6 +28,7 @@ jobs:
 
       - name: Run local-php-security-checker
         run: local-php-security-checker backend/composer.lock
+        working-directory: backend
 
   php-code-standard:
     runs-on: ubuntu-latest
@@ -54,6 +55,7 @@ jobs:
           phpstan analyse backend/src -l3
           phpdd backend/src
           phpcpd backend/src --exclude 'backend/src/Controller/Admin/' --exclude 'backend/src/Entity'
+        working-directory: backend
 
   lint:
     runs-on: ubuntu-latest
@@ -79,3 +81,4 @@ jobs:
           backend/bin/console lint:twig templates --env=prod
           backend/bin/console lint:yaml config --parse-tags
           backend/bin/console doctrine:schema:validate --skip-sync -vvv --no-interaction
+        working-directory: backend
