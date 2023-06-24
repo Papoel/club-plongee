@@ -49,6 +49,10 @@ jobs:
         run: composer install --no-progress
         working-directory: backend
 
+      - name: Debug backend/src directory
+        run: ls -al backend/src
+        working-directory: backend
+
       - name: PHP Coding Standards
         run: |
           php-cs-fixer fix backend/src --dry-run --rules=@Symfony --verbose
