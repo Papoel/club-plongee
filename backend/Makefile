@@ -8,7 +8,7 @@ DB_NAME = db_plongee
 DB_USER = root
 DB_PASS = password
 DB_PORT = 3306
-DB_SERVER = MariaDB-10.8.3&charset=utf8mb4
+DB_SERVER = MariaDB-10.9.3&charset=utf8mb4
 DATABASE_URL = mysql://$(DB_USER):$(DB_PASS)@$(HOST_NAME):$(DB_PORT)/$(DB_NAME)
 #?serverVersion=$(DB_VERSION)&charset=utf8mb4
 
@@ -323,7 +323,7 @@ qa-lint-container: ## Vérifier la configuration du container.
 .PHONY: qa-lint-container
 
 qa-lint-schema: ## Vérifier la validité du schéma de la base de données.
-	$(SYMFONY) doctrine:schema:validate --skip-sync -vvv --no-interaction
+	$(SYMFONY) doctrine:schema:validate
 .PHONY: qa-lint-schema
 
 qa-audit: ## Faire un audit de sécurité avec composer.
