@@ -125,7 +125,11 @@ command: ## Créer une commande | symfony console make:command
 ## ********** 🧪 TESTS 🧪 ******************************************************************
 tests: ## Lancer les tests | php bin/phpunit
 	$(PHPUNIT) --testdox
+.PHONY: tests
 
+tests-coverage: ## Lancer les tests avec le coverage | php bin/phpunit --coverage-html var/coverage
+	XDEBUG_MODE=coverage $(PHPUNIT) --coverage-html var/coverage
+.PHONY: tests-coverage
 test-watch: ## Lancer les tests en mode watch | php bin/phpunit --watch
 	$(PHP) bin/phpunit --watch
 
