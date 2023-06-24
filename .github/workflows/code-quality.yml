@@ -52,7 +52,7 @@ jobs:
       - name: PHP Coding Standards
         run: |
           php-cs-fixer fix src --dry-run --rules=@Symfony --verbose
-          phpstan analyse src -l3
+          phpstan analyse src -l9
           phpdd src
           phpcpd src --exclude 'src/Controller/Admin/' --exclude 'src/Entity'
         working-directory: backend
