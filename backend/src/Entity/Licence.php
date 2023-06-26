@@ -29,7 +29,7 @@ class Licence
         return $this->number;
     }
 
-    public function setNumber(string $number): static
+    public function setNumber(?string $number): static
     {
         $this->number = $number;
 
