@@ -4,20 +4,31 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+#[UniqueEntity(fields: ['email'], message: 'Un compte existe déjà avec cette adresse email.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    public const ROLE_ADHERENT = 'ROLE_ADHERENT';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    private ?string $email = null;
+    #[Assert\Length(
+        max: 180,
+        maxMessage: 'L\'adresse email ne doit pas contenir plus de {{ limit }} caractères.')]
+    #[Assert\Email(message: 'L\'adresse email n\'est pas valide.')]
+    #[Assert\NotBlank(message: 'L\'adresse email est une information obligatoire.')]
+    private string $email;
 
     /**
      * @var array<string>
@@ -29,13 +40,41 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\Length(
+        max: 25,
+        maxMessage: 'Le mot de passe ne doit pas contenir plus de {{ limit }} caractères.')]
+    #[Assert\Regex(// Le mot de passe doit contenir au minimum 8 caractères, au moins une lettre majuscule, une lettre minuscule, et un chiffre.
+        pattern: '/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/',
+        // '/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/',
+        message: 'Le mot de passe doit contenir au minimum 8 caractères, au moins une lettre majuscule, une lettre minuscule, et un chiffre.'
+    )]
+    #[Assert\NotCompromisedPassword(message: 'Le mot de passe a été compromis. Veuillez en choisir un autre.')]
+    #[Assert\NotBlank(message: 'Le mot de passe est une information obligatoire.')]
     private string $password;
 
-    #[ORM\Column(length: 100)]
-    private ?string $firstname = null;
+    #[ORM\Column(length: 50)]
+    #[Assert\Length(
+        min: 3,
+        max: 50,
+        minMessage: 'Le prénom doit contenir au moins {{ limit }} caractères.',
+        maxMessage: 'Le prénom ne doit pas contenir plus de {{ limit }} caractères.')]
+    #[Assert\NotBlank(message: 'Le prénom est une information obligatoire.')]
+    #[Assert\Regex(
+        pattern: '/^[A-Za-zÀ-ÿ|-]{3,}$/',
+        message: 'Le prénom ne doit contenir que des lettres, mais si vous êtes le fils d\'Elon Musk(X Æ A-12), écrivez simplement Ex-ash-a-twelve comme cela se prononce.')]
+    private string $firstname;
 
-    #[ORM\Column(length: 100)]
-    private ?string $lastname = null;
+    #[ORM\Column(length: 60)]
+    #[Assert\Length(
+        min: 2,
+        max: 60,
+        minMessage: 'Le nom doit contenir au moins {{ limit }} caractères.',
+        maxMessage: 'Le nom ne doit pas contenir plus de {{ limit }} caractères.')]
+    #[Assert\NotBlank(message: 'Le nom est une information obligatoire.')]
+    #[Assert\Regex(
+        pattern: '/^[A-Za-zÀ-ÿ|-]{2,}$/',
+        message: 'Le nom ne doit contenir que des lettres.')]
+    private string $lastname;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $address = null;
@@ -44,7 +83,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $zipCode = null;
 
     #[ORM\Column(length: 80, nullable: true)]
-    private ?string $town = null;
+    private ?string $city = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $certificateMedical = null;
@@ -52,12 +91,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(inversedBy: 'user_licence', cascade: ['persist', 'remove'])]
     private ?Licence $licence = null;
 
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $phone = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+
+        if (empty($this->roles)) {
+            $this->roles = [self::ROLE_ADHERENT];
+        }
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -86,7 +143,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = self::ROLE_ADHERENT;
 
         return array_unique($roles);
     }
@@ -125,7 +182,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getFirstname(): ?string
+    public function getFirstname(): string
     {
         return $this->firstname;
     }
@@ -137,7 +194,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getLastname(): ?string
+    public function getLastname(): string
     {
         return $this->lastname;
     }
@@ -173,14 +230,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getTown(): ?string
+    public function getCity(): ?string
     {
-        return $this->town;
+        return $this->city;
     }
 
-    public function setTown(?string $town): static
+    public function setCity(?string $city): static
     {
-        $this->town = $town;
+        $this->city = $city;
 
         return $this;
     }
@@ -205,6 +262,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLicence(?Licence $licence): static
     {
         $this->licence = $licence;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): static
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

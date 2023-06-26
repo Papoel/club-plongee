@@ -29,7 +29,7 @@ class AppFixtures extends Fixture
             ->setRoles(roles: ['ROLE_ADMIN'])
             ->setAddress(address: '15 rue de la Liberté')
             ->setZipCode(zipCode: '59600')
-            ->setTown(town: 'Maubeuge');
+            ->setCity(city: 'Maubeuge');
         /** @param array $certificats */
         $certificats = [
             'certificat_medical_2021.pdf',
@@ -59,11 +59,10 @@ class AppFixtures extends Fixture
                 ->setFirstname(firstname: $faker->firstName())
                 ->setLastname(lastname: $faker->lastName())
                 ->setEmail(email: $faker->email())
-                ->setRoles(roles: ['ROLE_USER'])
                 ->setAddress(address: $faker->streetAddress())
                 // Transforme le code postal en string pour éviter les erreurs de type
                 ->setZipCode(zipCode: (string) $faker->randomNumber($nbDigits = 5, $strict = true))
-                ->setTown(town: $faker->city());
+                ->setCity(city: $faker->city());
 
             /** @param array $certificats */
             $certificats = [

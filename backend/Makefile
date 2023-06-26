@@ -123,7 +123,8 @@ command: ## Créer une commande | symfony console make:command
 # Commandes de t.ests
 # --------------------
 ## ********** 🧪 TESTS 🧪 ******************************************************************
-tests: ## Lancer les tests | php bin/phpunit
+run-tests: ## Lancer les tests | php bin/phpunit
+	$(MAKE) init-db-tests
 	$(PHPUNIT) --testdox
 .PHONY: tests
 
@@ -203,6 +204,7 @@ fixtures: ## Créer des fixtures | symfony console make:fixtures
 	$(SYMFONY) make:fixtures
 
 init-db:
+	$(MAKE) cc
 	$(MAKE) db-drop
 	$(MAKE) db-create
 	@if [ -n "$$(find migrations -name 'Version*' -print -quit)" ]; then \
@@ -234,7 +236,7 @@ delete-db: ## Supprimer la base de données | db-drop-schema + db-drop
 	$(MAKE) db-drop
 
 init-db-tests: ## Initialiser la base de données de test | create-db-tests + schema-load-db
-	cc db-drop-test db-create-test db-schema-test db-s-v db-s-u-test
+	$(MAKE) cc db-drop-test db-create-test db-schema-test db-s-v db-s-u-test
 
 # --------------------
 # Commandes de debug
@@ -355,7 +357,7 @@ lint: ## Vérifier la qualité du code | symfony console lint:twig, yaml (ignore
 # --------------------
 # Commandes pratique
 # --------------------
-before-commit: qa-cs-fixer qa-phpstan qa-security-checker qa-phpcpd qa-lint-twigs qa-lint-yaml qa-lint-container qa-lint-schema tests ## Run before commit.
+before-commit: qa-cs-fixer qa-phpstan qa-security-checker qa-phpcpd qa-lint-twigs qa-lint-yaml qa-lint-container qa-lint-schema run-tests ## Run before commit.
 .PHONY: before-commit
 # --------------------
 

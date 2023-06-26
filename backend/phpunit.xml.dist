@@ -15,6 +15,8 @@
         <server name="SHELL_VERBOSITY" value="-1" />
         <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
         <server name="SYMFONY_PHPUNIT_VERSION" value="9.6.9" />
+        <server name="KERNEL_CLASS" value="App\Kernel" />
+        <env name="APP_ENV" value="test" force="true"/>
     </php>
 
     <testsuites>
@@ -27,10 +29,14 @@
         <include>
             <directory suffix=".php">src</directory>
         </include>
+        <exclude>
+            <directory>src/DataFixtures</directory>
+            <file>src/Kernel.php</file>
+        </exclude>
     </coverage>
 
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
     </listeners>
-    
+
 </phpunit>

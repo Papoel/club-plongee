@@ -19,6 +19,7 @@ grumphp:
                     - 🚀 RELEASE # Une nouvelle version
                     - 🤖 TEST # Une modification ou un ajout de test
                     - 💥️ BREAKING # Une modification qui casse la compatibilité
+                    - 💡 REFACTOR # Une modification qui n'apporte ni nouvelle fonctionnalité ni d'amélioration
                 scopes: ~
                 subject_pattern: >-
                     ([a-zA-Zа-яА-Я0-9-_ #@'\/\"]+)
