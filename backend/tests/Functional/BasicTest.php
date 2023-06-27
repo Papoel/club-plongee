@@ -7,11 +7,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class BasicTest extends WebTestCase
 {
-    public function test404(): void
+    /**
+     * @test
+     */
+    public function homepageIsUp(): void
     {
         $client = static::createClient();
         $crawler = $client->request('GET', '/');
 
-        self::assertResponseStatusCodeSame(expectedCode: Response::HTTP_NOT_FOUND);
+        self::assertResponseStatusCodeSame(expectedCode: Response::HTTP_OK);
     }
 }
