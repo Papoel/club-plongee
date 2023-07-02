@@ -28,11 +28,13 @@
                 </div>
                 <div class="swiper-slide">
                     <div class="swiper-slide-cover bg-position-top-center"
-                         style="background-image: url(assets/img/landing/yoga-studio/hero/02.jpg);"></div>
+                         style="background-image: url( {{ asset('assets/img/site/accueil-2.jpeg') }} );">
+                    </div>
                 </div>
                 <div class="swiper-slide">
                     <div class="swiper-slide-cover bg-position-top-center"
-                         style="background-image: url(assets/img/landing/yoga-studio/hero/03.jpg);"></div>
+                         style="background-image: url( {{ asset('assets/img/site/accueil-3.jpeg)') }}">
+                    </div>
                 </div>
             </div>
             <div class="swiper-pagination mb-4"></div>
@@ -448,6 +450,9 @@
         </div>
     </section>
 
+    <section class="container pt-5 mt-lg-3 mt-xl-4 mt-xxl-5">
+        {% include('pages/calendar/index.html.twig') %}
+    </section>
     {#<!-- Calendrier-->
     <section class="container pt-5 mt-lg-3 mt-xl-4 mt-xxl-5">
         <h2 class="h1 text-center pb-3 pt-sm-3 pt-lg-5 mb-3 mb-lg-4">Calendrier</h2>
@@ -779,6 +784,7 @@
     </svg>
     <i class="ai-arrow-up"></i>
 </a>
+
 <!-- Vendor scripts: js libraries and plugins-->
 <script src="{{ asset('assets/js/vendor/bootstrap/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('assets/js/vendor/smooth-scroll/smooth-scroll.polyfills.min.js') }}"></script>
@@ -786,5 +792,6 @@
 <script src="{{ asset('assets/js/vendor/lightgallery/lightgallery.min.js') }}"></script>
 <script src="{{ asset('assets/js/vendor/lightgallery/plugins/video/lg-video.min.js') }}"></script>
 <script src="{{ asset('assets/js/vendor/fullcalendar/main.min.js') }}"></script>
+
 <!-- Main theme script-->
 <script src="{{ ('assets/js/vendor/bootstrap/theme.min.js') }}"></script>
