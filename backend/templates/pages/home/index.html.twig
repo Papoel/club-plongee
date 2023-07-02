@@ -3,5 +3,10 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-
+    <!-- Page header-->
+    {% include 'pages/header/navbar.html.twig' %}
+    <!-- Page content-->
+    {% include 'pages/home/homepage.html.twig' %}
+    <!-- Page footer-->
+    {% include 'pages/footer/footer.html.twig' %}
 {% endblock %}

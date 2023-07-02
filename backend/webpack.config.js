@@ -70,6 +70,24 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
+
+    // Copy files images from assets to public
+    .copyFiles({
+        from: './assets/img',
+        to: 'img/[path][name].[ext]',
+    })
+
+    // Copy files css from assets to public
+    .copyFiles({
+        from: './assets/css',
+        to: 'css/[path][name].[ext]',
+    })
+
+    // Copy files js from assets to public
+    .copyFiles({
+        from: './assets/js/vendor',
+        to: 'js/vendor/[path][name].[ext]',
+    })
 ;
 
 module.exports = Encore.getWebpackConfig();

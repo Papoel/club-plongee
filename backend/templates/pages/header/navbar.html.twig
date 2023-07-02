@@ -1,0 +1,85 @@
+<!-- Navbar. Remove 'fixed-top' class to make the navigation bar scrollable with the page-->
+<header class="navbar navbar-expand-lg fixed-top navbar-ignore-dark-mode ignore-dark-mode">
+    <div class="container">
+        <!-- Logo du club -->
+        <a class="navbar-brand pe-sm-3" href="{{ path('app_home') }}">
+            <span class="text-primary flex-shrink-0 me-2">
+                <img src="{{ asset('assets/img/logo/logo-club.svg') }}" alt="Logo du club" width="80">
+            </span>
+        </a>
+        <!-- Fin logo du club -->
+
+        <!-- Switcher Dark/Light mode -->
+        <div class="form-check form-switch mode-switch order-lg-2 me-3 me-lg-4 ms-auto" data-bs-toggle="mode">
+            <input class="form-check-input" type="checkbox" id="theme-mode">
+            <label class="form-check-label" for="theme-mode"><i class="ai-sun fs-lg"></i></label>
+            <label class="form-check-label" for="theme-mode"><i class="ai-moon fs-lg"></i></label>
+        </div>
+        <!-- Fin switcher Dark/Light mode -->
+
+        <!-- Bouton de connexion -->
+        <a class="btn btn-primary btn-sm fs-sm order-lg-3 d-none d-sm-inline-flex"
+           href="#"
+           target="_blank" rel="noopener">
+            <i class="ai-user fs-xl me-2 ms-n1"></i>
+            Se connecter
+        </a>
+        <!-- Fin bouton de connexion -->
+
+        <button class="navbar-toggler ms-sm-3"
+                type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <nav class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav navbar-nav-scroll me-auto" style="--ar-scroll-height: 520px;">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle active"
+                       href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                        Les activités du club
+                    </a>
+                    <div class="dropdown-menu overflow-hidden p-0">
+                        <div class="d-lg-flex">
+                            <div class="mega-dropdown-column pt-1 pt-lg-3 pb-lg-4">
+                                <ul class="list-unstyled mb-0">
+                                    <li>
+                                        <a class="dropdown-item" href="#">Nage avec palmes</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">Plongée sous-marine</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                {#<li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle"
+                       href="#" data-bs-toggle="dropdown"
+                       data-bs-auto-close="outside"
+                       aria-expanded="false">Nos événements</a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown">
+                            #}{#<a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Portfolio</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="portfolio-list-v1.html">List View v.1</a></li>
+                                <li><a class="dropdown-item" href="portfolio-list-v2.html">List View v.2</a></li>
+                                <li><a class="dropdown-item" href="portfolio-grid-v1.html">Grid View v.1</a></li>
+                                <li><a class="dropdown-item" href="portfolio-grid-v2.html">Grid View v.2</a></li>
+                                <li><a class="dropdown-item" href="portfolio-slider.html">Slider View</a></li>
+                                <li><a class="dropdown-item" href="portfolio-single-v1.html">Single Project v.1</a></li>
+                                <li><a class="dropdown-item" href="portfolio-single-v2.html">Single Project v.2</a></li>
+                            </ul>#}{#
+                        </li>
+                    </ul>
+                </li>#}
+                <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+            </ul>
+            <div class="d-sm-none p-3 mt-n3">
+                <a class="btn btn-primary w-100  mb-1" href="https://themes.getbootstrap.com/product/around-multipurpose-template-ui-kit/" target="_blank" rel="noopener">
+                    <i class="ai-user fs-xl me-2 ms-n1"></i>
+                    Se connecter
+                </a>
+            </div>
+        </nav>
+    </div>
+</header>
