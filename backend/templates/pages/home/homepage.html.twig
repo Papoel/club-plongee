@@ -1,0 +1,790 @@
+<main class="page-wrapper">
+    <!-- Page content-->
+
+    <!-- Hero -->
+    <section class="ignore-dark-mode position-relative min-vh-100 py-5">
+        <!-- Background image slider-->
+        <div class="swiper swiper-scale-effect position-absolute top-0 start-0 w-100 h-100"
+             data-swiper-options="
+             {
+                &quot;effect&quot;: &quot;fade&quot;,
+                &quot;speed&quot;: 800,
+                &quot;autoplay&quot;:
+                {
+                  &quot;delay&quot;: 7000,
+                  &quot;disableOnInteraction&quot;: false
+                },
+                &quot;pagination&quot;: {
+                &quot;el&quot;: &quot;.swiper-pagination&quot;,
+                &quot;clickable&quot;: true
+                }
+             }"
+        >
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="swiper-slide-cover bg-position-top-center"
+                         style="background-image: url( {{ asset('assets/img/site/accueil.jpeg)') }}">
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="swiper-slide-cover bg-position-top-center"
+                         style="background-image: url(assets/img/landing/yoga-studio/hero/02.jpg);"></div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="swiper-slide-cover bg-position-top-center"
+                         style="background-image: url(assets/img/landing/yoga-studio/hero/03.jpg);"></div>
+                </div>
+            </div>
+            <div class="swiper-pagination mb-4"></div>
+        </div>
+        <!-- Content-->
+        <div class="container position-relative zindex-2 py-lg-3 py-xl-5 my-5">
+            <div class="row pt-md-3 py-xxl-2 my-5">
+                <div class="col py-5 mb-md-4 mb-lg-5">
+                    <h1 class="display-4 text-uppercase text-secondary">
+                        Club de plongée
+                    </h1>
+                    <h3 class="text-primary text-uppercase text-white">
+                        Maubeuge
+                    </h3>
+                    <!-- Slogan-->
+                    <p class="d-block fs-xl pb-2 mb-4 mb-md-5 text-white" style="max-width: 500px;">
+                        Découvrez les merveilles cachées des profondeurs : Plongée sous-marine, une aventure sans limite
+                        !
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Présentation des activités (slider) -->
+    <section class="pt-5 mt-lg-3 mt-xl-4 mt-xxl-5">
+        <div class="container pt-2 pt-sm-4 pt-lg-5 mt-md-3 mt-lg-0">
+            <div class="row pb-3 mb-3 mb-lg-4">
+                <div class="col-lg-11 d-sm-flex justify-content-between text-center text-sm-start">
+                    <h2 class="h1 mb-sm-0 mx-auto me-sm-4" style="max-width: 440px;">
+                        Découvrez les avantages qui font de notre club de plongée un lieu unique
+                    </h2>
+                    <p class="pt-2 mb-0 mx-auto" style="max-width: 420px;">
+                        Bienvenue sur notre site dédié à la plongée sous-marine ! En tant que club de plongée agréé
+                        FFESSM,
+                        nous vous offrons une expérience unique qui allie passion, expertise et sécurité.
+                        Que vous soyez novice ou plongeur expérimenté, notre club vous invite à explorer les merveilles
+                        cachées des fonds marins avec notre équipe de professionnels certifiés.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="container-start pe-0">
+            <div class="swiper" data-swiper-options="{
+            &quot;slidesPerView&quot;: &quot;auto&quot;,
+            &quot;spaceBetween&quot;: 24,
+            &quot;loop&quot;: true,
+            &quot;navigation&quot;: {
+              &quot;prevEl&quot;: &quot;#prev-feature&quot;,
+              &quot;nextEl&quot;: &quot;#next-feature&quot;
+            }
+          }"
+            >
+                <div class="swiper-wrapper">
+                    <!-- Item - Nage avec palmes-->
+                    <div class="swiper-slide w-auto h-auto">
+                        <div class="card border-0 bg-secondary card-hover h-100 py-4" style="max-width: 306px;">
+                            <div class="opacity-0 position-absolute top-0 start-0 w-100 h-100 bg-size-cover bg-position-center rounded-5"
+                                 style="background-image: url({{ asset('assets/img/site/nage-avec-palme.jpeg') }});">
+                            </div>
+                            <div class="card-body text-center">
+                                <i class="ai-flower h1 fw-normal text-primary d-block mb-4"></i>
+                                <h3>Nage avec palmes</h3>
+                                <p class="card-text">Plongez, explorez et dépassez-vous dans l'univers de la nage avec
+                                    palmes.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Item - Plongée sous-marine-->
+                    <div class="swiper-slide w-auto h-auto">
+                        <div class="card border-0 bg-secondary card-hover h-100 py-4" style="max-width: 306px;">
+                            <div class="opacity-0 position-absolute top-0 start-0 w-100 h-100 bg-size-cover bg-position-center rounded-5"
+                                 style="background-image: url({{ asset('assets/img/site/plongee.jpeg') }});">
+                            </div>
+                            <div class="card-body text-center">
+                                <i class="ai-towel h1 fw-normal text-primary d-block mb-4"></i>
+                                <h3>Plongée</h3>
+                                <p class="card-text">
+                                    Notre centre de plongée agréé FFESSM vous offre des formations et des expéditions
+                                    pour vivre des
+                                    expériences inoubliables sous l'eau.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Item - Demande d'essai-->
+                    <div class="swiper-slide w-auto h-auto">
+                        <div class="card border-0 bg-primary card-hover h-100 py-4" style="max-width: 306px;">
+                            <img class="position-absolute top-0 start-0"
+                                 src="{{ asset('assets/img/logo/logo-club-alt.svg') }}"
+                                 width="306" alt="Decor"
+                            >
+                            <div class="card-body position-relative zindex-2 text-center">
+                                <h3 class="text-white">Réservez votre séance d'essai</h3>
+                                <p class="text-white fs-sm">
+                                    Plongez dans l'univers fascinant de la plongée sous-marine, même en piscine !
+                                </p>
+                                {# TODO: Lien vers la page de contact #}
+                                <a class="btn btn-light text-primary" href="#">
+                                    Contacter le club
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Slider controls (Prev/next buttons)-->
+            <div class="container d-flex justify-content-center justify-content-sm-end pt-3 mt-3 mt-lg-4">
+                <button class="btn btn-icon btn-sm btn-outline-primary rounded-circle me-3" type="button"
+                        id="prev-feature"><i class="ai-arrow-left"></i></button>
+                <button class="btn btn-icon btn-sm btn-outline-primary rounded-circle" type="button" id="next-feature">
+                    <i class="ai-arrow-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Détails : Baptême, Plongeur N1-N2 (Tabs)-->
+    <section class="container pt-5 mt-lg-3 mt-xl-4 mt-xxl-5">
+        <h2 class="h1 text-center pt-2 pt-sm-3">Nos offres</h2>
+        <p class="text-center pb-3 mb-3 mb-lg-4">Que vous soyez un plongeur débutant ou confirmé.</p>
+        <!-- Nav tabs-->
+        <ul class="nav nav-tabs flex-nowrap overflow-auto text-nowrap w-100 mx-auto pb-3 mb-3 mb-lg-4 d-flex justify-content-around" role="tablist"
+            style="max-width: 892px;">
+            <li class="nav-item mb-0">
+                <a class="nav-link active" href="#bapteme" data-bs-toggle="tab" role="tab">
+                    Baptême
+                </a>
+            </li>
+            <li class="nav-item mb-0">
+                <a class="nav-link" href="#plongeur-n1" data-bs-toggle="tab" role="tab">
+                    Plongeur Niveau 1
+                </a>
+            </li>
+            <li class="nav-item mb-0">
+                <a class="nav-link" href="#plongeur-n2" data-bs-toggle="tab" role="tab">
+                    Plongeur Niveau 2
+                </a>
+            </li>
+        </ul>
+        <!-- Tab content-->
+        <div class="tab-content">
+
+            <!-- Baptême-->
+            <div class="tab-pane fade show active" id="bapteme" role="tabpanel">
+                <div class="row align-items-lg-center">
+                    <div class="col-md-6 pb-4 pb-md-0 mb-2 mb-md-0">
+                        <img class="rounded-5" src="{{ asset('assets/img/site/bapteme/01.jpeg') }}" alt="Bapteme">
+                    </div>
+                    <div class="col-md-6 col-lg-5 col-xl-4 offset-lg-1">
+                        <div class="ps-md-4 ps-lg-0">
+                            <h2 class="mb-xl-4">Le baptême de plongée</h2>
+                            <p class="pb-3 mb-3 mb-xl-4">
+                                Explorez l'excitation d'un baptême de plongée en piscine ! Plongez dans les eaux
+                                cristallines et découvrez un monde aquatique captivant. Avec notre équipe expérimentée,
+                                réservez dès maintenant et vivez une aventure inoubliable.
+                                La liberté de respirer sous l'eau vous attend.
+                            </p>
+                            <div class="row row-cols-2 g-4 pb-2 pb-xl-0 mb-4 mb-xl-5">
+                                <div class="col">
+                                    <i class="ai-user-check d-block h2 text-primary fw-normal pb-2 mb-1"></i>
+                                    <h3 class="h6 mb-2">Sécurité optimale </h3>
+                                    <p class="fs-sm mb-0">
+                                        La plongée en piscine offre un environnement contrôlé et
+                                        sécurisé, parfait pour les débutants.
+                                    </p>
+                                </div>
+                                <div class="col"><i class="ai-emoji-happy d-block h2 text-primary fw-normal pb-2 mb-1"></i>
+                                    <h3 class="h6 mb-2">Accessibilité</h3>
+                                    <p class="fs-sm mb-0">
+                                        La plongée en piscine est ouverte à tous, quel que soit votre âge ou votre
+                                        niveau de condition physique.
+                                    </p>
+                                </div>
+                                <div class="col">
+                                    <i class="ai-towel d-block h2 text-primary fw-normal pb-2 mb-1"></i>
+                                    <h3 class="h6 mb-2">Confort et commodité</h3>
+                                    <p class="fs-sm mb-0">
+                                        En optant pour un baptême de plongée en piscine, vous pourrez profiter d'une
+                                        expérience pratique et facile d'accès.
+                                    </p>
+                                </div>
+                                <div class="col">
+                                    <i class="ai-note d-block h2 text-primary fw-normal pb-2 mb-1"></i>
+                                    <h3 class="h6 mb-2">Encadrement professionnel</h3>
+                                    <p class="fs-sm mb-0">Lors de votre baptême de plongée en piscine, vous serez
+                                        accompagné(e) par une équipe d'instructeurs certifiés et expérimentés.
+                                    </p>
+                                </div>
+                            </div>
+                            <a class="btn btn-primary w-100 w-sm-auto" href="#">Réserver un baptême de plongée</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Plongeur de Niveau 1-->
+            <div class="tab-pane fade" id="plongeur-n1" role="tabpanel">
+                <div class="row align-items-lg-center">
+                    <div class="col-md-6 pb-4 pb-md-0 mb-2 mb-md-0">
+                        <img class="rounded-5" src="{{ asset('assets/img/site/bapteme/02.jpeg') }}" alt="Bapteme-02">
+                    </div>
+                    <div class="col-md-6 col-lg-5 col-xl-4 offset-lg-1">
+                        <div class="ps-md-4 ps-lg-0">
+                            <h2 class="mb-xl-4">Plongeur de niveau 1</h2>
+                            <p class="pb-3 mb-3 mb-xl-4">
+                                Le brevet de plongeur niveau 1 (N1) est le premier niveau de plongée français.
+                                Il permet d'effectuer des plongées encadrées jusqu'à une profondeur maximum de 20 mètres.
+                            </p>
+                            <div class="row row-cols-2 g-4 pb-2 pb-xl-0 mb-4 mb-xl-5">
+                                <div class="col">
+                                    <i class="ai-key d-block h2 text-primary fw-normal pb-2 mb-1"></i>
+                                    <h3 class="h6 mb-2">Je sais</h3>
+                                    <p class="fs-sm mb-0">
+                                        <span class="d-block">- M'équiper et me déséquiper</span>
+                                        <span class="d-block">- Comprendre le brief de mon encadrant</span>
+                                    </p>
+                                </div>
+                                <div class="col">
+                                    <i class="ai-target d-block h2 text-primary fw-normal pb-2 mb-1"></i>
+                                    <h3 class="h6 mb-2">Conditions</h3>
+                                    <p class="fs-sm mb-0">
+                                        - Minimum : 12 ans* <br>
+                                        - Un certificat médical de non contre-indication à la pratique de la plongée sous-marine
+                                    </p>
+                                </div>
+                                <div class="col">
+                                    <i class="ai-cafe d-block h2 text-primary fw-normal pb-2 mb-1"></i>
+                                    <h3 class="h6 mb-2">Connaissances Théorique</h3>
+                                    <p class="fs-sm mb-0">
+                                        J'ai les connaissances théoriques minimales pour comprendre le milieu dans lequel
+                                        j'évolue et plonger en sécurité.
+                                    </p>
+                                </div>
+                                <div class="col">
+                                    <i class="ai-checks d-block h2 text-primary fw-normal pb-2 mb-1"></i>
+                                    <h3 class="h6 mb-2">La validation</h3>
+                                    <p class="fs-sm mb-0">
+                                        - Examen théorique <br>
+                                        - 4 plongées en milieu naturel (mer ou lac).
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="my-3 bg-info bg-opacity-10 border border-info rounded">
+                                <p class="p-3 m-0">
+                                    *sous réserve d'accord des parents et du responsable du centre de formation,
+                                    sinon 14 ans.
+                                </p>
+                            </div>
+                            <a class="btn btn-primary w-100 w-sm-auto" href="#">
+                                S'inscrire au club
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Plongeur de niveau 2-->
+            <div class="tab-pane fade" id="plongeur-n2" role="tabpanel">
+                <div class="row align-items-lg-center">
+                    <div class="col-md-6 pb-4 pb-md-0 mb-2 mb-md-0">
+                        <img class="rounded-5" src="{{ asset('assets/img/site/bapteme/03.jpeg') }}" alt="Plongeur niveau 2">
+                    </div>
+                    <div class="col-md-6 col-lg-5 col-xl-4 offset-lg-1">
+                        <div class="ps-md-4 ps-lg-0">
+                            <h2 class="mb-xl-4">Plongeur niveau 2</h2>
+                            <p class="pb-3 mb-3 mb-xl-4">
+                                Le brevet de plongeur niveau 2 (N2) est le deuxième niveau de plongée français.
+
+                                Il permet d'effectuer des plongées encadrées (PE) jusqu'à une profondeur maximale de 40 mètres
+                                et d'effectuer des plongées en autonomie (PA) jusqu'à une profondeur maximale de 20 mètres.
+                            </p>
+                            <div class="row row-cols-2 g-4 pb-2 pb-xl-0 mb-4 mb-xl-5">
+                                <div class="col">
+                                    <i class="ai-key d-block h2 text-primary fw-normal pb-2 mb-1"></i>
+                                    <h3 class="h6 mb-2">J'ai acquis</h3>
+                                    <p class="fs-sm mb-0">
+                                        <span class="d-block">
+                                            - La possibilité de plongée jusqu'à 40m avec encadrant ou autonomie à 20m avec équipiers.
+                                        </span>
+                                        <span class="d-block">
+                                            - Je peux acquérir les modules PE40 et PA20 indépendamment l’un de l’autre
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="col">
+                                    <i class="ai-target d-block h2 text-primary fw-normal pb-2 mb-1"></i>
+                                    <h3 class="h6 mb-2">Conditions</h3>
+                                    <p class="fs-sm mb-0">
+                                        - Niveau 1 <br>
+                                        - PE 40 : 16 ans <br>
+                                        - PA 20 : 18 ans <br>
+                                        - Un certificat médical de non contre-indication à la pratique de la plongée sous-marine
+                                    </p>
+                                </div>
+                                <div class="col">
+                                    <i class="ai-cafe d-block h2 text-primary fw-normal pb-2 mb-1"></i>
+                                    <h3 class="h6 mb-2">Connaissances Théorique</h3>
+                                    <p class="fs-sm mb-0">
+                                        J'ai les connaissances théoriques pour comprendre le milieu dans lequel
+                                        j'évolue, je suis capable de communiquer avec les membres de ma palanquée.
+                                    </p>
+                                </div>
+                                <div class="col">
+                                    <i class="ai-checks d-block h2 text-primary fw-normal pb-2 mb-1"></i>
+                                    <h3 class="h6 mb-2">La validation</h3>
+                                    <p class="fs-sm mb-0">
+                                        - Examen théorique <br>
+                                        - PE 40 : entre 3 et 4 plongées <br>
+                                        - PA 20 : entre 7 et 8 plongées
+                                    </p>
+                                </div>
+                            </div>
+                            <a class="btn btn-primary w-100 w-sm-auto" href="#">S'inscrire au club</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Instructeurs (Grid)-->
+    <section class="container pb-2 pb-sm-3 pt-5 mt-lg-3 mt-xl-4 mt-xxl-5">
+        <h2 class="h1 text-center pt-2 pt-sm-4 pt-lg-5 pb-2 mb-3 mb-lg-4 mt-md-3 mt-lg-0">
+            Nous vous offrons les meilleurs formateurs.
+        </h2>
+        <!-- Daniel -->
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            <div class="col text-center pt-2">
+                <a class="card-hover card-lifted d-inline-block text-decoration-none"
+                   href="#">
+                    <img class="card-lifted d-block rounded-5 mb-3"
+                         src="{{ asset('assets/img/site/membre/bureau/daniel.jpeg') }}"
+                         width="340" alt="Daniel"
+                    >
+                    <h3 class="h5 mb-1">Daniel</h3>
+                    <p class="mb-0 text-muted">
+                        Instructeur de plongée
+                    </p>
+                </a>
+            </div>
+
+            <!-- Mohamed -->
+            <div class="col text-center pt-2">
+                <a class="card-hover card-lifted d-inline-block text-decoration-none"
+                   href="#">
+                    <img class="card-lifted d-block rounded-5 mb-3"
+                         src="{{ asset('assets/img/site/membre/bureau/default.jpeg') }}"
+                         width="340" alt="Mohamed">
+                    <h3 class="h5 mb-1">Mohamed</h3>
+                    <p class="mb-0 text-muted">
+                        Instructeur de plongée
+                    </p>
+                </a>
+            </div>
+
+            <!-- Thierry -->
+            <div class="col text-center pt-2">
+                <a class="card-hover card-lifted d-inline-block text-decoration-none"
+                   href="#">
+                    <img class="card-lifted d-block rounded-5 mb-3"
+                         src="{{ asset('assets/img/site/membre/bureau/default.jpeg') }}"
+                         width="340" alt="Thierry">
+                    <h3 class="h5 mb-1">Thierry</h3>
+                    <p class="mb-0 text-muted">Instructeur de plongée</p>
+                </a>
+            </div>
+
+            <!-- Stephan -->
+            <div class="col text-center pt-2">
+                <a class="card-hover card-lifted d-inline-block text-decoration-none"
+                   href="#">
+                    <img class="card-lifted d-block rounded-5 mb-3"
+                         src="{{ asset('assets/img/site/membre/bureau/stephan.jpeg') }}"
+                         width="340" alt="Stephan">
+                    <h3 class="h5 mb-1">Stephan</h3>
+                    <p class="mb-0 text-muted">Instructeur nage avec palme</p>
+                </a>
+            </div>
+
+            <!-- Yves et Chantal -->
+            <div class="col text-center pt-2">
+                <a class="card-hover card-lifted d-inline-block text-decoration-none"
+                   href="#">
+                    <img class="card-lifted d-block rounded-5 mb-3"
+                         src="{{ asset('assets/img/site/membre/bureau/yves-chantal.jpeg') }}"
+                         width="340" height="280" alt="Yves & Chantal Zumstein">
+                    <h3 class="h5 mb-1">Yves & Chantal</h3>
+                    <p class="mb-0 text-muted">Yves est le Président du club</p>
+                    <p class="mb-0 text-muted">Chantal est instructrice de plongée (N1)</p>
+                </a>
+            </div>
+
+            {#<div class="col text-center pt-2">
+                <a class="card-hover card-lifted d-inline-block text-decoration-none" href="#">
+                    <img class="card-lifted d-block rounded-5 mb-3"
+                         src="assets/img/landing/yoga-studio/trainers/07.jpg"
+                         width="340" alt="Annette Black">
+                    <h3 class="h5 mb-1">Annette Black</h3>
+                    <p class="mb-0 text-muted">Fly-yoga trainer</p>
+                </a>
+            </div>
+            <div class="col text-center pt-2">
+                <a class="card-hover card-lifted d-inline-block text-decoration-none"
+                   href="#">
+                    <img class="card-lifted d-block rounded-5 mb-3"
+                         src="assets/img/landing/yoga-studio/trainers/08.jpg"
+                         width="340" alt="Ralph Edwards">
+                    <h3 class="h5 mb-1">Ralph Edwards</h3>
+                    <p class="mb-0 text-muted">Stretching trainer, healthy back</p>
+                </a>
+            </div>#}
+        </div>
+    </section>
+
+    {#<!-- Calendrier-->
+    <section class="container pt-5 mt-lg-3 mt-xl-4 mt-xxl-5">
+        <h2 class="h1 text-center pb-3 pt-sm-3 pt-lg-5 mb-3 mb-lg-4">Calendrier</h2>
+        {% set month = "now"|date('m') %}
+        <div class="calendar" data-calendar-options="
+        {
+             &quot;initialDate&quot;: &quot;2023-09-01&quot;,
+            &quot;headerToolbar&quot;:
+            {
+                &quot;left&quot;: &quot;prev,next today&quot;,
+                &quot;center&quot;: &quot;title&quot;,
+                &quot;right&quot;: &quot;dayGridMonth,timeGridWeek,listWeek&quot;
+            },
+            &quot;eventTimeFormat&quot;:
+            {
+                &quot;hour&quot;: &quot;2-digit&quot;,
+                &quot;minute&quot;: &quot;2-digit&quot;,
+                &quot;hour12&quot;: false
+            },
+            &quot;events&quot;:
+            [
+                {
+                    &quot;title&quot;: &quot;Entrainement&quot;,
+                    &quot;start&quot;: &quot;2023-09-16T19:00&quot;,
+                    &quot;end&quot;: &quot;2023-09-16T21:00&quot;,
+                    &quot;classNames&quot;:
+                    [
+                        &quot;event-custom-style&quot;,
+                        &quot;bg-light&quot;,
+                        &quot;text-nav&quot;,
+                        &quot;border-0&quot;,
+                        &quot;rounded-1&quot;,
+                        &quot;p-2&quot;,
+                        &quot;ps-3&quot;,
+                        &quot;border-start&quot;,
+                        &quot;border-5&quot;,
+                        &quot;border-purple&quot;
+                    ]
+                },
+                {
+                  &quot;title&quot;: &quot;For pregnant&quot;,
+                  &quot;start&quot;: &quot;2022-08-02T07:30&quot;,
+                  &quot;end&quot;: &quot;2022-08-02T09:40&quot;,
+                  &quot;classNames&quot;:
+                  [
+                        &quot;event-custom-style&quot;,
+                        &quot;bg-light&quot;,
+                        &quot;text-nav&quot;,
+                        &quot;border-0&quot;,
+                        &quot;rounded-1&quot;,
+                        &quot;p-2&quot;,
+                        &quot;ps-3&quot;,
+                        &quot;border-start&quot;,
+                        &quot;border-5&quot;,
+                        &quot;border-warning&quot;
+                  ]
+                },
+                {
+                  &quot;title&quot;: &quot;Healthy back&quot;,
+                  &quot;start&quot;: &quot;2022-08-02T12:00&quot;,
+                  &quot;end&quot;: &quot;2022-08-02T13:30&quot;,
+                  &quot;classNames&quot;:
+                  [
+                        &quot;event-custom-style&quot;,
+                        &quot;bg-light&quot;,
+                        &quot;text-nav&quot;,
+                        &quot;border-0&quot;,
+                        &quot;rounded-1&quot;,
+                        &quot;p-2&quot;,
+                        &quot;ps-3&quot;,
+                        &quot;border-start&quot;,
+                        &quot;border-5&quot;,
+                        &quot;border-info&quot;
+                  ]
+                },
+                {
+                  &quot;title&quot;: &quot;Relax yoga&quot;,
+                  &quot;start&quot;: &quot;2022-08-02T18:45&quot;,
+                  &quot;end&quot;: &quot;2022-08-02T20:00&quot;,
+                  &quot;classNames&quot;: [&quot;event-custom-style&quot;, &quot;bg-light&quot;, &quot;text-nav&quot;, &quot;border-0&quot;, &quot;rounded-1&quot;, &quot;p-2&quot;, &quot;ps-3&quot;, &quot;border-start&quot;, &quot;border-5&quot;, &quot;border-danger&quot;]
+                },
+                {
+                  &quot;title&quot;: &quot;Beginners&quot;,
+                  &quot;start&quot;: &quot;2022-08-03T11:00&quot;,
+                  &quot;end&quot;: &quot;2022-08-03T13:00&quot;,
+                  &quot;classNames&quot;: [&quot;event-custom-style&quot;, &quot;bg-light&quot;, &quot;text-nav&quot;, &quot;border-0&quot;, &quot;rounded-1&quot;, &quot;p-2&quot;, &quot;ps-3&quot;, &quot;border-start&quot;, &quot;border-5&quot;, &quot;border-success&quot;]
+                },
+                {
+                  &quot;title&quot;: &quot;Relax yoga&quot;,
+                  &quot;start&quot;: &quot;2022-08-03T12:35&quot;,
+                  &quot;end&quot;: &quot;2022-08-03T14:00&quot;,
+                  &quot;classNames&quot;: [&quot;event-custom-style&quot;, &quot;bg-light&quot;, &quot;text-nav&quot;, &quot;border-0&quot;, &quot;rounded-1&quot;, &quot;p-2&quot;, &quot;ps-3&quot;, &quot;border-start&quot;, &quot;border-5&quot;, &quot;border-danger&quot;]
+                },
+                {
+                  &quot;title&quot;: &quot;Fly yoga&quot;,
+                  &quot;start&quot;: &quot;2022-08-04T09:00&quot;,
+                  &quot;end&quot;: &quot;2022-08-04T11:00&quot;,
+                  &quot;classNames&quot;: [&quot;event-custom-style&quot;, &quot;bg-light&quot;, &quot;text-nav&quot;, &quot;border-0&quot;, &quot;rounded-1&quot;, &quot;p-2&quot;, &quot;ps-3&quot;, &quot;border-start&quot;, &quot;border-5&quot;, &quot;border-primary&quot;]
+                },
+                {
+                  &quot;title&quot;: &quot;For pregnant&quot;,
+                  &quot;start&quot;: &quot;2022-08-05T07:30&quot;,
+                  &quot;end&quot;: &quot;2022-08-05T09:40&quot;,
+                  &quot;classNames&quot;: [&quot;event-custom-style&quot;, &quot;bg-light&quot;, &quot;text-nav&quot;, &quot;border-0&quot;, &quot;rounded-1&quot;, &quot;p-2&quot;, &quot;ps-3&quot;, &quot;border-start&quot;, &quot;border-5&quot;, &quot;border-warning&quot;]
+                },
+                {
+                  &quot;title&quot;: &quot;Beginners&quot;,
+                  &quot;start&quot;: &quot;2022-08-08T11:00&quot;,
+                  &quot;end&quot;: &quot;2022-08-03T13:00&quot;,
+                  &quot;classNames&quot;: [&quot;event-custom-style&quot;, &quot;bg-light&quot;, &quot;text-nav&quot;, &quot;border-0&quot;, &quot;rounded-1&quot;, &quot;p-2&quot;, &quot;ps-3&quot;, &quot;border-start&quot;, &quot;border-5&quot;, &quot;border-success&quot;]
+                },
+                {
+                  &quot;title&quot;: &quot;Relax yoga&quot;,
+                  &quot;start&quot;: &quot;2022-08-08T12:35&quot;,
+                  &quot;end&quot;: &quot;2022-08-03T14:00&quot;,
+                  &quot;classNames&quot;: [&quot;event-custom-style&quot;, &quot;bg-light&quot;, &quot;text-nav&quot;, &quot;border-0&quot;, &quot;rounded-1&quot;, &quot;p-2&quot;, &quot;ps-3&quot;, &quot;border-start&quot;, &quot;border-5&quot;, &quot;border-danger&quot;]
+                },
+                {
+                  &quot;title&quot;: &quot;For pregnant&quot;,
+                  &quot;start&quot;: &quot;2022-08-09T07:30&quot;,
+                  &quot;end&quot;: &quot;2022-08-09T09:40&quot;,
+                  &quot;classNames&quot;: [&quot;event-custom-style&quot;, &quot;bg-light&quot;, &quot;text-nav&quot;, &quot;border-0&quot;, &quot;rounded-1&quot;, &quot;p-2&quot;, &quot;ps-3&quot;, &quot;border-start&quot;, &quot;border-5&quot;, &quot;border-warning&quot;]
+                },
+                {
+                  &quot;title&quot;: &quot;Fly yoga&quot;,
+                  &quot;start&quot;: &quot;2022-08-10T09:00&quot;,
+                  &quot;end&quot;: &quot;2022-08-10T11:00&quot;,
+                  &quot;classNames&quot;: [&quot;event-custom-style&quot;, &quot;bg-light&quot;, &quot;text-nav&quot;, &quot;border-0&quot;, &quot;rounded-1&quot;, &quot;p-2&quot;, &quot;ps-3&quot;, &quot;border-start&quot;, &quot;border-5&quot;, &quot;border-primary&quot;]
+                },
+                {
+                  &quot;title&quot;: &quot;Stretching&quot;,
+                  &quot;start&quot;: &quot;2022-08-11T16:30&quot;,
+                  &quot;end&quot;: &quot;2022-08-11T18:00&quot;,
+                  &quot;classNames&quot;: [&quot;event-custom-style&quot;, &quot;bg-light&quot;, &quot;text-nav&quot;, &quot;border-0&quot;, &quot;rounded-1&quot;, &quot;p-2&quot;, &quot;ps-3&quot;, &quot;border-start&quot;, &quot;border-5&quot;, &quot;border-purple&quot;]
+                },
+                {
+                  &quot;title&quot;: &quot;Healthy back&quot;,
+                  &quot;start&quot;: &quot;2022-08-11T12:00&quot;,
+                  &quot;end&quot;: &quot;2022-08-11T13:30&quot;,
+                  &quot;classNames&quot;: [&quot;event-custom-style&quot;, &quot;bg-light&quot;, &quot;text-nav&quot;, &quot;border-0&quot;, &quot;rounded-1&quot;, &quot;p-2&quot;, &quot;ps-3&quot;, &quot;border-start&quot;, &quot;border-5&quot;, &quot;border-info&quot;]
+                },
+                {
+                  &quot;title&quot;: &quot;Relax yoga&quot;,
+                  &quot;start&quot;: &quot;2022-08-12T12:35&quot;,
+                  &quot;end&quot;: &quot;2022-08-12T14:00&quot;,
+                  &quot;classNames&quot;:
+                  [
+                        &quot;event-custom-style&quot;,
+                        &quot;bg-light&quot;,
+                        &quot;text-nav&quot;,
+                        &quot;border-0&quot;,
+                        &quot;rounded-1&quot;,
+                        &quot;p-2&quot;,
+                        &quot;ps-3&quot;,
+                        &quot;border-start&quot;,
+                        &quot;border-5&quot;,
+                        &quot;border-danger&quot;
+                  ]
+                }
+            ]
+        }">
+
+        </div>
+        <div class="text-center pt-4 pt-md-5 mt-2 mt-sm-3 mt-md-0">
+            <a class="btn btn-outline-primary fs-base" href="#">
+                S'inscrire au club
+            </a>
+        </div>
+    </section>#}
+
+    <!-- CTA - Réduction de 10% -->
+    <section class="container pt-5 mt-lg-3 mt-xl-4 mt-xxl-5">
+        <div class="bg-primary rounded-5 overflow-hidden mt-2 mt-sm-4 mt-lg-5">
+            <img class="position-absolute top-50 start-0 translate-middle-y d-none d-md-block"
+                 src="{{ asset('assets/img/site/bg-cta.svg') }}" width="186" alt="Background flower">
+            <div class="row position-relative zindex-2 align-items-center">
+                <div class="col-md-6 col-lg-5 offset-lg-1">
+                    <div class="text-center text-md-start py-5 px-4 px-sm-5 pe-md-0 ps-lg-4 ps-xl-5">
+                        <div class="d-flex align-items-center justify-content-center justify-content-md-start mb-2">
+                            <span class="bg-white opacity-70 me-2 d-none d-md-block" style="width: 40px; height: 1px; margin-top: -1px;"></span>
+                            <span class="fs-xs fw-semibold text-white opacity-70 text-uppercase">
+                                Offre Spéciale
+                            </span>
+                        </div>
+                        <h2 class="h1 text-white pb-2 pb-sm-3">
+                            Obtenez 10% de réduction sur votre premiere inscription
+                        </h2>
+                        <a class="btn btn-outline-light fs-base" href="#">S'inscrire au club</a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <img class="d-block mx-auto mx-md-0 mt-n4 mt-md-0"
+                         src="{{ asset('assets/img/site/piscine-cta.jpeg') }}" width="534" alt="Image">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing - Sidebar + Card-->
+    <section id="pricing" class="pt-5 mt-lg-3 mt-xl-4 mt-xxl-5">
+        <div class="container pt-2 pt-sm-4 pt-lg-5 mt-md-2">
+            <div class="row">
+                <!-- Sticky sidebar-->
+                <div class="col-md-5 col-xl-4 mb-5 mb-md-0" style="margin-top: -125px;">
+                    <div class="position-sticky top-0" style="padding-top: 125px;">
+                        <h2 class="h1 pb-2 pb-lg-3">Choisissez un abonnement</h2>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <p class="mb-4">
+                                    Choisissez l'abonnement qui vous convient le mieux et embarquez pour des aventures
+                                    de plongée inoubliables.
+                                </p>
+                            </div>
+                        </div>
+                        <ul class="list-unstyled mb-0 pb-5">
+                            <li class="d-flex align-items-center mb-3">
+                                <svg class="d-block flex-shrink-0 text-primary" width="24" height="24"
+                                     viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M11.9266 11.9488V7.48998C11.9266 7.22049 11.7181 7 11.4633 7C11.2085 7 11 7.22049 11 7.48998V12.1448C11 12.2673 11.0463 12.3898 11.139 12.4878L16.2124 15.853C16.305 15.951 16.4208 16 16.5367 16C16.6525 16 16.7683 15.951 16.861 15.853C17.0463 15.657 17.0463 15.363 16.861 15.167L11.9266 11.9488Z"></path>
+                                    <path d="M12 1C5.92609 1 1 5.92609 1 12C1 18.0739 5.92609 23 12 23C18.0739 23 23 18.0739 23 12C23 5.92609 18.0739 1 12 1ZM12 22.0435C6.45217 22.0435 1.95652 17.5478 1.95652 12C1.95652 6.45217 6.45217 1.95652 12 1.95652C17.5478 1.95652 22.0435 6.45217 22.0435 12C22.0435 17.5478 17.5478 22.0435 12 22.0435Z"></path>
+                                </svg>
+                                <div class="ps-2 ms-1">
+                                    <div class="text-nav fw-medium">2 entrainements par semaine</div>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-center mb-3">
+                                <svg class="d-block flex-shrink-0 text-primary" width="24" height="24"
+                                     viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M11 24C4.935 24 0 19.065 0 13C0 6.935 4.935 2 11 2C13.109 2 15.161 2.601 16.934 3.739C17.166 3.888 17.234 4.197 17.085 4.43C16.935 4.662 16.626 4.73 16.394 4.581C14.782 3.546 12.917 3 11 3C5.486 3 1 7.486 1 13C1 18.514 5.486 23 11 23C16.514 23 21 18.514 21 13C21 12.67 20.984 12.345 20.953 12.024C20.926 11.749 21.127 11.504 21.402 11.478C21.682 11.455 21.922 11.652 21.948 11.927C21.982 12.28 22 12.638 22 13C22 19.065 17.065 24 11 24Z"></path>
+                                    <path d="M12.5002 15.2502C12.3723 15.2502 12.2442 15.2012 12.1462 15.1042L7.64625 10.6042C7.45125 10.4092 7.45125 10.0922 7.64625 9.89725C7.84125 9.70225 8.15825 9.70225 8.35325 9.89725L12.4992 14.0432L23.1462 3.39625C23.3412 3.20125 23.6583 3.20125 23.8533 3.39625C24.0483 3.59125 24.0483 3.90825 23.8533 4.10325L12.8532 15.1032C12.7562 15.2012 12.6282 15.2502 12.5002 15.2502Z"></path>
+                                </svg>
+                                <div class="ps-2 ms-1">
+                                    <div class="text-nav fw-medium">Des sorties en milieu naturels</div>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <svg class="d-block flex-shrink-0 text-primary" width="24" height="24"
+                                     viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M23.479 10.9238C23.9514 10.4634 24.1181 9.78767 23.9144 9.15956C23.7101 8.53144 23.1781 8.08307 22.5245 7.98791L16.7134 7.14354C16.4659 7.1075 16.252 6.95227 16.1415 6.72784L13.5435 1.46216C13.2518 0.870571 12.6597 0.50293 11.9999 0.50293C11.3405 0.50293 10.7485 0.870571 10.4568 1.46216L7.85829 6.72784C7.74776 6.95227 7.53342 7.1075 7.28592 7.14354L1.47479 7.98839C0.821687 8.08307 0.289688 8.53144 0.0854429 9.15956C-0.118322 9.78767 0.0484385 10.4634 0.520845 10.9238L4.72541 15.0221C4.90467 15.197 4.98684 15.4489 4.94455 15.6949L3.95216 21.4825C3.84067 22.1327 4.10258 22.7772 4.6365 23.1655C5.16994 23.5543 5.86438 23.6047 6.44924 23.2967L11.6462 20.5641C11.8677 20.4478 12.1321 20.4478 12.3536 20.5641L17.551 23.2967C17.8048 23.4303 18.0797 23.4961 18.3531 23.4961C18.7083 23.4961 19.062 23.3851 19.3638 23.1655C19.8977 22.7772 20.1596 22.1327 20.0481 21.4825L19.0552 15.6954C19.013 15.4489 19.0951 15.1975 19.2744 15.0226L23.479 10.9238ZM18.1085 15.8578L19.1009 21.6449C19.1509 21.9362 19.0379 22.2144 18.7986 22.3884C18.5588 22.5619 18.2604 22.583 17.9985 22.4465L12.801 19.7135C12.5506 19.5823 12.2748 19.516 11.9999 19.516C11.725 19.516 11.4496 19.5823 11.1988 19.714L6.0023 22.4465C5.73943 22.583 5.44099 22.5619 5.20166 22.3884C4.96234 22.2144 4.84988 21.9366 4.89938 21.6449L5.89177 15.8578C5.98741 15.2994 5.80238 14.7294 5.39678 14.3344L1.19173 10.2356C0.979796 10.0289 0.90771 9.73769 0.9995 9.45655C1.09081 9.17494 1.32004 8.98174 1.61272 8.93897L7.42337 8.0946C7.9842 8.01338 8.4691 7.6616 8.71948 7.15315L11.318 1.88747C11.4487 1.62219 11.7039 1.46408 11.9994 1.46408C12.2955 1.46408 12.5502 1.62219 12.6814 1.88747L15.2798 7.15315C15.5302 7.6616 16.0146 8.01338 16.5755 8.0946L22.3866 8.93897C22.6793 8.98174 22.9085 9.17494 22.9998 9.45655C23.0911 9.73769 23.0195 10.0289 22.8076 10.2356L18.603 14.3339C18.1974 14.7294 18.0124 15.2989 18.1085 15.8578Z"></path>
+                                </svg>
+                                <div class="ps-2 ms-1">
+                                    <div class="text-nav fw-medium">Reconnue dans les clubs FFESSM</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Pricing list-->
+                <div class="col-md-7 offset-xl-1">
+                    <div class="ps-md-4 ps-xxl-5">
+                        <!-- Pricing card - Nage avec palmes-->
+                        <div class="card border-0 bg-secondary rounded-4 position-relative mb-3">
+                            <div class="card-body d-sm-flex align-items-start text-center text-sm-start">
+                                <div class="w-100 pe-sm-4 mb-3 mb-sm-0" style="max-width: 27rem;">
+                                    <h3 class="mb-2">Nage avec palme</h3>
+                                    <p class="fs-lg mb-0">A partir de 10 ans</p>
+                                </div>
+                                <div class="w-100 pe-sm-3 mx-auto me-sm-0 mb-3 mb-sm-0" style="max-width: 8rem;">
+                                    <div class="h3 text-primary mb-0 mb-sm-2">40€</div>
+                                    <span class="fs-sm">40€ l'année</span>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary stretched-link w-100 w-sm-auto"
+                                        type="button">
+                                    S'inscrire
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Pricing card - Plongée-->
+                        <div class="card border-0 bg-secondary rounded-4 position-relative mb-3">
+                            <div class="card-body d-sm-flex align-items-start text-center text-sm-start">
+                                <div class="w-100 pe-sm-4 mb-3 mb-sm-0" style="max-width: 27rem;">
+                                    <h3 class="mb-2">Plongée</h3>
+                                    <p class="fs-lg mb-0">A partir de 14 ans</p>
+                                </div>
+                                <div class="w-100 pe-sm-3 mx-auto me-sm-0 mb-3 mb-sm-0" style="max-width: 8rem;">
+                                    <div class="h3 text-primary mb-0 mb-sm-2">80€</div>
+                                    <span class="fs-sm">80€ l'année</span>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary stretched-link w-100 w-sm-auto"
+                                        type="button">S'inscrire
+                                </button>
+                            </div>
+                        </div>
+                        {#<!-- Pricing card-->
+                        <div class="card border-0 bg-secondary rounded-4 position-relative mb-3">
+                            <div class="card-body d-sm-flex align-items-start text-center text-sm-start">
+                                <div class="w-100 pe-sm-4 mb-3 mb-sm-0" style="max-width: 27rem;">
+                                    <h3 class="mb-2">16 lessons</h3>
+                                    <p class="fs-lg mb-0">Valid for all types of classes</p>
+                                </div>
+                                <div class="w-100 pe-sm-3 mx-auto me-sm-0 mb-3 mb-sm-0" style="max-width: 8rem;">
+                                    <div class="h3 text-primary mb-0 mb-sm-2">$120</div>
+                                    <span class="fs-sm">$7 per class</span>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary stretched-link w-100 w-sm-auto"
+                                        type="button">Buy
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Pricing card-->
+                        <div class="card border-0 bg-secondary rounded-4 position-relative">
+                            <div class="card-body d-sm-flex align-items-start text-center text-sm-start">
+                                <div class="w-100 pe-sm-4 mb-3 mb-sm-0" style="max-width: 27rem;">
+                                    <h3 class="mb-2">Yoga for pregnant</h3>
+                                    <p class="fs-lg mb-0">Valid for all types of classes</p>
+                                </div>
+                                <div class="w-100 pe-sm-3 mx-auto me-sm-0 mb-3 mb-sm-0" style="max-width: 8rem;">
+                                    <div class="h3 text-primary mb-0 mb-sm-2">$12</div>
+                                    <span class="fs-sm">per class</span>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary stretched-link w-100 w-sm-auto"
+                                        type="button">Buy
+                                </button>
+                            </div>
+                        </div>#}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- Revenir au haut de la page -->
+<a class="btn-scroll-top" href="#top" data-scroll>
+    <svg viewBox="0 0 40 40" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="20" cy="20" r="19" fill="none" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"></circle>
+    </svg>
+    <i class="ai-arrow-up"></i>
+</a>
+<!-- Vendor scripts: js libraries and plugins-->
+<script src="{{ asset('assets/js/vendor/bootstrap/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('assets/js/vendor/smooth-scroll/smooth-scroll.polyfills.min.js') }}"></script>
+<script src="{{ asset('assets/js/vendor/swiper/swiper-bundle.min.js') }}"></script>
+<script src="{{ asset('assets/js/vendor/lightgallery/lightgallery.min.js') }}"></script>
+<script src="{{ asset('assets/js/vendor/lightgallery/plugins/video/lg-video.min.js') }}"></script>
+<script src="{{ asset('assets/js/vendor/fullcalendar/main.min.js') }}"></script>
+<!-- Main theme script-->
+<script src="{{ ('assets/js/vendor/bootstrap/theme.min.js') }}"></script>

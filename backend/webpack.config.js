@@ -8,9 +8,9 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 
 Encore
     // directory where compiled assets will be stored
-    .setOutputPath('public/build/')
+    .setOutputPath('public/assets/')
     // public path used by the web server to access the output path
-    .setPublicPath('/build')
+    .setPublicPath('/assets')
     // only needed for CDN's or subdirectory deploy
     //.setManifestKeyPrefix('build/')
 
@@ -54,7 +54,9 @@ Encore
     })
 
     // enables Sass/SCSS support
-    //.enableSassLoader()
+    .enableSassLoader()
+
+    .enablePostCssLoader()
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
@@ -68,6 +70,24 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
+
+    // Copy files images from assets to public
+    .copyFiles({
+        from: './assets/img',
+        to: 'img/[path][name].[ext]',
+    })
+
+    // Copy files css from assets to public
+    .copyFiles({
+        from: './assets/css',
+        to: 'css/[path][name].[ext]',
+    })
+
+    // Copy files js from assets to public
+    .copyFiles({
+        from: './assets/js/vendor',
+        to: 'js/vendor/[path][name].[ext]',
+    })
 ;
 
 module.exports = Encore.getWebpackConfig();
