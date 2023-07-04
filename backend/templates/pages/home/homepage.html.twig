@@ -28,11 +28,13 @@
                 </div>
                 <div class="swiper-slide">
                     <div class="swiper-slide-cover bg-position-top-center"
-                         style="background-image: url(assets/img/landing/yoga-studio/hero/02.jpg);"></div>
+                         style="background-image: url( {{ asset('assets/img/site/accueil-2.jpeg') }} );">
+                    </div>
                 </div>
                 <div class="swiper-slide">
                     <div class="swiper-slide-cover bg-position-top-center"
-                         style="background-image: url(assets/img/landing/yoga-studio/hero/03.jpg);"></div>
+                         style="background-image: url( {{ asset('assets/img/site/accueil-3.jpeg)') }}">
+                    </div>
                 </div>
             </div>
             <div class="swiper-pagination mb-4"></div>
@@ -58,7 +60,7 @@
     </section>
 
     <!-- Présentation des activités (slider) -->
-    <section class="pt-5 mt-lg-3 mt-xl-4 mt-xxl-5">
+    <section class="container pt-5 mt-lg-3 mt-xl-4 mt-xxl-5">
         <div class="container pt-2 pt-sm-4 pt-lg-5 mt-md-3 mt-lg-0">
             <div class="row pb-3 mb-3 mb-lg-4">
                 <div class="col-lg-11 d-sm-flex justify-content-between text-center text-sm-start">
@@ -355,99 +357,106 @@
     </section>
 
     <!-- Instructeurs (Grid)-->
-    <section class="container pb-2 pb-sm-3 pt-5 mt-lg-3 mt-xl-4 mt-xxl-5">
-        <h2 class="h1 text-center pt-2 pt-sm-4 pt-lg-5 pb-2 mb-3 mb-lg-4 mt-md-3 mt-lg-0">
-            Nous vous offrons les meilleurs formateurs.
-        </h2>
-        <!-- Daniel -->
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-            <div class="col text-center pt-2">
-                <a class="card-hover card-lifted d-inline-block text-decoration-none"
-                   href="#">
-                    <img class="card-lifted d-block rounded-5 mb-3"
-                         src="{{ asset('assets/img/site/membre/bureau/daniel.jpeg') }}"
-                         width="340" alt="Daniel"
-                    >
-                    <h3 class="h5 mb-1">Daniel</h3>
-                    <p class="mb-0 text-muted">
-                        Instructeur de plongée
-                    </p>
-                </a>
-            </div>
+    <section class="bg-secondary py-5 pb-2 pb-sm-3 pt-5 mt-lg-3 mt-xl-4 mt-xxl-5">
+        <div class="container">
 
-            <!-- Mohamed -->
-            <div class="col text-center pt-2">
-                <a class="card-hover card-lifted d-inline-block text-decoration-none"
-                   href="#">
-                    <img class="card-lifted d-block rounded-5 mb-3"
-                         src="{{ asset('assets/img/site/membre/bureau/default.jpeg') }}"
-                         width="340" alt="Mohamed">
-                    <h3 class="h5 mb-1">Mohamed</h3>
-                    <p class="mb-0 text-muted">
-                        Instructeur de plongée
-                    </p>
-                </a>
-            </div>
+            <h2 class="h1 text-center pt-2 pt-sm-4 pt-lg-5 pb-2 mb-3 mb-lg-4 mt-md-3 mt-lg-0">
+                Nous vous offrons les meilleurs formateurs.
+            </h2>
+            <!-- Daniel -->
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                <div class="col text-center pt-2">
+                    <a class="card-hover card-lifted d-inline-block text-decoration-none"
+                       href="#">
+                        <img class="card-lifted d-block rounded-5 mb-3"
+                             src="{{ asset('assets/img/site/membre/bureau/daniel.jpeg') }}"
+                             width="340" alt="Daniel"
+                        >
+                        <h3 class="h5 mb-1">Daniel</h3>
+                        <p class="mb-0 text-muted">
+                            Instructeur de plongée
+                        </p>
+                    </a>
+                </div>
 
-            <!-- Thierry -->
-            <div class="col text-center pt-2">
-                <a class="card-hover card-lifted d-inline-block text-decoration-none"
-                   href="#">
-                    <img class="card-lifted d-block rounded-5 mb-3"
-                         src="{{ asset('assets/img/site/membre/bureau/default.jpeg') }}"
-                         width="340" alt="Thierry">
-                    <h3 class="h5 mb-1">Thierry</h3>
-                    <p class="mb-0 text-muted">Instructeur de plongée</p>
-                </a>
-            </div>
+                <!-- Mohamed -->
+                <div class="col text-center pt-2">
+                    <a class="card-hover card-lifted d-inline-block text-decoration-none"
+                       href="#">
+                        <img class="card-lifted d-block rounded-5 mb-3"
+                             src="{{ asset('assets/img/site/membre/bureau/default.jpeg') }}"
+                             width="340" alt="Mohamed">
+                        <h3 class="h5 mb-1">Mohamed</h3>
+                        <p class="mb-0 text-muted">
+                            Instructeur de plongée
+                        </p>
+                    </a>
+                </div>
 
-            <!-- Stephan -->
-            <div class="col text-center pt-2">
-                <a class="card-hover card-lifted d-inline-block text-decoration-none"
-                   href="#">
-                    <img class="card-lifted d-block rounded-5 mb-3"
-                         src="{{ asset('assets/img/site/membre/bureau/stephan.jpeg') }}"
-                         width="340" alt="Stephan">
-                    <h3 class="h5 mb-1">Stephan</h3>
-                    <p class="mb-0 text-muted">Instructeur nage avec palme</p>
-                </a>
-            </div>
+                <!-- Thierry -->
+                <div class="col text-center pt-2">
+                    <a class="card-hover card-lifted d-inline-block text-decoration-none"
+                       href="#">
+                        <img class="card-lifted d-block rounded-5 mb-3"
+                             src="{{ asset('assets/img/site/membre/bureau/default.jpeg') }}"
+                             width="340" alt="Thierry">
+                        <h3 class="h5 mb-1">Thierry</h3>
+                        <p class="mb-0 text-muted">Instructeur de plongée</p>
+                    </a>
+                </div>
 
-            <!-- Yves et Chantal -->
-            <div class="col text-center pt-2">
-                <a class="card-hover card-lifted d-inline-block text-decoration-none"
-                   href="#">
-                    <img class="card-lifted d-block rounded-5 mb-3"
-                         src="{{ asset('assets/img/site/membre/bureau/yves-chantal.jpeg') }}"
-                         width="340" height="280" alt="Yves & Chantal Zumstein">
-                    <h3 class="h5 mb-1">Yves & Chantal</h3>
-                    <p class="mb-0 text-muted">Yves est le Président du club</p>
-                    <p class="mb-0 text-muted">Chantal est instructrice de plongée (N1)</p>
-                </a>
-            </div>
+                <!-- Stephan -->
+                <div class="col text-center pt-2">
+                    <a class="card-hover card-lifted d-inline-block text-decoration-none"
+                       href="#">
+                        <img class="card-lifted d-block rounded-5 mb-3"
+                             src="{{ asset('assets/img/site/membre/bureau/stephan.jpeg') }}"
+                             width="340" alt="Stephan">
+                        <h3 class="h5 mb-1">Stephan</h3>
+                        <p class="mb-0 text-muted">Instructeur nage avec palme</p>
+                    </a>
+                </div>
 
-            {#<div class="col text-center pt-2">
-                <a class="card-hover card-lifted d-inline-block text-decoration-none" href="#">
-                    <img class="card-lifted d-block rounded-5 mb-3"
-                         src="assets/img/landing/yoga-studio/trainers/07.jpg"
-                         width="340" alt="Annette Black">
-                    <h3 class="h5 mb-1">Annette Black</h3>
-                    <p class="mb-0 text-muted">Fly-yoga trainer</p>
-                </a>
+                <!-- Yves et Chantal -->
+                <div class="col text-center pt-2">
+                    <a class="card-hover card-lifted d-inline-block text-decoration-none"
+                       href="#">
+                        <img class="card-lifted d-block rounded-5 mb-3"
+                             src="{{ asset('assets/img/site/membre/bureau/yves-chantal.jpeg') }}"
+                             width="340" height="280" alt="Yves & Chantal Zumstein">
+                        <h3 class="h5 mb-1">Yves & Chantal</h3>
+                        <p class="mb-0 text-muted">Yves est le Président du club</p>
+                        <p class="mb-0 text-muted">Chantal est instructrice de plongée (N1)</p>
+                    </a>
+                </div>
+
+                {#<div class="col text-center pt-2">
+                    <a class="card-hover card-lifted d-inline-block text-decoration-none" href="#">
+                        <img class="card-lifted d-block rounded-5 mb-3"
+                             src="assets/img/landing/yoga-studio/trainers/07.jpg"
+                             width="340" alt="Annette Black">
+                        <h3 class="h5 mb-1">Annette Black</h3>
+                        <p class="mb-0 text-muted">Fly-yoga trainer</p>
+                    </a>
+                </div>
+                <div class="col text-center pt-2">
+                    <a class="card-hover card-lifted d-inline-block text-decoration-none"
+                       href="#">
+                        <img class="card-lifted d-block rounded-5 mb-3"
+                             src="assets/img/landing/yoga-studio/trainers/08.jpg"
+                             width="340" alt="Ralph Edwards">
+                        <h3 class="h5 mb-1">Ralph Edwards</h3>
+                        <p class="mb-0 text-muted">Stretching trainer, healthy back</p>
+                    </a>
+                </div>#}
             </div>
-            <div class="col text-center pt-2">
-                <a class="card-hover card-lifted d-inline-block text-decoration-none"
-                   href="#">
-                    <img class="card-lifted d-block rounded-5 mb-3"
-                         src="assets/img/landing/yoga-studio/trainers/08.jpg"
-                         width="340" alt="Ralph Edwards">
-                    <h3 class="h5 mb-1">Ralph Edwards</h3>
-                    <p class="mb-0 text-muted">Stretching trainer, healthy back</p>
-                </a>
-            </div>#}
         </div>
     </section>
 
+    <!-- Calendrier-->
+    <section class="container pt-5 mt-lg-3 mt-xl-4 mt-xxl-5">
+        {% include('pages/calendar/index.html.twig') %}
+    </section>
     {#<!-- Calendrier-->
     <section class="container pt-5 mt-lg-3 mt-xl-4 mt-xxl-5">
         <h2 class="h1 text-center pb-3 pt-sm-3 pt-lg-5 mb-3 mb-lg-4">Calendrier</h2>
@@ -779,6 +788,7 @@
     </svg>
     <i class="ai-arrow-up"></i>
 </a>
+
 <!-- Vendor scripts: js libraries and plugins-->
 <script src="{{ asset('assets/js/vendor/bootstrap/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('assets/js/vendor/smooth-scroll/smooth-scroll.polyfills.min.js') }}"></script>
@@ -786,5 +796,6 @@
 <script src="{{ asset('assets/js/vendor/lightgallery/lightgallery.min.js') }}"></script>
 <script src="{{ asset('assets/js/vendor/lightgallery/plugins/video/lg-video.min.js') }}"></script>
 <script src="{{ asset('assets/js/vendor/fullcalendar/main.min.js') }}"></script>
+
 <!-- Main theme script-->
 <script src="{{ ('assets/js/vendor/bootstrap/theme.min.js') }}"></script>

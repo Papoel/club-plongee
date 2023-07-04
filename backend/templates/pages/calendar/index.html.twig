@@ -1,0 +1,59 @@
+<div class="d-flex {{ is_granted('ROLE_ADMIN') ? 'justify-content-evenly' : 'justify-content-center' }}">
+    <h1 class="h3 mb-4 text-gray-800">Calendrier</h1>
+    <div>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a id="calendar-gestion" href="{{ path('app_calendar_index') }}">Gérer le calendrier</a>
+        {% endif %}
+    </div>
+</div>
+
+<div id="calendrier" class="py-5"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let calendarElt = document.querySelector('#calendrier')
+
+            let calendar = new FullCalendar.Calendar(calendarElt, {
+                initialView: 'dayGridMonth',
+                locale: '{{ app.request.locale }}',
+                timeZone: 'Europe/Paris',
+                themeSystem: 'bootstrap5',
+                headerToolbar: {
+                    start: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,listWeek',
+                },
+                events: {{ data|raw }},
+                editable: {{ is_granted('ROLE_ADMIN') ? 'true' : 'false' }},
+                eventResizableFromStart: true,
+                eventDisplay: 'block',
+            })
+
+            calendar.on('eventChange', (e) => {
+                let url = `/api/calendrier/${e.event.id}/edit`
+                // log description
+                console.log(e.event.extendedProps.description)
+
+                let datas = {
+                    "title": e.event.title,
+                    "description": e.event.extendedProps.description,
+                    "start": e.event.start,
+                    "end": e.event.end,
+                    "backgroundColor": e.event.backgroundColor,
+                    "borderColor": e.event.borderColor,
+                    "textColor": e.event.textColor,
+                    "allDay": e.event.allDay,
+                }
+
+                // Save event with xhr
+                let xhr = new XMLHttpRequest()
+
+                xhr.open('PUT', url, true)
+                xhr.setRequestHeader('Content-Type', 'application/json')
+                xhr.send(JSON.stringify(datas))
+
+
+            })
+
+            calendar.render()
+        })
+    </script>

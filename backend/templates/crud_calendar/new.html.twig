@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Calendar{% endblock %}
+
+
+{% block body %}
+
+{% include('pages/header/navbar.html.twig') %}
+
+    <main class="page-wrapper mt-5">
+        <section class="container pt-5 mt-lg-3 mt-xl-4 mt-xxl-5">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1>Créer une nouvelle entrée</h1>
+                <a href="{{ path('app_calendar_index') }}"
+                   class="btn btn-outline-primary">
+                    Retour à la liste
+                </a>
+            </div>
+
+
+            {{ include('crud_calendar/_form.html.twig') }}
+        </section>
+    </main>
+
+{% endblock %}

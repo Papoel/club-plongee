@@ -1,0 +1,5 @@
+<form method="post" action="{{ path('app_calendar_delete', {'id': calendar.id}) }}"
+      onsubmit="return confirm('Êtes-vous sûr de vouloir effacer cette entrée?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ calendar.id) }}">
+    <button class="btn btn-danger">Effacer</button>
+</form>
