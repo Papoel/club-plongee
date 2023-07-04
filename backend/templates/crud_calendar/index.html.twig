@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Calendar index{% endblock %}
+
+{% block body %}
+    {% include('pages/header/navbar.html.twig') %}
+
+    <main class="page-wrapper mt-5">
+        <section class="container pt-5 mt-lg-3 mt-xl-4 mt-xxl-5">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1>Calendrier club</h1>
+                <a class="btn btn-outline-success" href="{{ path('app_calendar_new') }}">Créer une nouvelle entrée</a>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Titre</th>
+                        <th>Début</th>
+                        <th>Fin</th>
+                        <th>Description</th>
+                        <th>Journée complète</th>
+                        <th>Couleur de fond</th>
+                        <th>Couleur de bordure</th>
+                        <th>Couleur de texte</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for calendar in calendars %}
+                    <tr>
+                        <td>{{ calendar.id }}</td>
+                        <td>{{ calendar.title }}</td>
+                        <td>{{ calendar.start ? calendar.start|date('d-m-Y H:i:s') : '' }}</td>
+                        <td>{{ calendar.end ? calendar.end|date('d-m-Y H:i:s') : '' }}</td>
+                        <td>{{ calendar.description }}</td>
+                        <td>{{ calendar.allDay ? 'Oui' : 'Non' }}</td>
+                        <td>{{ calendar.backgroundColor }}</td>
+                        <td>{{ calendar.borderColor }}</td>
+                        <td>{{ calendar.textColor }}</td>
+                        <td>
+                            <a href="{{ path('app_calendar_show', {'id': calendar.id}) }}">Voir</a>
+                            <a href="{{ path('app_calendar_edit', {'id': calendar.id}) }}">Modifier</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="10">Aucune données trouvées</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+{% endblock %}

@@ -1,0 +1,8 @@
+<section class="container mt-lg-3 mt-xl-4 mt-xxl-5">
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-primary my-3">
+            {{ button_label|default('Sauvegarder') }}
+        </button>
+    {{ form_end(form) }}
+</section>
