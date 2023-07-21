@@ -1,59 +1,186 @@
-<div class="d-flex {{ is_granted('ROLE_ADMIN') ? 'justify-content-evenly' : 'justify-content-center' }}">
+{#<div class="d-flex {{ is_granted('ROLE_ADMIN') ? 'justify-content-evenly' : 'justify-content-center' }}">#}
+<div class="d-flex justify-content-evenly">
     <h1 class="h3 mb-4 text-gray-800">Calendrier</h1>
-    <div>
-        {% if is_granted('ROLE_ADMIN') %}
-            <a id="calendar-gestion" href="{{ path('app_calendar_index') }}">Gérer le calendrier</a>
-        {% endif %}
+    <a id="calendar-gestion" href="{{ path('app_calendar_index') }}">Gérer le calendrier</a>
+        {#{% if is_granted('ROLE_ADMIN') %}{% endif %}#}
+</div>
+
+{#<div class="modal fade" id="calendarModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalTitle"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>#}
+
+{{ dump(data) }}
+
+<div class="modal fade" id="calendarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modal-title"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Date:</label>
+                        <input type="text" class="form-control" id="modal-date-start">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Description:</label>
+                        <textarea class="form-control" id="modal-description"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Send message</button>
+            </div>
+        </div>
     </div>
 </div>
 
 <div id="calendrier" class="py-5"></div>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            let calendarElt = document.querySelector('#calendrier')
+        document.addEventListener('DOMContentLoaded',
+            () => {
+                let calendarElt = document.querySelector('#calendrier')
 
-            let calendar = new FullCalendar.Calendar(calendarElt, {
-                initialView: 'dayGridMonth',
-                locale: '{{ app.request.locale }}',
-                timeZone: 'Europe/Paris',
-                themeSystem: 'bootstrap5',
-                headerToolbar: {
-                    start: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,listWeek',
-                },
-                events: {{ data|raw }},
-                editable: {{ is_granted('ROLE_ADMIN') ? 'true' : 'false' }},
-                eventResizableFromStart: true,
-                eventDisplay: 'block',
+                let calendar = new FullCalendar.Calendar(calendarElt, {
+                    aspectRatio: 1.5,
+                    initialView: 'dayGridMonth',
+                    locale: '{{ app.request.locale }}',
+                    timeZone: 'Europe/Paris',
+                    themeSystem: 'bootstrap5',
+                    headerToolbar: {
+                        start: 'prevYear,prev,next,nextYear today',
+                        center: 'title',
+                        right: 'dayGridMonth,dayGridWeek listWeek',
+                    },
+                    buttonIcons: {
+                        prev: 'arrow-left',
+                        next: 'arrow-right',
+                        prevYear: 'chevron-bar-left',
+                        nextYear: 'chevron-bar-right',
+                    },
+                    // Dans l'agenda, afficher les événements sur une seule ligne
+                    allDayText: 'Journée',
+                    // Les boutons en français
+                    buttonText: {
+                        today: 'Aujourd\'hui',
+                        month: 'Mois',
+                        week: 'Semaine',
+                        day: 'Jour',
+                        list: 'Agenda',
+                        days: 'Jours',
+                    },
+                    // Durée des créneaux horaires
+                    slotDuration: "00:15:00",
+                    // Affichage des numéros de semaine
+                    weekNumbers: true,
+                    // Préfixe des numéros de semaine
+                    weekText: 'Sem. ',
+                    // editable: {{ is_granted('ROLE_ADMIN') ? 'true' : 'false' }},
+                    editable: 'true',
+                    moreLinkText: 'voir plus',
+                    noEventsText: 'Aucun événement à afficher',
+                    // Redimensionnement des événements depuis le début
+                    eventResizableFromStart: true,
+                    // Indicateur de l'heure actuelle sur l'agenda
+                    nowIndicator: true,
+                    // Commence la semaine le lundi
+                    firstDay: 1,
+                    // Format de l'heure
+                    eventTimeFormat: {
+                        hour: '2-digit', // 2 chiffres pour l'heure
+                        minute: '2-digit', // 2 chiffres pour les minutes
+                        hour12: false // Affichage de l'heure en 24h
+                    },
+
+                    events: {{ data|raw }},
+
+                    // < ########## Test Événements récurrents>
+                    // ...
+                    /*events: [
+                        {
+                            id: 1,
+                            //groupId: 1,
+                            daysOfWeek: [2, 4],
+                            title: "🤿 Entrainement Piscine",
+                            startTime: '19:00',
+                            //endTime: '21:00',
+                            duration: '02:00',
+                            startRecur: '2023-07-04', // Date de début de la récurrence
+                            endRecur: '2023-09-01', // Date de fin de la récurrence
+                            allDay: false,
+                            icon: "fa-swimmer",
+                            extendedProps: {
+                                description: "Rendez-vous à la piscine du Tournesol situé Boulevard Rampon à Maubeuge",
+                            },
+                        },
+                        {
+                            // Evenement Unique le 09/07/2023
+                            id: 2,
+                            title: "Anniversaire de François",
+                            start: '2023-07-09',
+                            allDay: true,
+                            icon: "fa-birthday-cake",
+                        },
+                        {
+                            // Une fois par semaine le mardi à 20h00 et sans date de fin : Sortir les poubelles
+                            id: 3,
+                            title: "🗑 Sortir les poubelles",
+                            startTime: '20:00',
+                            daysOfWeek: [2],
+                            freq: 'weekly',
+                            startRecur: '2023-07-04', // Date de début de la récurrence
+                            allDay: false,
+                            icon: "fa-trash",
+                        },
+                    ],*/
+
+                    // </ ########## Test Événements récurrents >
+                })
+
+
+                calendar.on('eventChange', (e) => {
+                    let url = `/api/calendrier/${e.event.id}/edit`
+                    // log description
+                    console.log(e.event)
+
+                    let datas = {
+                        "title": e.event.title,
+                        "description": e.event.extendedProps.description,
+                        "start": e.event.start,
+                        "end": e.event.end,
+                        "backgroundColor": e.event.backgroundColor,
+                        "borderColor": e.event.borderColor,
+                        "textColor": e.event.textColor,
+                        "allDay": e.event.allDay,
+                        "recurrent": e.event.recurrent,
+                    }
+                    console.log(datas)
+
+                    // Save event with xhr
+                    let xhr = new XMLHttpRequest()
+
+                    xhr.open('PUT', url, true)
+                    xhr.setRequestHeader('Content-Type', 'application/json')
+                    xhr.send(JSON.stringify(datas))
+
+                })
+
+                calendar.render();
             })
-
-            calendar.on('eventChange', (e) => {
-                let url = `/api/calendrier/${e.event.id}/edit`
-                // log description
-                console.log(e.event.extendedProps.description)
-
-                let datas = {
-                    "title": e.event.title,
-                    "description": e.event.extendedProps.description,
-                    "start": e.event.start,
-                    "end": e.event.end,
-                    "backgroundColor": e.event.backgroundColor,
-                    "borderColor": e.event.borderColor,
-                    "textColor": e.event.textColor,
-                    "allDay": e.event.allDay,
-                }
-
-                // Save event with xhr
-                let xhr = new XMLHttpRequest()
-
-                xhr.open('PUT', url, true)
-                xhr.setRequestHeader('Content-Type', 'application/json')
-                xhr.send(JSON.stringify(datas))
-
-
-            })
-
-            calendar.render()
-        })
     </script>

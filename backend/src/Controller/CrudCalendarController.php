@@ -21,46 +21,54 @@ class CrudCalendarController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws \JsonException
+     */
     #[Route('/ajouter', name: 'app_calendar_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CalendarRepository $calendarRepository): Response
     {
         $calendar = new Calendar();
-        $form = $this->createForm(CalendarType::class, $calendar);
+        $form = $this->createForm(type: CalendarType::class, data: $calendar);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $calendarRepository->save($calendar, true);
+            // Enregistrez l'événement dans la base de données
+            $calendarRepository->save(entity: $calendar, flush: true);
 
             return $this->redirectToRoute(route: 'app_calendar_index', parameters: [], status: Response::HTTP_SEE_OTHER);
         }
 
         return $this->render(view: 'crud_calendar/new.html.twig', parameters: [
             'calendar' => $calendar,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
     #[Route('/{id}', name: 'app_calendar_show', methods: ['GET'])]
     public function show(Calendar $calendar): Response
     {
-        return $this->render('crud_calendar/show.html.twig', [
+        return $this->render(view: 'crud_calendar/show.html.twig', parameters: [
             'calendar' => $calendar,
         ]);
     }
 
+    /**
+     * @throws \JsonException
+     */
     #[Route('/{id}/modifier', name: 'app_calendar_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Calendar $calendar, CalendarRepository $calendarRepository): Response
     {
-        $form = $this->createForm(CalendarType::class, $calendar);
+        $form = $this->createForm(type: CalendarType::class, data: $calendar);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $calendarRepository->save($calendar, true);
+            $calendarRepository->save($calendar, flush: true);
 
             return $this->redirectToRoute(route: 'app_calendar_index', parameters: [], status: Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('crud_calendar/edit.html.twig', [
+        return $this->render(view: 'crud_calendar/edit.html.twig', parameters: [
             'calendar' => $calendar,
             'form' => $form,
         ]);
