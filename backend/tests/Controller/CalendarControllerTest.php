@@ -40,6 +40,22 @@ class CalendarControllerTest extends WebTestCase
         $originalNumObjectsInRepository = count($this->repository->findAll());
         $uri = 'ajouter';
 
+        // Choix d'une valeur valide aléatoire parmi les choix possibles
+        $validColorChoices = [
+            '#1f96a5',
+            '#007bff',
+            '#28a745',
+            '#dc3545',
+            '#ffc107',
+            '#17a2b8',
+            '#e83e8c',
+            '#6f42c1',
+            '#6c757d',
+            '#363636',
+            '#ffffff'
+        ];
+        $randomValidColor = $validColorChoices[array_rand($validColorChoices)];
+
         $this->client->request(method: 'GET', uri: sprintf('%s'.$uri, $this->path));
 
         self::assertResponseStatusCodeSame(expectedCode: 200);
@@ -50,80 +66,113 @@ class CalendarControllerTest extends WebTestCase
             'calendar[end]' => '2023-01-01 16:45:00',
             'calendar[description]' => 'Testing now',
             'calendar[all_day]' => false,
-            'calendar[background_color]' => '#DC134C',
-            'calendar[border_color]' => '#A7123C',
-            'calendar[text_color]' => '#FFFFFF',
+            'calendar[background_color]' => $randomValidColor,
+            'calendar[border_color]' => $randomValidColor,
+            'calendar[text_color]' => $randomValidColor,
         ]);
 
         self::assertResponseRedirects(expectedLocation: $this->path);
 
         self::assertCount(expectedCount: $originalNumObjectsInRepository + 1, haystack: $this->repository->findAll());
+
+        // Tester avec une valeur invalide
+        $this->client->request(method: 'GET', uri: $this->path . $uri);
+
+        self::assertResponseStatusCodeSame(expectedCode: Response::HTTP_OK);
     }
 
     public function testShow(): void
     {
+        // Choix d'une valeur valide aléatoire parmi les choix possibles
+        $validColorChoices = [
+            '#1f96a5',
+            '#007bff',
+            '#28a745',
+            '#dc3545',
+            '#ffc107',
+            '#17a2b8',
+            '#e83e8c',
+            '#6f42c1',
+            '#6c757d',
+            '#363636',
+            '#ffffff'
+        ];
+        $randomValidColor = $validColorChoices[array_rand($validColorChoices)];
+
         $fixture = new Calendar();
-        $fixture->setTitle(title: 'Calendrier');
+        $fixture->setTitle(title: 'Testing Show');
         $fixture->setStart(start: new \DateTime(datetime: '2023-01-01 16:00:00'));
         $fixture->setEnd(end: new \DateTime(datetime: '2023-01-01 19:45:00'));
         $fixture->setDescription(description: 'My calendar description');
-        $fixture->setAllDay(all_day: false);
-        $fixture->setBackgroundColor(background_color: '#DC134C');
-        $fixture->setBorderColor(border_color: '#A7123C');
-        $fixture->setTextColor(text_color: '#FFFFFF');
+        $fixture->setBackgroundColor(background_color: $randomValidColor);
+        $fixture->setBorderColor(border_color: $randomValidColor);
+        $fixture->setTextColor(text_color: $randomValidColor);
 
         $this->repository->save(entity: $fixture, flush: true);
 
         $this->client->request(method: 'GET', uri: sprintf('%s%s', $this->path, $fixture->getId()));
 
-        self::assertResponseStatusCodeSame(expectedCode: 200);
-        self::assertPageTitleContains(expectedTitle: 'Calendrier');
+        self::assertResponseStatusCodeSame(Response::HTTP_OK);
+        self::assertPageTitleContains(expectedTitle: 'Testing Show');
 
         // Use assertions to check that the properties are properly displayed.
     }
 
     public function testEdit(): void
     {
+        // Choix d'une valeur valide aléatoire parmi les choix possibles
+        $validColorChoices = [
+            '#1f96a5',
+            '#007bff',
+            '#28a745',
+            '#dc3545',
+            '#ffc107',
+            '#17a2b8',
+            '#e83e8c',
+            '#6f42c1',
+            '#6c757d',
+            '#363636',
+            '#ffffff'
+        ];
+        $randomValidColor = $validColorChoices[array_rand($validColorChoices)];
+
         $fixture = new Calendar();
         $fixture->setTitle(title: 'Calendrier');
         $fixture->setStart(new \DateTime(datetime: '2023-01-01'));
         $fixture->setEnd(new \DateTime(datetime: '2023-01-01'));
-        $fixture->setDescription(description: 'My calendar description');
-        $fixture->setAllDay(all_day: false);
-        $fixture->setBackgroundColor(background_color: '#DC134C');
-        $fixture->setBorderColor(border_color: '#A7123C');
-        $fixture->setTextColor(text_color: '#FFFFFF');
+        $fixture->setDescription(description: 'La description du calendrier');
+        $fixture->setBackgroundColor(background_color: $randomValidColor);
+        $fixture->setBorderColor(border_color: $randomValidColor);
+        $fixture->setTextColor(text_color: $randomValidColor);
 
-        $this->repository->save($fixture, true);
+        $this->repository->save(entity: $fixture, flush: true);
 
         $crawler = $this->client->request(method: 'GET', uri: sprintf('%s%s/modifier', $this->path, $fixture->getId()));
 
         $form = $crawler->selectButton(value: 'Mettre à jour')->form();
-        $form['calendar[title]'] = 'Something New';
+        $form['calendar[title]'] = 'Mise a jour du calendrier';
         $form['calendar[start]'] = '2025-01-01T00:00';
         $form['calendar[end]'] = '2025-01-01T00:00';
-        $form['calendar[description]'] = 'Something New';
+        $form['calendar[description]'] = 'Ce calendrier a été mis à jour';
         $form['calendar[all_day]']->tick();
-        $form['calendar[background_color]'] = '#DC134C';
-        $form['calendar[border_color]'] = '#A7123C';
-        $form['calendar[text_color]'] = '#FFFFFF';
+        $form['calendar[background_color]'] = $randomValidColor;
+        $form['calendar[border_color]'] = $randomValidColor;
+        $form['calendar[text_color]'] = $randomValidColor;
 
         $this->client->submit($form);
-
-        // dd($this->client->getResponse()->getContent());
 
         self::assertResponseRedirects(expectedLocation: $this->path);
 
         $updatedFixture = $this->repository->findAll();
 
-        self::assertSame(expected: 'Something New', actual: $updatedFixture[0]->getTitle());
+        self::assertSame(expected: 'Mise a jour du calendrier', actual: $updatedFixture[0]->getTitle());
         self::assertEquals(new \DateTime(datetime: '2025-01-01'), $updatedFixture[0]->getStart());
         self::assertEquals(expected: new \DateTime(datetime: '2025-01-01'), actual: $updatedFixture[0]->getEnd());
-        self::assertSame(expected: 'Something New', actual: $updatedFixture[0]->getDescription());
+        self::assertSame(expected: 'Ce calendrier a été mis à jour', actual: $updatedFixture[0]->getDescription());
         self::assertTrue($updatedFixture[0]->isAllDay());
-        self::assertSame(expected: '#DC134C', actual: $updatedFixture[0]->getBackgroundColor());
-        self::assertSame(expected: '#A7123C', actual: $updatedFixture[0]->getBorderColor());
-        self::assertSame(expected: '#FFFFFF', actual: $updatedFixture[0]->getTextColor());
+        self::assertSame(expected: $randomValidColor, actual: $updatedFixture[0]->getBackgroundColor());
+        self::assertSame(expected: $randomValidColor, actual: $updatedFixture[0]->getBorderColor());
+        self::assertSame(expected: $randomValidColor, actual: $updatedFixture[0]->getTextColor());
     }
 
 
@@ -131,15 +180,30 @@ class CalendarControllerTest extends WebTestCase
     {
         $originalNumObjectsInRepository = count($this->repository->findAll());
 
+        // Choix d'une valeur valide aléatoire parmi les choix possibles
+        $validColorChoices = [
+            '#1f96a5',
+            '#007bff',
+            '#28a745',
+            '#dc3545',
+            '#ffc107',
+            '#17a2b8',
+            '#e83e8c',
+            '#6f42c1',
+            '#6c757d',
+            '#363636',
+            '#ffffff'
+        ];
+        $randomValidColor = $validColorChoices[array_rand($validColorChoices)];
+
         $fixture = new Calendar();
         $fixture->setTitle(title: 'Calendrier');
         $fixture->setStart(new \DateTime(datetime: '2023-01-01'));
         $fixture->setEnd(new \DateTime(datetime: '2023-01-01'));
         $fixture->setDescription(description: 'My calendar description');
-        $fixture->setAllDay(all_day: false);
-        $fixture->setBackgroundColor(background_color: '#DC134C');
-        $fixture->setBorderColor(border_color: '#A7123C');
-        $fixture->setTextColor(text_color: '#FFFFFF');
+        $fixture->setBackgroundColor(background_color: $randomValidColor);
+        $fixture->setBorderColor(border_color: $randomValidColor);
+        $fixture->setTextColor(text_color: $randomValidColor);
 
         $this->repository->save(entity: $fixture, flush: true);
 
