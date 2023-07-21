@@ -1,12 +1,3 @@
-/**
- * Around | Multipurpose Bootstrap HTML Template
- * Copyright 2022 Createx Studio
- * Theme core scripts
- *
- * @author Createx Studio
- * @version 3.0.0
-*/
-
 import themeModeSwitch from './components/theme-mode-switch';
 import stickyNavbar from './components/sticky-navbar';
 import animateOnscroll from './components/animation-on-scroll';
