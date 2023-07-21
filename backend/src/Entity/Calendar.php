@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CalendarRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CalendarRepository::class)]
 class Calendar
@@ -15,7 +16,14 @@ class Calendar
     private ?int $id = null;
 
     #[ORM\Column(type: Types::STRING, length: 100)]
-    private ?string $title = null;
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 3,
+        max: 100,
+        minMessage: 'Le titre doit contenir au moins {{ limit }} caractères',
+        maxMessage: 'Le titre doit contenir au maximum {{ limit }} caractères'
+    )]
+    private string $title;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $start = null;
@@ -23,11 +31,14 @@ class Calendar
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $end = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::BOOLEAN)]
-    private ?bool $all_day = null;
+    private ?bool $all_day = false;
+
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private ?bool $recurrent = false;
 
     #[ORM\Column(type: Types::STRING, length: 7, nullable: true)]
     private ?string $background_color = null;
@@ -37,9 +48,6 @@ class Calendar
 
     #[ORM\Column(type: Types::STRING, length: 7, nullable: true)]
     private ?string $text_color = null;
-
-    #[ORM\Column(type: Types::BOOLEAN)]
-    private ?bool $recurrent = null;
 
     /**
      * @var array<string>
@@ -70,7 +78,7 @@ class Calendar
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -111,7 +119,7 @@ class Calendar
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
 
@@ -126,6 +134,18 @@ class Calendar
     public function setAllDay(bool $all_day): static
     {
         $this->all_day = $all_day;
+
+        return $this;
+    }
+
+    public function isRecurrent(): ?bool
+    {
+        return $this->recurrent;
+    }
+
+    public function setRecurrent(bool $recurrent): static
+    {
+        $this->recurrent = $recurrent;
 
         return $this;
     }
@@ -162,18 +182,6 @@ class Calendar
     public function setTextColor(?string $text_color): static
     {
         $this->text_color = $text_color;
-
-        return $this;
-    }
-
-    public function isRecurrent(): ?bool
-    {
-        return $this->recurrent;
-    }
-
-    public function setRecurrent(bool $recurrent): static
-    {
-        $this->recurrent = $recurrent;
 
         return $this;
     }
