@@ -1,135 +1,268 @@
-{#
-<section class="container mt-lg-3 mt-xl-4 mt-xxl-5">
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button class="btn btn-primary my-3">
-            {{ button_label|default('Sauvegarder') }}
-        </button>
-    {{ form_end(form) }}
-</section>
-
-#}
-
 <section class="container mt-lg-3 mt-xl-4 mt-xxl-5">
 
-    <!-- Render Form with Row -->
     {{ form_start(form) }}
 
-        <div class="my-custom-class-for-errors">
-            {{ form_errors(form) }}
-        </div>
+    <div id="form-errors">
+        {{ form_errors(form) }}
+    </div>
 
-        {# Choisir si l'événement est unique ou répété #}
-        <div class="row col-6 mt-4 d-flex justify-content-between" id="recurrent-event">
-            {{ form_row(form.recurrent) }}
-            {{ form_row(form.all_day) }}
-        </div>
-
-        <fieldset>
-            <legend class="my-4">
+    {# Etape 1: Titre et Description #}
+    <fieldset id="step-1" class="etape">
+        <legend class="my-4">
                 <span class="border-4 border-bottom border-primary">
-                    Événement Unique
+                    #1 - Titre et description
                 </span>
-            </legend>
-            <div class="row my-3">
-                <div class="col" id="title">
-                    {{ form_row(form.title) }}
-                </div>
-
-                <div class="col" id="description">
-                    {{ form_row(form.description) }}
-                </div>
-
-                <div class="row">
-                    <div class="col-6" id="start">
-                        {{ form_row(form.start) }}
-                    </div>
-                    <div class="col-6" id="end">
-                        {{ form_row(form.end) }}
-                    </div>
-                </div>
-
-                {#<div class="row col-6 mt-4" id="all_day">
-                    {{ form_row(form.all_day) }}
-                </div>#}
+        </legend>
+        <div class="row my-3">
+            <div class="col" id="title">
+                {{ form_row(form.title) }}
             </div>
-        </fieldset>
+            <div class="col" id="description">
+                {{ form_row(form.description) }}
+            </div>
+        </div>
+    </fieldset>
 
-        <hr class="">
-        {#<div class="row col-6 mt-4" id="recurrent-event">
-            {{ form_row(form.recurrent) }}
+    {# Etape 2: Personnalisation des couleurs #}
+    <fieldset id="step-2" class="etape">
+        <legend class="my-4">
+                <span class="border-4 border-bottom border-primary">
+                    #2 - Personnalisations des couleurs
+                </span>
+        </legend>
+        <div class="row my-3">
+            <div class="col" id="bg-color">
+                {{ form_row(form.background_color) }}
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col" id="border-color">
+                {{ form_row(form.border_color) }}
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col" id="text-color">
+                {{ form_row(form.text_color) }}
+            </div>
+        </div>
+    </fieldset>
+
+    {# Etape 3: Evénement répété ou événement sur une journée entière #}
+    <fieldset id="step-3" class="etape">
+        <legend class="my-4">
+            <span class="border-4 border-bottom border-primary">
+                #3 - Événement répété ou événement sur une journée entière
+            </span>
+            <small class="text-muted fs-sm d-block">Ces options sont facultatives</small>
+        </legend>
+        <div class="row col-6 mt-4 d-flex justify-content-between">
+            <!-- Mettre en place un design pour demander si l'événement est répété ? -->
+            <div id="recurrent-event">
+                <h6>✨ L'événement est-il répété ?</h6>
+                <span class="my-3">
+                    {{ form_label(form.recurrent, null, { 'label_attr' : { 'class' : 'w-25' }}) }}
+                    {{ form_row(form.recurrent) }}
+                </span>
+            </div>
+            <div id="allDay-event">
+                <h6>✨ L'événement se déroule-t-il toute la journée ?</h6>
+                {{ form_label(form.all_day, null, { 'label_attr' : { 'class' : 'w-100' }}) }}
+                {{ form_row(form.all_day) }}
+
+            </div>
+        </div>
+    </fieldset>
+
+    {# Etape 4: Sélectionner la date de début et de fin #}
+    <fieldset id="step-4" class="etape">
+        <legend class="my-4">
+            <span class="border-4 border-bottom border-primary">
+                #4 - Sélectionner la date de début et de fin
+            </span>
+        </legend>
+        <div class="row">
+            <div class="col-6" id="start">
+                {{ form_row(form.start) }}
+            </div>
+            <div class="col-6" id="end">
+                {{ form_row(form.end) }}
+            </div>
+        </div>
+    </fieldset>
+
+    {# Etape 5: Fréquence de répétition #}
+    <fieldset id="step-5" class="etape">
+        <legend class="my-4">
+                <span class="border-4 border-bottom border-primary">
+                    #5 - Fréquence de répétition
+                </span>
+        </legend>
+
+        {# TODO: Gérer la Fréquence de répétion #}
+        {#<div class="row col-6">
+            {{ form_label(form.frequency, null, { 'label_attr' : { 'class' : 'w-100' }}) }}
+            {{ form_widget(form.frequency) }}
         </div>#}
-        <hr class="">
 
-        {# class="{{ divContent=='' ? 'emptyClass' :'notEmptyClass' }}" #}
-        <fieldset id="recurrent-event" class="{{ form.recurrent == true ? '' : 'd-none' }}">
-            <legend class="my-4">
-                <span class="border-4 border-bottom border-primary">
-                    Répéter un événement
-                </span>
-            </legend>
-
-            <div class="row col-6">
-                {{ form_label(form.frequency, null, { 'label_attr' : { 'class' : 'w-100' }}) }}
-                {{ form_widget(form.frequency) }}
+        <div class="row">
+            <div class="col-12" id="daysOfWeek">
+                {{ form_label(form.daysOfWeek, null, { 'label_attr' : { 'class' : 'w-100' }}) }}
+                {{ form_widget(form.daysOfWeek, { 'attr': { 'class' : 'd-flex flex-wrap justify-content-between mb-3'  }}) }}
             </div>
+        </div>
 
-            <div class="row">
-                {# Ajouter form.daysOfWeek et aligner les jours de la semaines dur deux lignes #}
-                <div class="col-12" id="daysOfWeek">
-                    {{ form_label(form.daysOfWeek, null, { 'label_attr' : { 'class' : 'w-100' }}) }}
-                    {{ form_widget(form.daysOfWeek, { 'attr': { 'class' : 'd-flex flex-wrap justify-content-between mb-3'  }}) }}
-                </div>
+        <div class="row my-3">
+            <div class="col-6" id="start">
+                {{ form_row(form.startRecur) }}
+                {{ form_row(form.startTime) }}
             </div>
+            <div class="col-6" id="end">
+                {{ form_row(form.endRecur) }}
+                {{ form_row(form.endTime) }}
+            </div>
+        </div>
+    </fieldset>
 
-            <div class="row my-3">
-                <div class="col-6" id="start">
-                    {{ form_row(form.startRecur) }}
-                    {{ form_row(form.startTime) }}
-                </div>
-                <div class="col-6" id="end">
-                    {{ form_row(form.endRecur) }}
-                    {{ form_row(form.endTime) }}
-                </div>
-                <div class="col-6" id="duration">
-                    {{ form_row(form.duration) }}
-                </div>
-            </div>
-        </fieldset>
+    {# Etape 6: Mis à jour de l'événement #}
+    <fieldset id="step-6" class="etape">
+        <legend class="my-4">
+            <span class="border-4 border-bottom border-primary">
+                #6 - Mis à jour de l'événement
+            </span>
+        </legend>
+        <div class="d-flex justify-content-start w-100">
+            <button id="save" class="btn btn-primary me-2">
+                {{ button_label|default('Sauvegarder') }}
+            </button>
+        </div>
+    </fieldset>
 
-        <hr class="my-5">
+    <hr class="my-3">
 
-        <fieldset id="params-colors">
-            <legend class="my-4">
-                <span class="border-4 border-bottom border-primary">
-                    Général
-                </span>
-            </legend>
-            <div class="row my-3">
-                <div class="col" id="bg-color">
-                    {{ form_row(form.background_color) }}
-                </div>
-            </div>
-            <div class="row my-3">
-                <div class="col" id="border-color">
-                    {{ form_row(form.border_color) }}
-                </div>
-            </div>
-            <div class="row my-3">
-                <div class="col" id="text-color">
-                    {{ form_row(form.text_color) }}
-                </div>
-            </div>
-        </fieldset>
+    {# Boutons de navigation #}
+    <div class="d-flex justify-content-start">
+        <button type="button" id="prevButton" class="btn btn-secondary my-3 me-3">Précédent</button>
+        <button type="button" id="nextButton" class="btn btn-primary my-3">Suivant</button>
+    </div>
 
-    <button class="btn btn-primary my-3">
-        {{ button_label|default('Sauvegarder') }}
-    </button>
 
     {{ form_end(form) }}
 
 </section>
 
-<dcript>
-    console.log('test');
-</dcript>
+<script>
+    // Attend que le DOM soit chargé
+    document.addEventListener("DOMContentLoaded", function () {
+        // Récupération des étapes du formulaire
+        const recurrentCheckbox = document.getElementById("calendar_recurrent");
+        const steps = document.querySelectorAll(".etape");
+        const prevButton = document.getElementById("prevButton");
+        const nextButton = document.getElementById("nextButton");
+
+        let currentStep = 0; // Commence à l'étape 0 (première étape)
+
+        // Les étapes à afficher si la checkbox est cochée ou non
+        // step-1 - currentStep = 0, step-2 - currentStep = 1, step-3 - currentStep = 2, step-4 - currentStep = 3,
+        // step-5 - currentStep = 4, step-6 - currentStep = 5
+
+        const stepIfCheckboxUnchecked = ['step-1', 'step-2', 'step-3', 'step-4', 'step-6'];
+        const stepIfCheckboxChecked = ['step-1', 'step-2', 'step-3', 'step-5', 'step-6'];
+
+        function showStep(stepIndex) {
+            // Récupérer les étapes à afficher en fonction de l'état de la checkbox
+            const stepsToShow = recurrentCheckbox.checked ? stepIfCheckboxChecked : stepIfCheckboxUnchecked;
+
+            // Afficher/masquer les étapes en fonction de la logique souhaitée
+            steps.forEach((step, index) => {
+                step.style.display = stepsToShow.includes(step.id) && index === stepIndex ? "block" : "none";
+            });
+
+            // Masquer le bouton "Précédent" si je suis à la première étape du formulaire
+            if (stepIndex === 0) {
+                // Je masque le bouton "Précédent" lorsque je suis à l'étape 1
+                prevButton.style.display = "none";
+            } else if (stepIndex === 5) {
+                // Si je suis à l'étape 6, je change le label du bouton "Précédent" en "Revenir à l'étape 1"
+                prevButton.textContent = "Revenir à l'étape 1";
+            } else {
+                // Sinon, j'affiche le bouton "Précédent"
+                prevButton.style.display = "block";
+                prevButton.textContent = "Précédent";
+            }
+
+            // Masquer le bouton "Suivant" si je suis à la dernière étape du formulaire
+            if (stepIndex === stepsToShow.length) {
+                nextButton.style.display = "none";
+            } else {
+                nextButton.style.display = "block";
+            }
+        }
+
+        // Passe à l'étape suivante
+        function goToNextStep() {
+            // Cas 1 => L'événement n'est pas répété (#calendar_reccurent n'est pas coché, stepIfCheckboxChecked)
+            // Si je suis à l'étape 1, je passe à l'étape 2
+            // Si je suis à l'étape 2, je passe à l'étape 3
+            // Si je suis à l'étape 3, je passe à l'étape 4 (étape 4 ignorée si #calendar_reccurent est coché)
+            // Si je suis à l'étape 4, je passe à l'étape 6
+
+            // Cas 2 => L'événement est répété (#calendar_reccurent est coché, stepIfCheckboxUnchecked)
+            // Si je suis à l'étape 1, je passe à l'étape 2
+            // Si je suis à l'étape 2, je passe à l'étape 3
+            // Si je suis à l'étape 3, je passe à l'étape 5 (étape 5 ignorée si #calendar_reccurent n'est pas coché)
+            // Si je suis à l'étape 5, je passe à l'étape 6
+
+            // Connaitre l'étape sur laquelle je suis
+            // console.log('Etape avant de cliquer sur \'Suivant\' : ' + steps[currentStep].innerHTML);
+            // console.log('Step avant de cliquer sur \'Suivant\' : ' + currentStep);
+
+            // Les étapes à afficher en fonction de l'état de la checkbox
+            const stepsToShow = recurrentCheckbox.checked ? stepIfCheckboxChecked : stepIfCheckboxUnchecked;
+
+            // Incrémenter l'étape actuelle avant de l'afficher
+            // currentStep++;
+
+            // Vérifier si la checkbox est cochée et que currentStep est égal à 3 (étape 4 ignorée)
+            if (!recurrentCheckbox.checked && currentStep === 3) {
+                currentStep = 5; // Passer à l'étape 6
+            } else if (recurrentCheckbox.checked && currentStep === 2) {
+                currentStep = 4; // Passer à l'étape 5
+                console.log('Checkbox cochée et étape 4 ignorée');
+            } else {
+                // Incrémenter l'étape actuelle avant de l'afficher
+                currentStep++;
+            }
+
+            // Afficher/masquer les étapes en fonction de la logique souhaitée
+            steps.forEach((step, index) => {
+                step.style.display = stepsToShow.includes(step.id) && index === currentStep ? "block" : "none";
+            });
+
+            // Afficher la prochaine étape
+            showStep(currentStep);
+        }
+
+
+        // Retourne à l'étape précédente
+        function goToPreviousStep() {
+            // Si je suis à l'étape 6, je reviens à l'étape 1
+            if (currentStep === 5) {
+                // Je change le label du bouton "Précédent" en "Revenir à l'étape 1"
+                currentStep = 0;
+            } else {
+                // Sinon, je reviens à l'étape précédente
+                currentStep--;
+            }
+            // Afficher la prochaine étape
+            showStep(currentStep);
+        }
+
+        // Cacher toutes les étapes sauf la première à l'initialisation
+        showStep(currentStep);
+
+        // Ajouter des écouteurs d'événements pour les boutons "Précédent" et "Suivant"
+        prevButton.addEventListener("click", goToPreviousStep);
+        nextButton.addEventListener("click", goToNextStep);
+    });
+
+</script>

@@ -17,33 +17,10 @@
 
             {{ include('crud_calendar/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
 
-            <div class="d-flex justify-content-center w-100 mb-3">
+            {#<div class="d-flex justify-content-center w-100 mb-3">
                 {{ include('crud_calendar/_delete_form.html.twig') }}
-            </div>
+            </div>#}
 
         </section>
     </main>
-
-    <script defer>
-        // Ajoutez un événement JavaScript pour afficher/cacher les champs de date de début et de fin
-        document.addEventListener('DOMContentLoaded', function() {
-            const recurrentCheckbox = document.querySelector('.recurrent-checkbox');
-            const startField = document.querySelector('#calendar_start');
-            const endField = document.querySelector('#calendar_end');
-
-            if (recurrentCheckbox && startField && endField) {
-                recurrentCheckbox.addEventListener('change', function() {
-                    if (this.checked) {
-                        startField.style.display = 'block';
-                        endField.style.display = 'block';
-                    } else {
-                        startField.style.display = 'none';
-                        endField.style.display = 'none';
-                    }
-                });
-            }
-        });
-
-
-    </script>
 {% endblock %}

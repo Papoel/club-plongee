@@ -29,6 +29,7 @@ class CrudCalendarController extends AbstractController
     {
         $calendar = new Calendar();
         $form = $this->createForm(type: CalendarType::class, data: $calendar);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -47,7 +48,7 @@ class CrudCalendarController extends AbstractController
     #[Route('/{id}', name: 'app_calendar_show', methods: ['GET'])]
     public function show(Calendar $calendar): Response
     {
-        return $this->render('crud_calendar/show.html.twig', [
+        return $this->render(view: 'crud_calendar/show.html.twig', parameters: [
             'calendar' => $calendar,
         ]);
     }
@@ -62,12 +63,12 @@ class CrudCalendarController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $calendarRepository->save(entity: $calendar, flush: true);
+            $calendarRepository->save($calendar, flush: true);
 
             return $this->redirectToRoute(route: 'app_calendar_index', parameters: [], status: Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('crud_calendar/edit.html.twig', [
+        return $this->render(view: 'crud_calendar/edit.html.twig', parameters: [
             'calendar' => $calendar,
             'form' => $form,
         ]);

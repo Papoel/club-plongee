@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Calendar;
+use App\EventSubscriber\Form\CalendarFormEventSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -25,19 +26,22 @@ class CalendarType extends AbstractType
             ->add(child: 'start', type: DateTimeType::class, options: [
                 'label' => 'Début',
                 'widget' => 'single_text',
+                'required' => false,
             ])
 
             ->add(child: 'end', type: DateTimeType::class, options: [
                 'label' => 'Fin',
                 'widget' => 'single_text',
+                'required' => false,
             ])
 
             ->add(child: 'description', type: TextareaType::class, options: [
                 'label' => 'Description',
+                'required' => false,
             ])
 
             ->add(child: 'all_day', type: CheckboxType::class, options: [
-                'label' => 'Journée entière',
+                'label' => 'Oui, toute la journée.',
                 'label_attr' => ['class' => 'checkbox-inline checkbox-switch'],
                 'required' => false,
             ])
@@ -100,7 +104,7 @@ class CalendarType extends AbstractType
             ])
 
             ->add(child: 'recurrent', type: CheckboxType::class, options: [
-                'label' => 'Événement récurrent ?',
+                'label' => 'Oui, l\'événement est répété.',
                 'label_attr' => ['class' => 'checkbox-inline checkbox-switch'],
                 'required' => false,
             ])
@@ -152,13 +156,16 @@ class CalendarType extends AbstractType
                 'widget' => 'single_text',
             ])
 
-            ->add(child: 'duration', type: TextType::class, options: [
+            /*->add(child: 'duration', type: TextType::class, options: [
                 'label' => 'Durée',
                 'required' => false,
-            ]);
+            ])*/
+
+            ->addEventSubscriber(new CalendarFormEventSubscriber())
+        ;
 
         // Fréquence de récurrence
-        $builder->add(child: 'frequency', type: ChoiceType::class, options: [
+        /*$builder->add(child: 'frequency', type: ChoiceType::class, options: [
             'label' => 'Fréquence de récurrence',
             'choices' => [
                 'Tous les jours' => 'DAILY',
@@ -168,13 +175,14 @@ class CalendarType extends AbstractType
             ],
             'required' => false,
             'placeholder' => 'Choisir une fréquence de récurrence',
-        ]);
+        ]);*/
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Calendar::class,
+            'entity_class' => Calendar::class,
         ]);
     }
 }

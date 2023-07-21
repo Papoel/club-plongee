@@ -14,7 +14,7 @@
 
             <table class="table table-hover align-middle text-center">
                 <thead class="table-dark">
-                    <tr class="align-middle text-center">
+                    <tr class="align-middle text-center fs-md">
                         <th>#</th>
                         <th>Titre</th>
                         <th>Début</th>
@@ -31,11 +31,11 @@
                 </thead>
                 <tbody>
                 {% for calendar in calendars %}
-                    <tr>
+                    <tr class="fs-sm">
                         <td>{{ calendar.id }}</td>
                         <td>{{ calendar.title }}</td>
                         {% if calendar.recurrent %}
-                            <td>{{ calendar.start|date('d-m-Y') }} <br> {{ calendar.startTime|date('H:i')|replace({':':'h'}) }}</td>
+                            <td>{{ calendar.start ? calendar.start|date('d-m-Y' ~ ' à ' ~'H:i')|replace({':':'h'}) : '' }}</td>
                         {% else %}
                             <td>{{ calendar.start ? calendar.start|date('d-m-Y' ~ ' à ' ~'H:i')|replace({':':'h'}) : '' }}</td>
                         {% endif %}
@@ -111,15 +111,26 @@
                                 {% endif %}
                             "></div>
                         </td>
-                        <td class="d-flex flex-column">
-                            <a class="btn btn-primary mb-1" href="{{ path('app_calendar_show', {'id': calendar.id}) }}">Voir</a>
-                            <a class="btn btn-warning text-dark" href="{{ path('app_calendar_edit', {'id': calendar.id}) }}">Modifier</a>
+                        <td>
+                            <div class="d-flex justify-content-between">
+                                <a class="btn btn-primary w-25"
+                                   href="{{ path('app_calendar_show', {'id': calendar.id}) }}">
+                                    <i class="bi bi-eye-fill"></i>
+                                </a>
+                                <a class="btn btn-warning w-25"
+                                   href="{{ path('app_calendar_edit', {'id': calendar.id}) }}">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
 
-                            <form method="post" action="{{ path('app_calendar_delete', {'id': calendar.id}) }}"
-                                  onsubmit="return confirm('Êtes-vous sûr de vouloir effacer cette entrée?');">
-                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ calendar.id) }}">
-                                <button class="btn btn-danger mt-1 w-100">Effacer</button>
-                            </form>
+                                <form method="post" action="{{ path('app_calendar_delete', {'id': calendar.id}) }}" class="p-0 m-0"
+                                      onsubmit="return confirm('Êtes-vous sûr de vouloir effacer cette entrée?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ calendar.id) }}">
+                                    <button class="btn btn-danger w-25">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
                     </tr>
                 {% else %}
                     <tr>
