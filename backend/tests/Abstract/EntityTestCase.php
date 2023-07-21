@@ -13,12 +13,8 @@ abstract class EntityTestCase extends KernelTestCase
     /**
      * @throws Exception
      */
-    public function assertValidationErrorsCount(object $entity, int $count): void
+    public function assertValidationErrorsCount(object $entity, int $count, ?string $expectedMessage = null): void
     {
-        // $container = self::getContainer();
-        // $validator = $container->get(ValidatorInterface::class);
-        // $violations = $validator->validate($entity);
-
         self::bootKernel();
 
         $container = self::getContainer();
@@ -37,6 +33,13 @@ abstract class EntityTestCase extends KernelTestCase
             haystack: $violations,
             message: implode(separator:PHP_EOL, array: $messages)
         );
+
+        if ($expectedMessage !== null) {
+            self::assertStringContainsString(
+                $expectedMessage,
+                haystack: implode(separator: PHP_EOL, array: $messages)
+            );
+        }
     }
 
 }

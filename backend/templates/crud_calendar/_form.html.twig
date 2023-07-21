@@ -1,3 +1,4 @@
+{#
 <section class="container mt-lg-3 mt-xl-4 mt-xxl-5">
     {{ form_start(form) }}
         {{ form_widget(form) }}
@@ -6,3 +7,129 @@
         </button>
     {{ form_end(form) }}
 </section>
+
+#}
+
+<section class="container mt-lg-3 mt-xl-4 mt-xxl-5">
+
+    <!-- Render Form with Row -->
+    {{ form_start(form) }}
+
+        <div class="my-custom-class-for-errors">
+            {{ form_errors(form) }}
+        </div>
+
+        {# Choisir si l'événement est unique ou répété #}
+        <div class="row col-6 mt-4 d-flex justify-content-between" id="recurrent-event">
+            {{ form_row(form.recurrent) }}
+            {{ form_row(form.all_day) }}
+        </div>
+
+        <fieldset>
+            <legend class="my-4">
+                <span class="border-4 border-bottom border-primary">
+                    Événement Unique
+                </span>
+            </legend>
+            <div class="row my-3">
+                <div class="col" id="title">
+                    {{ form_row(form.title) }}
+                </div>
+
+                <div class="col" id="description">
+                    {{ form_row(form.description) }}
+                </div>
+
+                <div class="row">
+                    <div class="col-6" id="start">
+                        {{ form_row(form.start) }}
+                    </div>
+                    <div class="col-6" id="end">
+                        {{ form_row(form.end) }}
+                    </div>
+                </div>
+
+                {#<div class="row col-6 mt-4" id="all_day">
+                    {{ form_row(form.all_day) }}
+                </div>#}
+            </div>
+        </fieldset>
+
+        <hr class="">
+        {#<div class="row col-6 mt-4" id="recurrent-event">
+            {{ form_row(form.recurrent) }}
+        </div>#}
+        <hr class="">
+
+        {# class="{{ divContent=='' ? 'emptyClass' :'notEmptyClass' }}" #}
+        <fieldset id="recurrent-event" class="{{ form.recurrent == true ? '' : 'd-none' }}">
+            <legend class="my-4">
+                <span class="border-4 border-bottom border-primary">
+                    Répéter un événement
+                </span>
+            </legend>
+
+            <div class="row col-6">
+                {{ form_label(form.frequency, null, { 'label_attr' : { 'class' : 'w-100' }}) }}
+                {{ form_widget(form.frequency) }}
+            </div>
+
+            <div class="row">
+                {# Ajouter form.daysOfWeek et aligner les jours de la semaines dur deux lignes #}
+                <div class="col-12" id="daysOfWeek">
+                    {{ form_label(form.daysOfWeek, null, { 'label_attr' : { 'class' : 'w-100' }}) }}
+                    {{ form_widget(form.daysOfWeek, { 'attr': { 'class' : 'd-flex flex-wrap justify-content-between mb-3'  }}) }}
+                </div>
+            </div>
+
+            <div class="row my-3">
+                <div class="col-6" id="start">
+                    {{ form_row(form.startRecur) }}
+                    {{ form_row(form.startTime) }}
+                </div>
+                <div class="col-6" id="end">
+                    {{ form_row(form.endRecur) }}
+                    {{ form_row(form.endTime) }}
+                </div>
+                <div class="col-6" id="duration">
+                    {{ form_row(form.duration) }}
+                </div>
+            </div>
+        </fieldset>
+
+        <hr class="my-5">
+
+        <fieldset id="params-colors">
+            <legend class="my-4">
+                <span class="border-4 border-bottom border-primary">
+                    Général
+                </span>
+            </legend>
+            <div class="row my-3">
+                <div class="col" id="bg-color">
+                    {{ form_row(form.background_color) }}
+                </div>
+            </div>
+            <div class="row my-3">
+                <div class="col" id="border-color">
+                    {{ form_row(form.border_color) }}
+                </div>
+            </div>
+            <div class="row my-3">
+                <div class="col" id="text-color">
+                    {{ form_row(form.text_color) }}
+                </div>
+            </div>
+        </fieldset>
+
+    <button class="btn btn-primary my-3">
+        {{ button_label|default('Sauvegarder') }}
+    </button>
+
+    {{ form_end(form) }}
+
+</section>
+
+<dcript>
+    console.log('test');
+</dcript>

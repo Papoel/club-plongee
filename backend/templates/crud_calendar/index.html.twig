@@ -8,22 +8,24 @@
     <main class="page-wrapper mt-5">
         <section class="container pt-5 mt-lg-3 mt-xl-4 mt-xxl-5">
             <div class="d-flex justify-content-between align-items-center">
-                <h1>Calendrier club</h1>
+                <h1>Le calendrier du club de Maubeuge</h1>
                 <a class="btn btn-outline-success" href="{{ path('app_calendar_new') }}">Créer une nouvelle entrée</a>
             </div>
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Id</th>
+            <table class="table table-hover align-middle text-center">
+                <thead class="table-dark">
+                    <tr class="align-middle text-center">
+                        <th>#</th>
                         <th>Titre</th>
                         <th>Début</th>
                         <th>Fin</th>
                         <th>Description</th>
-                        <th>Journée complète</th>
-                        <th>Couleur de fond</th>
-                        <th>Couleur de bordure</th>
-                        <th>Couleur de texte</th>
+                        <th>Journée</th>
+                        <th>Répété</th>
+                        <th>Jours</th>
+                        <th>Fond</th>
+                        <th>Bordure</th>
+                        <th>Texte</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -32,17 +34,92 @@
                     <tr>
                         <td>{{ calendar.id }}</td>
                         <td>{{ calendar.title }}</td>
-                        <td>{{ calendar.start ? calendar.start|date('d-m-Y H:i:s') : '' }}</td>
-                        <td>{{ calendar.end ? calendar.end|date('d-m-Y H:i:s') : '' }}</td>
+                        {% if calendar.recurrent %}
+                            <td>{{ calendar.start|date('d-m-Y') }} <br> {{ calendar.startTime|date('H:i')|replace({':':'h'}) }}</td>
+                        {% else %}
+                            <td>{{ calendar.start ? calendar.start|date('d-m-Y' ~ ' à ' ~'H:i')|replace({':':'h'}) : '' }}</td>
+                        {% endif %}
+
+                        {% if calendar.recurrent %}
+                            <td>{{ calendar.endRecur|date('d-m-Y') }} à {{ calendar.endTime|date('H:i')|replace({':':'h'}) }}</td>
+                        {% else %}
+                            <td>{{ calendar.end ? calendar.end|date('d-m-Y' ~ ' à ' ~'H:i')|replace({':':'h'}) : '' }}</td>
+                        {% endif %}
                         <td>{{ calendar.description }}</td>
                         <td>{{ calendar.allDay ? 'Oui' : 'Non' }}</td>
-                        <td>{{ calendar.backgroundColor }}</td>
-                        <td>{{ calendar.borderColor }}</td>
-                        <td>{{ calendar.textColor }}</td>
+                        {% if calendar.recurrent %}
+                            <td>{{ calendar.recurrent ? 'Oui' : 'Non' }}</td>
+                            <td class="text-start">
+                            {% for day in calendar.daysOfWeek %}
+                                {# in dayOfWeeks return Dimache for 0, Lundi for 1 ... Samedi for 6 and separate days with comma #}
+                                {% if day == 0 %}
+                                    Dimanche
+                                {% elseif day == 1 %}
+                                    Lundi
+                                {% elseif day == 2 %}
+                                    Mardi
+                                {% elseif day == 3 %}
+                                    Mercredi
+                                {% elseif day == 4 %}
+                                    Jeudi
+                                {% elseif day == 5 %}
+                                    Vendredi
+                                {% elseif day == 6 %}
+                                    Samedi
+                                {% endif %}
+                                {% if not loop.last %}
+                                    ,
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <td>/</td>
+                            <td>/</td>
+                        {% endif %}
                         <td>
-                            <a href="{{ path('app_calendar_show', {'id': calendar.id}) }}">Voir</a>
-                            <a href="{{ path('app_calendar_edit', {'id': calendar.id}) }}">Modifier</a>
+                            <div style="
+                                margin: auto;
+                                width: 1rem;
+                                height: 1rem;
+                                border-radius: 50%;
+                                background-color: {{ calendar.backgroundColor }};
+                                {% if calendar.backgroundColor == '#ffffff' %}
+                                    border: 1px solid #000000;
+                                {% endif %}
+                            "></div>
                         </td>
+                        <td>
+                            <div style="
+                                margin: auto;
+                                width: 1rem;
+                                height: 1rem;
+                                border-radius: 50%;
+                                background-color: {{ calendar.borderColor }};
+                                {% if calendar.borderColor == '#ffffff' %}
+                                    border: 1px solid #000000;
+                                {% endif %}
+                            "></div>
+                        </td>
+                        <td>
+                            <div style="
+                                margin: auto;
+                                width: 1rem;
+                                height: 1rem;
+                                border-radius: 50%;
+                                background-color: {{ calendar.textColor }};
+                                {% if calendar.textColor == '#ffffff' %}
+                                    border: 1px solid #000000;
+                                {% endif %}
+                            "></div>
+                        </td>
+                        <td class="d-flex flex-column">
+                            <a class="btn btn-primary mb-1" href="{{ path('app_calendar_show', {'id': calendar.id}) }}">Voir</a>
+                            <a class="btn btn-warning text-dark" href="{{ path('app_calendar_edit', {'id': calendar.id}) }}">Modifier</a>
+
+                            <form method="post" action="{{ path('app_calendar_delete', {'id': calendar.id}) }}"
+                                  onsubmit="return confirm('Êtes-vous sûr de vouloir effacer cette entrée?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ calendar.id) }}">
+                                <button class="btn btn-danger mt-1 w-100">Effacer</button>
+                            </form>
                     </tr>
                 {% else %}
                     <tr>

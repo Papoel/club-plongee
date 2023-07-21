@@ -460,7 +460,6 @@
     {#<!-- Calendrier-->
     <section class="container pt-5 mt-lg-3 mt-xl-4 mt-xxl-5">
         <h2 class="h1 text-center pb-3 pt-sm-3 pt-lg-5 mb-3 mb-lg-4">Calendrier</h2>
-        {% set month = "now"|date('m') %}
         <div class="calendar" data-calendar-options="
         {
              &quot;initialDate&quot;: &quot;2023-09-01&quot;,
@@ -796,6 +795,8 @@
 <script src="{{ asset('assets/js/vendor/lightgallery/lightgallery.min.js') }}"></script>
 <script src="{{ asset('assets/js/vendor/lightgallery/plugins/video/lg-video.min.js') }}"></script>
 <script src="{{ asset('assets/js/vendor/fullcalendar/main.min.js') }}"></script>
+<script src="{{ asset('assets/js/vendor/fullcalendar/rrule.js') }}"></script>
+
 
 <!-- Main theme script-->
 <script src="{{ ('assets/js/vendor/bootstrap/theme.min.js') }}"></script>
