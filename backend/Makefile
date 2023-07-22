@@ -357,8 +357,22 @@ lint: ## Vérifier la qualité du code | symfony console lint:twig, yaml (ignore
 # --------------------
 # Commandes pratique
 # --------------------
-before-commit: qa-cs-fixer qa-phpstan qa-security-checker qa-phpcpd qa-lint-twigs qa-lint-yaml qa-lint-container qa-lint-schema run-tests ## Run before commit.
-.PHONY: before-commit
+# Ajoutez une règle pour rechercher les occurrences de "{{ dump(" dans les fichiers du dossier "templates"
+# Ajoutez une règle pour rechercher les occurrences de "{{ dump(" dans les fichiers du dossier "templates"
+check-dump:
+	@echo "Vérification des occurrences de {{ dump() }} dans les fichiers du dossier 'templates'..."
+	@files_with_dump=$$(grep -r -n "{{ dump(" templates/); \
+	if [ -n "$$files_with_dump" ]; then \
+		echo "\033[31mErreur : Des occurrences de {{ dump() }} ont été trouvées dans les fichiers suivants :\033[0m"; \
+		echo "$$files_with_dump"; \
+		exit 1; \
+	else \
+		echo "Aucune occurrence de {{ dump() }} n'a été trouvée dans les fichiers du dossier 'templates'. Poursuite de la validation du commit."; \
+	fi
+
+before-commit:
+	$(MAKE) check-dump qa-cs-fixer qa-phpstan qa-security-checker qa-phpcpd qa-lint-twigs qa-lint-yaml qa-lint-container qa-lint-schema run-tests
+.PHONY: check-dump before-commit
 # --------------------
 
 # --------------------
