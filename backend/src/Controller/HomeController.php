@@ -9,13 +9,25 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
+    /**
+     * @throws \JsonException
+     */
     #[Route('/', name: 'app_home')]
     public function index(CalendarRepository $calendar): Response
     {
         $events = $calendar->findAll();
-
-        $rdvs = [];
         $planing = [];
+
+        // Convertir la valeur numérique de daysOfWeek en jours de semaine
+        $daysOfWeekMap = [
+            0 => 'dimanche',
+            1 => 'lundi',
+            2 => 'mardi',
+            3 => 'mercredi',
+            4 => 'jeudi',
+            5 => 'vendredi',
+            6 => 'samedi',
+        ];
 
         foreach ($events as $event) {
             // Permet de formater la date de début et de fin pour le calendrier
@@ -32,6 +44,29 @@ class HomeController extends AbstractController
             $startWhenEventIsRecurrent = $startRecure.' '.$startTime;
             $endWhenEventIsRecurrent = $endRecure.' '.$endTime;
 
+            // Tableau qui contient les classes css pour le calendrier
+            $borderColor = $event->getBorderColor();
+            $classes = [
+                'event-custom-style',
+                'border-0',
+                'rounded-1',
+                'p-2',
+                'ps-3',
+                'border-5',
+                'border-start',
+                'border-'.$borderColor,
+                'bg-'.$event->getBackgroundColor(),
+                'text-'.$event->getTextColor(),
+            ];
+
+            $joursSemaine = [];
+
+            if (null !== $event->getDaysOfWeek()) {
+                foreach ($event->getDaysOfWeek() as $dayOfWeek) {
+                    $joursSemaine[] = $daysOfWeekMap[$dayOfWeek];
+                }
+            }
+
             if ($event->isRecurrent()) {
                 $planing[] = [
                     'id' => $event->getId(),
@@ -39,18 +74,20 @@ class HomeController extends AbstractController
                     'allDay' => $event->isAllDay(),
                     'title' => $event->getTitle(),
                     'description' => $event->getDescription(),
-                    'daysOfWeek' => $event->getDaysOfWeek(),
-                    'frequency' => $event->getFrequency(),
-                    'startRecur' => $startRecure,
                     'start' => $startWhenEventIsRecurrent,
                     'end' => $endWhenEventIsRecurrent,
-                    'startTime' => $startTime,
-                    'endRecur' => $endRecure,
-                    'endTime' => $endTime,
-                    'duration' => $event->getDuration(),
                     'backgroundColor' => $event->getBackgroundColor(),
                     'borderColor' => $event->getBorderColor(),
                     'textColor' => $event->getTextColor(),
+                    'daysOfWeek' => $event->getDaysOfWeek(),
+                    'duration' => $event->getDuration(),
+                    'classNames' => $classes,
+                    'startRecur' => $startRecure,
+                    'endRecur' => $endRecure,
+                    'startTime' => $startTime,
+                    'endTime' => $endTime,
+                    'joursSemaine' => $joursSemaine,
+                    'frequency' => $event->getFrequency(),
                 ];
             } else {
                 $planing[] = [
@@ -65,24 +102,16 @@ class HomeController extends AbstractController
                     'borderColor' => $event->getBorderColor(),
                     'textColor' => $event->getTextColor(),
                     'duration' => $event->getDuration(),
-                    /*'classNames' => [
-                        'event-custom-style',
-                        'text-nav',
-                        'border-0',
-                        'rounded-1',
-                        'p-2',
-                        'ps-3',
-                        'border-start',
-                        'border-5',
-                    ],*/
+                    'classNames' => $classes,
                 ];
             }
         }
 
         $data = json_encode(value: $planing, flags: JSON_THROW_ON_ERROR);
 
-        // dd($data);
-
-        return $this->render(view: 'pages/home/index.html.twig', parameters: compact(var_name: 'data'));
+        return $this->render(view: 'pages/home/index.html.twig', parameters: [
+            'data' => $data,
+            'events' => $events,
+        ]);
     }
 }

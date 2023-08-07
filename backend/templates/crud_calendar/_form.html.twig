@@ -106,7 +106,7 @@
 
         <div class="row">
             <div class="col-12" id="daysOfWeek">
-                {{ form_label(form.daysOfWeek, null, { 'label_attr' : { 'class' : 'w-100' }}) }}
+                {{ form_label(form.daysOfWeek, null, { 'label_attr' : { 'class' : '' }}) }}
                 {{ form_widget(form.daysOfWeek, { 'attr': { 'class' : 'd-flex flex-wrap justify-content-between mb-3'  }}) }}
             </div>
         </div>
@@ -200,13 +200,13 @@
 
         // Passe à l'étape suivante
         function goToNextStep() {
-            // Cas 1 => L'événement n'est pas répété (#calendar_reccurent n'est pas coché, stepIfCheckboxChecked)
+            // Cas 1 : L'événement n'est pas répété (#calendar_reccurent n'est pas coché, stepIfCheckboxChecked)
             // Si je suis à l'étape 1, je passe à l'étape 2
             // Si je suis à l'étape 2, je passe à l'étape 3
             // Si je suis à l'étape 3, je passe à l'étape 4 (étape 4 ignorée si #calendar_reccurent est coché)
             // Si je suis à l'étape 4, je passe à l'étape 6
 
-            // Cas 2 => L'événement est répété (#calendar_reccurent est coché, stepIfCheckboxUnchecked)
+            // Cas 2 : L'événement est répété (#calendar_reccurent est coché, stepIfCheckboxUnchecked)
             // Si je suis à l'étape 1, je passe à l'étape 2
             // Si je suis à l'étape 2, je passe à l'étape 3
             // Si je suis à l'étape 3, je passe à l'étape 5 (étape 5 ignorée si #calendar_reccurent n'est pas coché)

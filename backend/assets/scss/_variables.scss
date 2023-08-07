@@ -35,6 +35,18 @@ $success:                     #3fca90 !default;
 $warning:                     #edcb50 !default;
 $danger:                      #ed5050 !default;
 $light:                       $white !default;
+$purple:                      #6f42c1 !default;
+$pink:                        #ff49db !default;
+$orange:                      #ff7849 !default;
+$green:                       #13ce66 !default;
+$yellow:                      #ffc82c !default;
+$teal:                        #39c0c4 !default;
+$metal:                       #565584 !default;
+$tahiti:                      #3ab7b9 !default;
+$silver:                      #ecebff !default;
+$bubble-gum:                  #ff7eb6 !default;
+$bermuda:                     #78dcca !default;
+$blue:                        #3b82f6 !default;
 $dark:                        $gray-900 !default;
 
 // Bootstrap's $theme-colors map
@@ -46,6 +58,18 @@ $theme-colors: (
   'warning':    $warning,
   'danger':     $danger,
   'light':      $light,
+  'purple':     $purple,
+  'pink':       $pink,
+  'orange':     $orange,
+  'green':      $green,
+  'yellow':     $yellow,
+  'teal':       $teal,
+  'metal':      $metal,
+  'tahiti':     $tahiti,
+  'silver':     $silver,
+  'bubble-gum': $bubble-gum,
+  'bermuda':    $bermuda,
+  'blue':       $blue,
   'dark':       $dark
 ) !default;
 

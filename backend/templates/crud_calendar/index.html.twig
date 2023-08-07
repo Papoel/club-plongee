@@ -17,8 +17,8 @@
                     <tr class="align-middle text-center fs-md">
                         <th>#</th>
                         <th>Titre</th>
-                        <th>Début</th>
-                        <th>Fin</th>
+                        <th style="min-width: 180px;">Début</th>
+                        <th style="min-width: 180px;">Fin</th>
                         <th>Description</th>
                         <th>Journée</th>
                         <th>Répété</th>
@@ -76,37 +76,34 @@
                             <td>/</td>
                         {% endif %}
                         <td>
-                            <div style="
+                            <div class="bg-{{ calendar.backgroundColor }}" style="
                                 margin: auto;
                                 width: 1rem;
                                 height: 1rem;
                                 border-radius: 50%;
-                                background-color: {{ calendar.backgroundColor }};
-                                {% if calendar.backgroundColor == '#ffffff' %}
+                                {% if calendar.backgroundColor == 'white' %}
                                     border: 1px solid #000000;
                                 {% endif %}
                             "></div>
                         </td>
                         <td>
-                            <div style="
+                            <div class="bg-{{ calendar.borderColor }}" style="
                                 margin: auto;
                                 width: 1rem;
                                 height: 1rem;
                                 border-radius: 50%;
-                                background-color: {{ calendar.borderColor }};
-                                {% if calendar.borderColor == '#ffffff' %}
-                                    border: 1px solid #000000;
-                                {% endif %}
+                                {% if calendar.borderColor == 'white' %}
+                                    border: 1px solid #000000;{% endif %}
                             "></div>
                         </td>
                         <td>
-                            <div style="
+                            <div class="bg-{{ calendar.textColor }}" style="
                                 margin: auto;
                                 width: 1rem;
                                 height: 1rem;
                                 border-radius: 50%;
                                 background-color: {{ calendar.textColor }};
-                                {% if calendar.textColor == '#ffffff' %}
+                                {% if calendar.textColor == 'white' %}
                                     border: 1px solid #000000;
                                 {% endif %}
                             "></div>
