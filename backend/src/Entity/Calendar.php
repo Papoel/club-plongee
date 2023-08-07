@@ -40,13 +40,13 @@ class Calendar
     #[ORM\Column(type: Types::BOOLEAN)]
     private ?bool $recurrent = false;
 
-    #[ORM\Column(type: Types::STRING, length: 7, nullable: true)]
+    #[ORM\Column(type: Types::STRING, length: 20, nullable: true)]
     private ?string $background_color = null;
 
-    #[ORM\Column(type: Types::STRING, length: 7, nullable: true)]
+    #[ORM\Column(type: Types::STRING, length: 20, nullable: true)]
     private ?string $border_color = null;
 
-    #[ORM\Column(type: Types::STRING, length: 7, nullable: true)]
+    #[ORM\Column(type: Types::STRING, length: 20, nullable: true)]
     private ?string $text_color = null;
 
     /**
@@ -191,7 +191,7 @@ class Calendar
         return $this->duration;
     }
 
-    public function setDuration(string $duration): static
+    public function setDuration(?string $duration): static
     {
         $this->duration = $duration;
 
