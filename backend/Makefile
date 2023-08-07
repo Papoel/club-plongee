@@ -8,7 +8,7 @@ DB_NAME = db_plongee
 DB_USER = root
 DB_PASS = password
 DB_PORT = 3306
-DB_SERVER = MariaDB-10.9.3&charset=utf8mb4
+DB_SERVER = 11.0.2-MariaDB&charset=utf8mb4
 DATABASE_URL = mysql://$(DB_USER):$(DB_PASS)@$(HOST_NAME):$(DB_PORT)/$(DB_NAME)
 #?serverVersion=$(DB_VERSION)&charset=utf8mb4
 
