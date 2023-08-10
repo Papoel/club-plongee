@@ -1,0 +1,6 @@
+{% extends 'bundles/TwigBundle/Exception/index.html.twig' %}
+
+{% block title %} Erreur {{ exception.statusCode }} {% endblock %}
+
+{% block message %}Accès refusé{% endblock %}
+{% block description %} Vous n'êtes pas autorisé à voir cette ressource. {% endblock %}

@@ -1,0 +1,6 @@
+{% extends 'bundles/TwigBundle/Exception/index.html.twig' %}
+
+{% block title %}Erreur {{ exception.statusCode }}{% endblock %}
+
+{% block message %} Page introuvable {% endblock %}
+{% block description %} Désolé la page que vous avez demandé n'existe pas. {% endblock %}
