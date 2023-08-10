@@ -1,0 +1,107 @@
+{% extends 'bundles/TwigBundle/Exception/index.html.twig' %}
+
+{% block title %} Erreur {{ exception.statusCode }} {% endblock %}
+
+{% block message %} Erreur {{ exception.statusCode }} {% endblock %}
+{% block description %}
+    <!-- Liste des codes en français depuis https://fr.wikipedia.org/wiki/Liste_des_codes_HTTP -->
+    {% if exception.statusCode == 400 %}
+        La syntaxe de la requête est erronée.
+    {% elseif exception.statusCode == 401 %}
+        L'authentification est requise.
+    {% elseif exception.statusCode == 402 %}
+        Le paiement est requis.
+    {% elseif exception.statusCode == 403 %}
+        Le serveur a compris la requête, mais refuse de l'exécuter.
+    {% elseif exception.statusCode == 404 %}
+        La ressource demandée est introuvable.
+    {% elseif exception.statusCode == 405 %}
+        La méthode de la requête est non autorisée.
+    {% elseif exception.statusCode == 406 %}
+        La ressource demandée n'est pas disponible dans un format qui respecterait les en-têtes "Accept" de la requête.
+    {% elseif exception.statusCode == 407 %}
+        L'accès à la ressource est refusé, car le serveur n'a pas reçu d'authentification valide de la part du client.
+    {% elseif exception.statusCode == 408 %}
+        Le temps imparti à la requête est écoulé.
+    {% elseif exception.statusCode == 409 %}
+        La requête ne peut être traitée en l'état actuel.
+    {% elseif exception.statusCode == 410 %}
+        La ressource n'est plus disponible et aucune adresse de redirection n'est connue.
+    {% elseif exception.statusCode == 411 %}
+        La longueur de la requête n'a pas été précisée.
+    {% elseif exception.statusCode == 412 %}
+        Les conditions préalables envoyées avec la requête n'ont pas été vérifiées.
+    {% elseif exception.statusCode == 413 %}
+        La requête est trop grande et a été rejetée.
+    {% elseif exception.statusCode == 414 %}
+        L'URI de la requête est trop grand et a été rejetée.
+    {% elseif exception.statusCode == 415 %}
+        Le format de la requête n'est pas supporté par le serveur.
+    {% elseif exception.statusCode == 416 %}
+        Champs d’en-tête de requête « range » incorrect.
+    {% elseif exception.statusCode == 417 %}
+        Comportement attendu et défini dans l’en-tête de la requête insatisfaisante.
+    {% elseif exception.statusCode == 418 %}
+        Le serveur refuse de préparer du café, car il est, littéralement, une théière.
+    {% elseif exception.statusCode == 419 %}
+        La page a expiré.
+    {% elseif exception.statusCode == 420 %}
+        La méthode de la requête est reconnue par le serveur, mais celle-ci est désactivée et ne peut être utilisée.
+    {% elseif exception.statusCode == 421 %}
+        La requête a été envoyée à une adresse qui, après une redirection, n'est plus valide.
+    {% elseif exception.statusCode == 422 %}
+        L'entité fournie avec la requête est incompréhensible ou incomplète.
+    {% elseif exception.statusCode == 423 %}
+        L'opération ne peut avoir lieu, car la ressource est verrouillée.
+    {% elseif exception.statusCode == 424 %}
+        Une méthode de la transaction a échoué.
+    {% elseif exception.statusCode == 425 %}
+        La ressource n'est pas disponible à cet instant, mais elle le sera plus tard.
+    {% elseif exception.statusCode == 426 %}
+        La requête devrait être répétée avec une autre URI, mais en utilisant autre protocole.
+    {% elseif exception.statusCode == 427 %}
+        La signature numérique du document n'est pas valide.
+    {% elseif exception.statusCode == 428 %}
+        La requête doit être conditionnelle.
+    {% elseif exception.statusCode == 429 %}
+        Le client a émis trop de requêtes dans un délai donné.
+    {% elseif exception.statusCode == 431 %}
+        Les entêtes HTTP émise dépassent la taille maximale admise par le serveur.
+    {% elseif exception.statusCode == 449 %}
+        Le serveur se repose, le client peut réessayer.
+    {% elseif exception.statusCode == 450 %}
+        Cette erreur est produite lorsque les contrôles parentaux sont activés et bloquent l'accès à la page.
+    {% elseif exception.statusCode == 451 %}
+        Le serveur a repéré une ressource qui pourrait être légalement censurée dans une juridiction donnée.
+    {% elseif exception.statusCode == 456 %}
+        Erreur irrécupérable.
+    {% elseif exception.statusCode == 499 %}
+        La connexion a été fermée par le client pendant que le serveur traitait la requête.
+    {% elseif exception.statusCode == 500 %}
+        Une erreur interne est survenue.
+    {% elseif exception.statusCode == 501 %}
+        Le serveur ne supporte pas le service demandé.
+    {% elseif exception.statusCode == 502 %}
+        Le serveur, agissant comme une passerelle ou un proxy, a reçu une réponse invalide du serveur distant.
+    {% elseif exception.statusCode == 503 %}
+        Le serveur est actuellement indisponible.
+    {% elseif exception.statusCode == 504 %}
+        Le serveur agissant comme une passerelle ou un proxy n'a pas reçu de réponse opportunément du serveur distant.
+    {% elseif exception.statusCode == 505 %}
+        La version HTTP utilisée dans la requête n'est pas gérée par le serveur.
+    {% elseif exception.statusCode == 506 %}
+        Le serveur a détecté une boucle infinie lors de la négociation des variantes.
+    {% elseif exception.statusCode == 507 %}
+        Le serveur a épuisé son espace de stockage.
+    {% elseif exception.statusCode == 508 %}
+        La requête ne peut être traitée, car une boucle infinie a été détectée dans le traitement des requêtes.
+    {% elseif exception.statusCode == 509 %}
+        La limite de bande passante a été atte
+    {% elseif exception.statusCode == 510 %}
+        La requête ne respecte pas la politique d'accès aux ressources HTTP étendues.
+    {% elseif exception.statusCode == 511 %}
+        Le client doit s'authentifier pour pouvoir accéder au réseau.
+    {% else %}
+        Une erreur est survenue.
+    {% endif %}
+{% endblock %}

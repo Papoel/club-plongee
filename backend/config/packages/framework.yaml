@@ -23,3 +23,8 @@ when@test:
         test: true
         session:
             storage_factory_id: session.storage.factory.mock_file
+
+# Return custom error template when prod
+when@prod:
+    framework:
+        error_controller: App\Controller\ErrorController::show

@@ -1,0 +1,6 @@
+{% extends 'bundles/TwigBundle/Exception/index.html.twig' %}
+
+{% block title %} Erreur {{ exception.statusCode }} {% endblock %}
+
+{% block message %}Non autorisé{% endblock %}
+{% block description %} Vous n'avez pas les droits nécessaires pour accéder à cette page. {% endblock %}
