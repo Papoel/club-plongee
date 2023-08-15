@@ -1,3 +1,12 @@
-//
-// user.scss
-// Use this to write your custom SCSS
+.custom-form-label {
+  margin-bottom: .3125rem;
+  font-size: calc(var(--ar-body-font-size) * 0.875);
+  font-weight: 500;
+  color: #121519;
+}
+
+.radio-inline {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 10px; /* Espacement entre les boutons */
+}

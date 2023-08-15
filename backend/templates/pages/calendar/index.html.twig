@@ -1,7 +1,7 @@
 {# <div class="d-flex {{ is_granted('ROLE_ADMIN') ? 'justify-content-evenly' : 'justify-content-center' }}"> #}
 <div class="d-flex justify-content-evenly">
     {% if is_granted('ROLE_ADMIN') %}
-        <a href="{{ path('app_calendar_index') }}">Gérer le calendrier</a>
+        <a id="calendar-gestion" href="{{ path('app_calendar_index') }}">Gérer le calendrier</a>
     {% endif %}
 </div>
 

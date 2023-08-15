@@ -26,6 +26,7 @@ public/assets/
 
 ###> IDE ###
 ./idea
+.DS_Store
 ###< IDE ###
 
 ###> symfony/webpack-encore-bundle ###

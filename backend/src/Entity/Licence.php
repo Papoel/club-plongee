@@ -29,6 +29,11 @@ class Licence
         return $this->number;
     }
 
+    public function __toString(): string
+    {
+        return $this->number ?? '';
+    }
+
     public function setNumber(?string $number): static
     {
         $this->number = $number;

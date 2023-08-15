@@ -1,0 +1,119 @@
+<div class="card-body">
+    <div class="d-flex align-items-center mt-sm-n1 pb-4 mb-0 mb-lg-1 mb-xl-3">
+        <i class="ai-user text-primary lead pe-1 me-2"></i>
+        <h2 class="h4 mb-0">Informations générales</h2>
+    </div>
+
+    {# TODO: Gestion de l'avatar -> Creer la proprité dans l'entité #}
+    <div class="d-flex align-items-center">
+        <div class="dropdown">
+            <a class="d-flex flex-column justify-content-end position-relative overflow-hidden rounded-circle bg-size-cover bg-position-center flex-shrink-0"
+               href="#"
+               data-bs-toggle="dropdown"
+               aria-expanded="false"
+               style="width: 80px; height: 80px; background-image: url( {{ asset('assets/img/site/default-avatar.png') }} );">
+                <span class="d-block text-light text-center lh-1 pb-1"
+                      style="background-color: rgba(0,0,0,.5)">
+                    <i class="ai-camera"></i>
+                </span>
+            </a>
+            <div class="dropdown-menu my-1">
+                <a class="dropdown-item fw-normal" href="#">
+                    <i class="ai-camera fs-base opacity-70 me-2"></i>
+                    Télécharger une photo
+                </a>
+                <a class="dropdown-item text-danger fw-normal" href="#">
+                    <i class="ai-trash fs-base me-2"></i>
+                    Effacer la photo
+                </a>
+            </div>
+        </div>
+        <div class="ps-3">
+            <h3 class="h6 mb-1">Image de profil</h3>
+            <p class="fs-sm text-muted mb-0">PNG ou JPG accepté</p>
+        </div>
+    </div>
+
+    {{ form_start(basicInfoForm) }}
+
+        {% for message in app.session.flashBag.get('danger') %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+
+        <div class="row g-3 g-sm-4 mt-0 mt-lg-2">
+            <div class="col-sm-6">
+                {{ form_label(basicInfoForm.firstname, null, {'label_attr': {'class': 'custom-form-label d-block w-100'}}) }}
+                {{ form_widget(basicInfoForm.firstname, {'attr': {'class': 'text-capitalize'}}) }}
+                {{ form_errors(basicInfoForm.firstname) }}
+            </div>
+            <div class="col-sm-6">
+                {{ form_label(basicInfoForm.lastname, null, {'label_attr': {'class': 'custom-form-label d-block w-100'}}) }}
+                {{ form_widget(basicInfoForm.lastname, {'attr': {'class': 'text-capitalize'}}) }}
+                {{ form_errors(basicInfoForm.lastname) }}
+            </div>
+            <div class="col-sm-6">
+                {{ form_label(basicInfoForm.email, null, {'label_attr': {'class': 'custom-form-label d-block w-100'}}) }}
+                {{ form_widget(basicInfoForm.email) }}
+                {{ form_errors(basicInfoForm.email) }}
+            </div>
+            <div class="col-sm-6">
+                {{ form_label(basicInfoForm.phone, null, {'label_attr': {'class': 'custom-form-label d-block w-100'}}) }}
+                {{ form_widget(basicInfoForm.phone, {'attr': {'class': 'text-capitalize'}}) }}
+                {{ form_errors(basicInfoForm.phone) }}
+            </div>
+            <div class="col-sm-6">
+                {{ form_label(basicInfoForm.address, null, {'label_attr': {'class': 'custom-form-label d-block w-100'}}) }}
+                {{ form_widget(basicInfoForm.address) }}
+                {{ form_errors(basicInfoForm.address) }}
+            </div>
+            <div class="col-sm-6">
+                {{ form_label(basicInfoForm.zipCode, null, {'label_attr': {'class': 'custom-form-label d-block w-100'}}) }}
+                {{ form_widget(basicInfoForm.zipCode) }}
+                {{ form_errors(basicInfoForm.zipCode) }}
+            </div>
+            <div class="col-sm-6">
+                {{ form_label(basicInfoForm.city, null, {'label_attr': {'class': 'custom-form-label d-block w-100'}}) }}
+                {{ form_widget(basicInfoForm.city, {'attr': {'class': 'text-capitalize'}}) }}
+                {{ form_errors(basicInfoForm.city) }}
+            </div>
+            <div class="col-sm-6">
+                {{ form_label(basicInfoForm.country, null, {'label_attr': {'class': 'custom-form-label d-block w-100'}}) }}
+                {{ form_widget(basicInfoForm.country, {'attr': {'class': 'text-capitalize'}}) }}
+                {{ form_errors(basicInfoForm.country) }}
+            </div>
+            {% if app.user.bio is not null %}
+                <div class="col-12 mt-2">
+                    {{ form_label(basicInfoForm.bio, null, {'label_attr': {'class': 'custom-form-label d-block w-100'}}) }}
+                    {{ form_widget(basicInfoForm.bio, {'attr': {'class': 'text-capitalize'}}) }}
+                    {{ form_errors(basicInfoForm.bio) }}
+                </div>
+            {% else %}
+                <div class="col-12 mt-2">
+                    {{ form_label(basicInfoForm.bio, null, {'label_attr': {'class': 'custom-form-label d-block w-100'}}) }}
+                    {{ form_widget(basicInfoForm.bio, {'attr': {'placeholder':
+                        app.user.firstname|capitalize ~', présentez-vous en quelques mots si vous le souhaitez.'}})
+                    }}
+                    {{ form_errors(basicInfoForm.bio) }}
+                </div>
+            {% endif %}
+            <div class="col-12 d-sm-flex align-items-center pt-sm-2 pt-md-3">
+                {{ form_label(basicInfoForm.genre, null, {'label_attr': {'class': 'custom-form-label'}}) }}
+                <div class="d-flex">
+                    {% for choice in basicInfoForm.genre %}
+                        <div class="form-check form-check-inline text-capitalize">
+                            {{ form_widget(choice) }}
+                            {{ form_label(choice) }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-12 d-flex justify-content-end pt-3">
+            <button class="btn btn-secondary" type="button">Annuler</button>
+            <button class="btn btn-primary ms-3" type="submit">Sauvegarder</button>
+        </div>
+    {{ form_end(basicInfoForm) }}
+
+</div>

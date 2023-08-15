@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paramètre du compte {% endblock %}
+
+{% block body %}
+    <!-- Code ok-->
+    <main class="page-wrapper">
+        <!-- Navbar. Remove 'fixed-top' class to make the navigation bar scrollable with the page-->
+        {% include ('pages/header/navbar.html.twig') %}
+        <!-- Page content-->
+        <div class="container py-5 mt-4 mt-lg-5 mb-lg-4 my-xl-5">
+            <div class="row pt-sm-2 pt-lg-0">
+                {% include 'pages/account/_sidebar.html.twig' %}
+                <!-- Page content-->
+                <div class="col-lg-9 pt-4 pb-2 pb-sm-4">
+                    <h1 class="h2 mb-4">Paramètre du compte</h1>
+
+                    <!-- Message Flash-->
+                    {% include('partials/_flash-messages.html.twig') %}
+
+                    <!-- Basic info-->
+                    <section class="card border-0 py-1 p-md-2 p-xl-3 p-xxl-4 mb-4">
+                        {% include('pages/account/form/_basic-info.html.twig') %}
+                    </section>
+                </div>
+
+                <!-- Password change-->
+                <section class="card border-0 py-1 p-md-2 p-xl-3 p-xxl-4 mb-4">
+                    {{ include('pages/account/form/_password-change.html.twig') }}
+                </section>
+
+                <!-- Delete account-->
+                <section class="card border-0 py-1 p-md-2 p-xl-3 p-xxl-4">
+                    {{ include('pages/account/form/_account-delete.html.twig') }}
+                </section>
+            </div>
+        </div>
+        <!-- Divider for dark mode only-->
+        <hr class="d-none d-dark-mode-block">
+        <!-- Sidebar toggle button-->
+        <button class="d-lg-none btn btn-sm fs-sm btn-primary w-100 rounded-0 fixed-bottom" data-bs-toggle="offcanvas"
+                data-bs-target="#sidebarAccount">
+            <i class="ai-menu me-2"></i>
+            Menu du compte
+        </button>
+    </main>
+{% endblock %}

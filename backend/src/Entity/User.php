@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -16,6 +17,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public const ROLE_ADHERENT = 'ROLE_ADHERENT';
     public const ROLE_ADMIN = 'ROLE_ADMIN';
+    public const TIMEZONE = 'Europe/Paris';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -41,24 +43,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Assert\Length(
-        max: 25,
-        maxMessage: 'Le mot de passe ne doit pas contenir plus de {{ limit }} caractères.')]
-    #[Assert\Regex(// Le mot de passe doit contenir au minimum 8 caractères, au moins une lettre majuscule, une lettre minuscule, et un chiffre.
-        pattern: '/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/',
-        // '/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/',
-        message: 'Le mot de passe doit contenir au minimum 8 caractères, au moins une lettre majuscule, une lettre minuscule, et un chiffre.'
-    )]
+        min: 8,
+        minMessage: 'Le mot de passe doit contenir au moins {{ limit }} caractères.')]
     #[Assert\NotCompromisedPassword(message: 'Le mot de passe a été compromis. Veuillez en choisir un autre.')]
     #[Assert\NotBlank(message: 'Le mot de passe est une information obligatoire.')]
     private string $password;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotNull(message: 'Le prénom est une information obligatoire.')]
+    #[Assert\NotBlank(message: 'Le prénom est une information obligatoire.')]
     #[Assert\Length(
         min: 3,
         max: 50,
         minMessage: 'Le prénom doit contenir au moins {{ limit }} caractères.',
         maxMessage: 'Le prénom ne doit pas contenir plus de {{ limit }} caractères.')]
-    #[Assert\NotBlank(message: 'Le prénom est une information obligatoire.')]
     #[Assert\Regex(
         pattern: '/^[A-Za-zÀ-ÿ|-]{3,}$/',
         message: 'Le prénom ne doit contenir que des lettres, mais si vous êtes le fils d\'Elon Musk(X Æ A-12), écrivez simplement Ex-ash-a-twelve comme cela se prononce.')]
@@ -80,6 +78,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $address = null;
 
     #[ORM\Column(length: 5, nullable: true)]
+    #[Assert\Regex(
+        pattern: '/^[0-9]{5}$/',
+        message: 'Le code postal doit contenir 5 chiffres.')]
     private ?string $zipCode = null;
 
     #[ORM\Column(length: 80, nullable: true)]
@@ -92,6 +93,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?Licence $licence = null;
 
     #[ORM\Column(length: 20, nullable: true)]
+    #[Assert\Regex(
+        pattern: '/^0[1-9]([-. ]?[0-9]{2}){4}$/',
+        message: 'Le numéro de téléphone doit contenir 10 chiffres et commencer par 0, ou il peut être vide.')]
     private ?string $phone = null;
 
     #[ORM\Column]
@@ -100,9 +104,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $diving_level = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $country = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $bio = null;
+
+    #[ORM\Column(length: 25, nullable: true)]
+    private ?string $genre = null;
+
+    #[ORM\Column]
+    private bool $isActive;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $account_deletion_request = null;
+
     public function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable(timezone: new \DateTimeZone(timezone: self::TIMEZONE));
+        $this->isActive = true;
 
         if (empty($this->roles)) {
             $this->roles = [self::ROLE_ADHERENT];
@@ -298,6 +321,78 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getDivingLevel(): ?int
+    {
+        return $this->diving_level;
+    }
+
+    public function setDivingLevel(?int $diving_level): static
+    {
+        $this->diving_level = $diving_level;
+
+        return $this;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?string $country): static
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    public function getBio(): ?string
+    {
+        return $this->bio;
+    }
+
+    public function setBio(?string $bio): static
+    {
+        $this->bio = $bio;
+
+        return $this;
+    }
+
+    public function getGenre(): ?string
+    {
+        return $this->genre;
+    }
+
+    public function setGenre(?string $genre): static
+    {
+        $this->genre = $genre;
+
+        return $this;
+    }
+
+    public function isIsActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getAccountDeletionRequest(): ?\DateTimeImmutable
+    {
+        return $this->account_deletion_request;
+    }
+
+    public function setAccountDeletionRequest(?\DateTimeImmutable $account_deletion_request): static
+    {
+        $this->account_deletion_request = $account_deletion_request;
 
         return $this;
     }

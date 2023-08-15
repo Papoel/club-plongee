@@ -124,7 +124,7 @@ command: ## Créer une commande | symfony console make:command
 # --------------------
 ## ********** 🧪 TESTS 🧪 ******************************************************************
 run-tests: ## Lancer les tests | php bin/phpunit
-	$(MAKE) init-db-tests
+	$(MAKE) init-db-tests-with-fixtures
 	$(PHPUNIT) --testdox
 .PHONY: tests
 
@@ -236,7 +236,11 @@ delete-db: ## Supprimer la base de données | db-drop-schema + db-drop
 	$(MAKE) db-drop
 
 init-db-tests: ## Initialiser la base de données de test | create-db-tests + schema-load-db
-	$(MAKE) cc db-drop-test db-create-test db-schema-test db-s-v db-s-u-test
+	$(MAKE) cc-test db-drop-test db-create-test db-schema-test db-s-v db-s-u-test
+
+init-db-tests-with-fixtures: ## Initialiser la base de données de test avec les fixtures | init-db-tests + fixtures-load
+	$(MAKE) init-db-tests
+	$(SYMFONY) doctrine:fixtures:load --no-interaction --env=test
 
 # --------------------
 # Commandes de debug

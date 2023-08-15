@@ -6,7 +6,10 @@ use App\Entity\Calendar;
 use App\Repository\CalendarRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CalendarControllerTest extends WebTestCase
 {
@@ -20,19 +23,83 @@ class CalendarControllerTest extends WebTestCase
         $this->repository = static::getContainer()->get('doctrine')->getRepository(Calendar::class);
 
         foreach ($this->repository->findAll() as $object) {
-            $this->repository->remove($object, true);
+            $this->repository->remove(entity: $object, flush: true);
         }
     }
 
-    public function testIndex(): void
+    public function logInAsAdmin(): Crawler
     {
-        $crawler = $this->client->request(method: 'GET', uri: $this->path);
+        // 1. Requête pour me connecter en tant qu'administrateur
+        $crawler = $this->client->request(method: Request::METHOD_GET, uri: $this->path);
+        // Si aucun utilisateur n'est connecté, je suis redirigé vers la page de connexion
+        self::assertResponseRedirects(expectedLocation: '/connexion');
+        // Suivre la redirection
+        $crawler = $this->client->followRedirect();
+        // Vérifier que je suis sur la page de connexion
+        self::assertResponseIsSuccessful();
+        self::assertResponseStatusCodeSame(expectedCode: Response::HTTP_OK);
 
-        self::assertResponseStatusCodeSame(expectedCode: Response::HTTP_UNAUTHORIZED);
-        //self::assertPageTitleContains(expectedTitle: 'Calendar index');
+        // 2. Remplir le formulaire de connexion
+        $form = $crawler->filter(selector: '#login_form')->form([
+            'email' => 'papoel@admin.fr',
+            'password' => 'admin1234',
+        ]);
 
-        // Use the $crawler to perform additional assertions e.g.
-        // self::assertSame('Some text on the page', $crawler->filter('.p')->first());
+        // 3. Soumettre le formulaire
+        $this->client->submit($form);
+        self::assertResponseStatusCodeSame(expectedCode: Response::HTTP_FOUND);
+
+        // 4. Suivre la redirection pour accéder à la page d'accueil
+        $this->client->followRedirect();
+        self::assertRouteSame(expectedRoute: 'app_calendar_index');
+
+        return $crawler;
+    }
+
+    public function testAccessWithoutAuthentication(): void
+    {
+        $this->client->request(method: Request::METHOD_GET, uri: $this->path);
+
+        // L'utilisateur non connecté doit être redirigé vers la page de connexion
+        self::assertResponseRedirects(expectedLocation: '/connexion');
+    }
+
+    public function testAdminAccess(): void
+    {
+        // Authentifier en tant qu'administrateur
+        $crawler = $this->logInAsAdmin();
+
+        // 5. Vérifier que j'arrive sur la page '/calendrier' avec un statut 200
+        self::assertResponseIsSuccessful();
+        self::assertResponseStatusCodeSame(expectedCode: Response::HTTP_OK);
+    }
+
+    public function testUserAccess(): void
+    {
+        // 1. Requête pour me connecter en tant qu'administrateur
+        $crawler = $this->client->request(method: Request::METHOD_GET, uri: $this->path);
+        // Si aucun utilisateur n'est connecté, je suis redirigé vers la page de connexion
+        self::assertResponseRedirects(expectedLocation: '/connexion');
+        // Suivre la redirection
+        $crawler = $this->client->followRedirect();
+        // Vérifier que je suis sur la page de connexion
+        self::assertResponseIsSuccessful();
+        self::assertResponseStatusCodeSame(expectedCode: Response::HTTP_OK);
+
+        // 2. Remplir le formulaire de connexion
+        $randomUser = 'user' . random_int(min: 1, max: 5) . '@test.fr';
+        $form = $crawler->filter(selector: '#login_form')->form([
+            'email' => $randomUser,
+            'password' => 'plongee',
+        ]);
+
+        // 3. Soumettre le formulaire
+        $this->client->submit($form);
+        self::assertResponseStatusCodeSame(expectedCode: Response::HTTP_FOUND);
+
+        // 4. Suivre la redirection pour accéder à la page d'accueil
+        $this->client->followRedirect();
+        self::assertResponseStatusCodeSame(expectedCode: Response::HTTP_FORBIDDEN);
     }
 
     public function testNew(): void
@@ -58,11 +125,13 @@ class CalendarControllerTest extends WebTestCase
         ];
         $randomValidColor = $validColorChoices[array_rand($validColorChoices)];
 
-        $this->client->request(method: 'GET', uri: sprintf('%s'.$uri, $this->path));
+        // 1. Connecter un administrateur
+        $crawler = $this->logInAsAdmin();
 
-        self::assertResponseStatusCodeSame(expectedCode: Response::HTTP_UNAUTHORIZED);
+        // 2. Accéder à la page de création
+        $this->client->request(method: Request::METHOD_GET, uri: $this->path . $uri);
 
-        /*$this->client->submitForm(button: 'Sauvegarder', fieldValues: [
+        $this->client->submitForm(button: 'Sauvegarder', fieldValues: [
             'calendar[title]' => 'Testing',
             'calendar[start]' => '2023-01-01 16:00:00',
             'calendar[end]' => '2023-01-01 16:45:00',
@@ -78,14 +147,17 @@ class CalendarControllerTest extends WebTestCase
         self::assertCount(expectedCount: $originalNumObjectsInRepository + 1, haystack: $this->repository->findAll());
 
         // Tester avec une valeur invalide
-        $this->client->request(method: 'GET', uri: $this->path . $uri);
+        $this->client->request(method: Request::METHOD_GET, uri: $this->path . $uri);
 
-        self::assertResponseStatusCodeSame(expectedCode: Response::HTTP_OK); */
+        self::assertResponseStatusCodeSame(expectedCode: Response::HTTP_OK);
     }
 
     public function testShow(): void
     {
-        // Choix d'une valeur valide aléatoire parmi les choix possibles
+        // 1. Connecter un administrateur
+        $this->logInAsAdmin();
+
+        // 2. Choix d'une valeur valide aléatoire parmi les choix possibles
         $validColorChoices = [
             'primary',
             'green',
@@ -103,6 +175,7 @@ class CalendarControllerTest extends WebTestCase
         ];
         $randomValidColor = $validColorChoices[array_rand($validColorChoices)];
 
+        // 3. Créer un objet avec des valeurs valides
         $fixture = new Calendar();
         $fixture->setTitle(title: 'Testing Show');
         $fixture->setStart(start: new \DateTime(datetime: '2023-01-01 16:00:00'));
@@ -112,19 +185,25 @@ class CalendarControllerTest extends WebTestCase
         $fixture->setBorderColor(border_color: $randomValidColor);
         $fixture->setTextColor(text_color: $randomValidColor);
 
+        // 4. Sauvegarder en base de données
         $this->repository->save(entity: $fixture, flush: true);
 
+        // 5. Accéder à la page de détails
         $this->client->request(method: 'GET', uri: sprintf('%s%s', $this->path, $fixture->getId()));
 
-        self::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
-        // self::assertPageTitleContains(expectedTitle: 'Testing Show');
-
-        // Use assertions to check that the properties are properly displayed.
+        // 6. Vérifier le statut de réponse
+        self::assertResponseStatusCodeSame(expectedCode: Response::HTTP_OK);
     }
 
-    public function testEdit(): void
+    /* TODO: Tester la modification du formulaire */
+    public function Edit(): void {}
+
+    public function testRemove(): void
     {
-        // Choix d'une valeur valide aléatoire parmi les choix possibles
+        // 1. Connecter un administrateur
+        $this->logInAsAdmin();
+
+        // 2. Choix d'une valeur valide aléatoire parmi les choix possibles
         $validColorChoices = [
             'primary',
             'green',
@@ -142,67 +221,7 @@ class CalendarControllerTest extends WebTestCase
         ];
         $randomValidColor = $validColorChoices[array_rand($validColorChoices)];
 
-        $fixture = new Calendar();
-        $fixture->setTitle(title: 'Calendrier');
-        $fixture->setStart(new \DateTime(datetime: '2023-01-01'));
-        $fixture->setEnd(new \DateTime(datetime: '2023-01-01'));
-        $fixture->setDescription(description: 'La description du calendrier');
-        $fixture->setBackgroundColor(background_color: $randomValidColor);
-        $fixture->setBorderColor(border_color: $randomValidColor);
-        $fixture->setTextColor(text_color: $randomValidColor);
-
-        $this->repository->save(entity: $fixture, flush: true);
-
-        $crawler = $this->client->request(method: 'GET', uri: sprintf('%s%s/modifier', $this->path, $fixture->getId()));
-
-        self::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
-
-        /*$form = $crawler->selectButton(value: 'Mettre à jour')->form();
-        $form['calendar[title]'] = 'Mise a jour du calendrier';
-        $form['calendar[start]'] = '2025-01-01T00:00';
-        $form['calendar[end]'] = '2025-01-01T00:00';
-        $form['calendar[description]'] = 'Ce calendrier a été mis à jour';
-        $form['calendar[all_day]']->tick();
-        $form['calendar[background_color]'] = $randomValidColor;
-        $form['calendar[border_color]'] = $randomValidColor;
-        $form['calendar[text_color]'] = $randomValidColor;
-
-        $this->client->submit($form);
-
-        self::assertResponseRedirects(expectedLocation: $this->path);
-
-        $updatedFixture = $this->repository->findAll();
-
-        self::assertSame(expected: 'Mise a jour du calendrier', actual: $updatedFixture[0]->getTitle());
-        self::assertEquals(new \DateTime(datetime: '2025-01-01'), $updatedFixture[0]->getStart());
-        self::assertEquals(expected: new \DateTime(datetime: '2025-01-01'), actual: $updatedFixture[0]->getEnd());
-        self::assertSame(expected: 'Ce calendrier a été mis à jour', actual: $updatedFixture[0]->getDescription());
-        self::assertTrue($updatedFixture[0]->isAllDay());
-        self::assertSame(expected: $randomValidColor, actual: $updatedFixture[0]->getBackgroundColor());
-        self::assertSame(expected: $randomValidColor, actual: $updatedFixture[0]->getBorderColor());
-        self::assertSame(expected: $randomValidColor, actual: $updatedFixture[0]->getTextColor());*/
-    }
-
-
-    public function Remove(): void
-    {
         $originalNumObjectsInRepository = count($this->repository->findAll());
-
-        // Choix d'une valeur valide aléatoire parmi les choix possibles
-        $validColorChoices = [
-            '#1f96a5',
-            '#007bff',
-            '#28a745',
-            '#dc3545',
-            '#ffc107',
-            '#17a2b8',
-            '#e83e8c',
-            '#6f42c1',
-            '#6c757d',
-            '#363636',
-            '#ffffff'
-        ];
-        $randomValidColor = $validColorChoices[array_rand($validColorChoices)];
 
         $fixture = new Calendar();
         $fixture->setTitle(title: 'Calendrier');
@@ -215,7 +234,7 @@ class CalendarControllerTest extends WebTestCase
 
         $this->repository->save(entity: $fixture, flush: true);
 
-        self::assertResponseStatusCodeSame(expectedCode: Response::HTTP_UNAUTHORIZED);
+        self::assertResponseStatusCodeSame(expectedCode: Response::HTTP_OK);
         self::assertCount(expectedCount: $originalNumObjectsInRepository + 1, haystack: $this->repository->findAll());
 
 

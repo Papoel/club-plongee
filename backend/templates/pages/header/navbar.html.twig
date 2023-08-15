@@ -4,7 +4,7 @@
         <!-- Logo du club -->
         <a class="navbar-brand pe-sm-3" href="{{ path('app_home') }}">
             <span class="text-primary flex-shrink-0 me-2">
-                {#<img src="{{ asset('assets/img/logo/logo-club.svg') }}" alt="Logo du club" width="80">#}
+                {# <img src="{{ asset('assets/img/logo/logo-club.svg') }}" alt="Logo du club" width="80"> #}
                 <img src="{{ asset('assets/img/logo/new-logo.png') }}" alt="Logo du club" width="120">
             </span>
         </a>
@@ -19,12 +19,54 @@
         <!-- Fin switcher Dark/Light mode -->
 
         <!-- Bouton de connexion -->
-        <a class="btn btn-primary btn-sm fs-sm order-lg-3 d-none d-sm-inline-flex"
-           href="#"
-           target="_blank" rel="noopener">
-            <i class="ai-user fs-xl me-2 ms-n1"></i>
-            Se connecter
-        </a>
+        {# TODO: Verifier si l'utilisateur est connecté ou s'il est authentifié #}
+        {% if not app.user or not is_granted('IS_AUTHENTICATED_FULLY') %}
+            <a class="btn btn-primary btn-sm fs-sm order-lg-3 d-none d-sm-inline-flex"
+               href="{{ path('app_login') }}" rel="noopener">
+                <i class="ai-user fs-xl me-2 ms-n1"></i>
+                Se connecter
+            </a>
+        {% else %}
+            <!-- User signed in state. Account dropdown on screens > 576px-->
+            <div class="dropdown nav d-none d-sm-block order-lg-3">
+                <a class="nav-link d-flex align-items-center p-0"
+                   href="#" data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    <img class="border rounded-circle" src="{{ asset('assets/img/site/default-avatar.png') }}"
+                         width="48" alt="Avatar utilisateur">
+                    <div class="ps-2">
+                        <div class="fs-xs lh-1 opacity-60">Salut,</div>
+                        <div class="fs-sm dropdown-toggle">{{ app.user.firstname|capitalize }}</div>
+                    </div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end my-1">
+                    <h6 class="dropdown-header fs-xs fw-medium text-muted text-uppercase pb-1">Compte</h6>
+                    <a class="dropdown-item" href="{{ path('account_overview') }}">
+                        <i class="ai-user-check fs-lg opacity-70 me-2"></i>
+                        Mon compte
+                    </a>
+                    <a class="dropdown-item" href="{{ path('account_settings') }}">
+                        <i class="ai-settings fs-lg opacity-70 me-2"></i>
+                        Mes informations
+                    </a>
+
+                    <div class="dropdown-divider"></div>
+                    <h6 class="dropdown-header fs-xs fw-medium text-muted text-uppercase pb-1">Ordinateur de bord</h6>
+                    <a class="dropdown-item" href="#">
+                        <i class="ai-cart fs-lg opacity-70 me-2"></i>
+                        Licence
+                    </a>
+                    {# <a class="dropdown-item" href="account-earnings.html">
+                        <i class="ai-activity fs-lg opacity-70 me-2"></i>
+                        Carnet de plongée
+                    </a> #}
+                    <a class="dropdown-item" href="{{ path('app_logout') }}">
+                        <i class="ai-logout fs-lg opacity-70 me-2"></i>
+                        Déconnexion
+                    </a>
+                </div>
+            </div>
+        {% endif %}
         <!-- Fin bouton de connexion -->
 
         <button class="navbar-toggler ms-sm-3"
@@ -53,14 +95,14 @@
                         </div>
                     </div>
                 </li>
-                {#<li class="nav-item dropdown">
+                {# <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle"
                        href="#" data-bs-toggle="dropdown"
                        data-bs-auto-close="outside"
                        aria-expanded="false">Nos événements</a>
                     <ul class="dropdown-menu">
                         <li class="dropdown">
-                            #}{#<a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Portfolio</a>
+                #}{# <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Portfolio</a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="portfolio-list-v1.html">List View v.1</a></li>
                                 <li><a class="dropdown-item" href="portfolio-list-v2.html">List View v.2</a></li>
@@ -69,14 +111,16 @@
                                 <li><a class="dropdown-item" href="portfolio-slider.html">Slider View</a></li>
                                 <li><a class="dropdown-item" href="portfolio-single-v1.html">Single Project v.1</a></li>
                                 <li><a class="dropdown-item" href="portfolio-single-v2.html">Single Project v.2</a></li>
-                            </ul>#}{#
-                        </li>
-                    </ul>
-                </li>#}
+                            </ul> #}{#
+                </li>
+            </ul>
+        </li> #}
                 <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
             </ul>
             <div class="d-sm-none p-3 mt-n3">
-                <a class="btn btn-primary w-100  mb-1" href="https://themes.getbootstrap.com/product/around-multipurpose-template-ui-kit/" target="_blank" rel="noopener">
+                <a class="btn btn-primary w-100  mb-1"
+                   href="{{ path('app_login') }}"
+                   rel="noopener">
                     <i class="ai-user fs-xl me-2 ms-n1"></i>
                     Se connecter
                 </a>
