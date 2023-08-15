@@ -1,0 +1,62 @@
+{% if not app.user.accountDeletionRequest %}
+    <div class="card-body">
+        <div class="d-flex align-items-center pb-4 mt-sm-n1 mb-0 mb-lg-1 mb-xl-3"><i
+                    class="ai-trash text-primary lead pe-1 me-2"></i>
+            <h2 class="h4 mb-0">Supprimer le compte</h2>
+        </div>
+        <div class="alert alert-warning d-flex mb-4"><i class="ai-triangle-alert fs-xl me-2"></i>
+            <p class="mb-0">
+                La demande de suppression de votre compte sera effective dans un délai de 15 jours.
+            </p>
+        </div>
+
+        <div class="form-check">
+            {% for message in app.session.flashBag.get('danger') %}
+                <div class="alert alert-danger">{{ message }}</div>
+            {% endfor %}
+            {{ form_start(deleteForm) }}
+
+            {{ form_label(deleteForm.confirm, 'Oui, je veux supprimer mon compte', {'label_attr': {'class': 'form-check-label text-dark fw-medium'}}) }}
+            {{ form_widget(deleteForm.confirm, {'attr': {'class': 'form-check-input', 'id': 'confirm'}}) }}
+            {{ form_errors(deleteForm.confirm) }}
+
+            <div class="d-flex flex-column flex-sm-row justify-content-end pt-4 mt-sm-2 mt-md-3">
+                <button class="btn btn-danger" type="submit">
+                    <i class="ai-trash ms-n1 me-2"></i>
+                    Supprimer le compte
+                </button>
+            </div>
+
+            {{ form_end(deleteForm) }}
+        </div>
+    </div>
+    {% else %}
+        <div class="card-body">
+            <div class="d-flex align-items-center pb-4 mt-sm-n1 mb-0 mb-lg-1 mb-xl-3"><i
+                        class="ai-trash text-primary lead pe-1 me-2"></i>
+                <h2 class="h4 mb-0">Supprimer le compte</h2>
+            </div>
+            <div class="alert alert-danger d-flex mb-4 d-flex align-items-center"><i class="ai-triangle-alert fs-xl mx-3"></i>
+                <p class="mb-0">
+                    Vous avez demandé la suppression de votre compte le
+                    <strong>{{ app.user.accountDeletionRequest|format_datetime('full', 'short', locale='fr') }}.</strong>
+                    <br> Votre compte sera supprimé définitivement au plus tard le
+                    <strong>
+                        {{
+                            app.user.accountDeletionRequest|
+                            date_modify("+15 day")|
+                            format_datetime('full', 'none', locale='fr')
+                        }}
+                    </strong>.
+                </p>
+            </div>
+            <div class="mb-0">
+                {% if app.user.accountDeletionRequest %}
+                    Si vous souhaitez annuler la suppression de votre compte, cliquez sur le lien ci-contre :
+                    <a href="{{ path('account_cancel_deletion') }}" class="text-primary mt-2">
+                        Annuler la suppression du compte
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+{% endif %}
