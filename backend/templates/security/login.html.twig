@@ -1,0 +1,127 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+    <!-- Page wrapper-->
+    <main class="page-wrapper">
+        <!-- Page content-->
+        <div class="d-lg-flex position-relative h-100">
+            <!-- Home button-->
+            <a class="text-nav btn btn-icon bg-light border rounded-circle position-absolute top-0 end-0 p-0 mt-3 me-3 mt-sm-4 me-sm-4"
+               href="{{ path('app_home') }}" data-bs-toggle="tooltip" data-bs-placement="left" title="Retour au site">
+                <i class="ai-home"></i>
+            </a>
+            <!-- Sign in form-->
+            <div class="d-flex flex-column align-items-center w-lg-50 h-100 px-3 px-lg-5 pt-5">
+                <div class="w-100 mt-auto" style="max-width: 526px;">
+                    <h1>Connexion à votre compte</h1>
+                    <p class="pb-3 mb-3 mb-lg-4">Vous n'avez pas encore de compte ?&nbsp;&nbsp;
+                        <a href='#'>s'inscrire maintenant</a>
+                    </p>
+
+                    <form method="post" class="needs-validation" novalidate id="login_form" name="login_form">
+                        {% if error %}
+                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                        {% endif %}
+
+
+                        {% if app.user %}
+                            <div class="mb-3">
+                                Vous êtes connecté en tant que {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">
+                                    Déconnexion
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        <div class="pb-3 mb-3">
+                            <div class="position-relative">
+                                <i class="ai-mail fs-lg position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+                                <input type="email"
+                                       id="inputEmail"
+                                       name="email"
+                                       value="{{ last_username }}"
+                                       autocomplete="email"
+                                       class="form-control form-control-lg ps-5"
+                                       placeholder="Adresse e-mail"
+                                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}\.[a-z]{2,}$"
+                                       required
+                                       autofocus
+                                >
+                                <div class="invalid-tooltip">
+                                    Veuillez fournir une adresse e-mail valide.
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="position-relative">
+                                <i class="ai-lock-closed fs-lg position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+                                <div class="password-toggle">
+                                    <input type="password"
+                                           id="inputPassword"
+                                           name="password"
+                                           class="form-control form-control-lg ps-5"
+                                           autocomplete="current-password"
+                                           placeholder="Mot de passe"
+                                           minlength="6"
+                                           required
+                                    >
+                                    <label class="password-toggle-btn" aria-label="Show/hide password">
+                                        <input class="password-toggle-check" type="checkbox">
+                                        <span class="password-toggle-indicator"></span>
+                                    </label>
+                                    <div class="invalid-tooltip">
+                                        Le mot de passe doit contenir au moins 6 caractères.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-wrap align-items-center justify-content-between pb-4">
+                            <form-check class="my-3">
+                                <input class="form-check-input" type="checkbox" id="keep-signedin">
+                                <label class="form-check-label ms-1" for="keep-signedin">Rester connecté</label>
+                            </form-check>
+                            {# TODO: Mettre le path vers la route mot de passe oublié #}
+                            <a class="fs-sm fw-semibold text-decoration-none my-1" href="#">
+                                Mot de passe oublié ?
+                            </a>
+                        </div>
+
+                        <button class="btn btn-lg btn-primary w-100 mb-4" type="submit">Se connecter</button>
+
+                        <h2 class="h6 text-center pt-3 pt-lg-4 mb-4">Ou connectez-vous avec votre réseau social</h2>
+                        <div class="row row-cols-1 row-cols-sm-2 gy-3">
+                            <div class="col"><a class="btn btn-icon btn-outline-secondary btn-google btn-lg w-100" href="#">
+                                    <i class="ai-google fs-xl me-2"></i>
+                                    Google
+                                </a>
+                            </div>
+                            <div class="col"><a class="btn btn-icon btn-outline-secondary btn-facebook btn-lg w-100" href="#">
+                                    <i class="ai-facebook fs-xl me-2"></i>
+                                    Facebook
+                                </a>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    </form>
+                </div>
+                <!-- Copyright-->
+                <p class="w-100 fs-sm pt-5 mt-auto mb-5" style="max-width: 526px;">
+                    {% set createdWeb = 2023 %}
+                    {% set now = "now"|date("Y") %}
+                    <span class="text-muted">{{ createdWeb == now ? now : (createdWeb ~'-'~ now) }}</span>
+                    <span class="text-muted">&middot;Tous droits réservés. Conçu par</span>
+                    <a class="nav-link d-inline-block p-0 ms-1" href="https://github.com/Papoel" target="_blank" rel="noopener">
+                        Papoel
+                    </a>
+                </p>
+            </div>
+            <!-- Cover image-->
+            <div class="w-50 bg-size-cover bg-repeat-0 bg-position-center" style="background-image: url({{ asset('assets/img/site/compte/cover.jpg') }});"></div>
+        </div>
+    </main>
+{% endblock %}
