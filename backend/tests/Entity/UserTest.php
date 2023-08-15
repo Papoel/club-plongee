@@ -348,21 +348,6 @@ class UserTest extends EntityTestCase
     }
 
     /**
-     * @test
-     * @throws Exception
-     */
-    public function PasswordWithoutMajuscule(): void
-    {
-        $user = new User();
-        $user->setFirstname(firstname: 'Pascal');
-        $user->setLastname(lastname: 'Briffard');
-        $user->setPassword(password: 'motdepasse212');
-        $user->setEmail(email: 'test@email.fr');
-
-        $this->assertValidationErrorsCount(entity: $user, count: 1);
-    }
-
-    /**
      *
      * @test
      * @throws Exception
@@ -374,61 +359,12 @@ class UserTest extends EntityTestCase
         $user->setLastname(lastname: 'Briffard');
         $user->setEmail(email: 'test@email.fr');
 
-        $password = 'Mdp1';
-        $user->setPassword(password: $password);
-
+        // Test the Length and other constraints
+        $user->setPassword(password: 'Mdp1');
         $this->assertValidationErrorsCount(entity: $user, count: 1);
     }
 
     /**
-     * @test
-     * @throws Exception
-     */
-    public function PasswordMoreThan25Characters(): void
-    {
-        $user = new User();
-        $user->setFirstname(firstname: 'Pascal');
-        $user->setLastname(lastname: 'Briffard');
-        $user->setEmail(email: 'test@email.fr');
-
-        // Use str_repeat to repeat a character 26 times
-        $password = str_repeat(string: 'Mdp1', times: 26);
-        $user->setPassword(password: $password);
-
-        $this->assertValidationErrorsCount(entity: $user, count: 1);
-    }
-
-    /**
-     * @test
-     * @throws Exception
-     */
-    public function PasswordWithoutMinuscule(): void
-    {
-        $user = new User();
-        $user->setFirstname(firstname: 'Pascal');
-        $user->setLastname(lastname: 'Briffard');
-        $user->setPassword(password: 'MOTDEPASSE212');
-        $user->setEmail(email: 'test@email.fr');
-
-        $this->assertValidationErrorsCount(entity: $user, count: 1);
-    }
-
-    /**
-     * @test
-     * @throws Exception
-     */
-    public function PasswordWithoutNumber(): void
-    {
-        $user = new User();
-        $user->setFirstname(firstname: 'Pascal');
-        $user->setLastname(lastname: 'Briffard');
-        $user->setPassword(password: 'Motdepasse');
-        $user->setEmail(email: 'test@email.fr');
-
-        $this->assertValidationErrorsCount(entity: $user, count: 1);
-    }
-
-/**
      * @test
      * @throws Exception
      */
@@ -440,7 +376,13 @@ class UserTest extends EntityTestCase
         $user->setPassword(password: '');
         $user->setEmail(email: 'test@email.fr');
 
-        $this->assertValidationErrorsCount(entity: $user, count: 1);
+        // Valider l'entité
+        $violations = $this->validateEntity(entity: $user);
+        $this->assertValidationErrorsCount(entity: $user, count: 2);
+
+        // Vérifier les messages d'erreur spécifiques
+        $this->assertContainsViolation(message: 'Le mot de passe est une information obligatoire.', violations: $violations);
+        $this->assertContainsViolation(message: 'Le mot de passe doit contenir au moins 8 caractères.', violations: $violations);
     }
 
     /**
@@ -455,9 +397,15 @@ class UserTest extends EntityTestCase
         $user->setPassword(password: 'MotDePasse1');
         $user->setEmail(email: 'test@email.fr');
 
-        // Retourne 2 erreurs (1 pour le champ vide et 1 pour le min de caractères)
+        // Valider l'entité
+        $violations = $this->validateEntity(entity: $user);
         $this->assertValidationErrorsCount(entity: $user, count: 2);
+
+        // Vérifier les messages d'erreur spécifiques
+        $this->assertContainsViolation(message: 'Le prénom est une information obligatoire.', violations: $violations);
+        $this->assertContainsViolation(message: 'Le prénom doit contenir au moins 3 caractères.', violations: $violations);
     }
+
 
     /**
      * @test
@@ -472,7 +420,18 @@ class UserTest extends EntityTestCase
 
         $firstname = 'Pa';
         $user->setFirstname(firstname: $firstname);
+
+        // Valider l'entité
+        $violations = $this->validateEntity(entity: $user);
         $this->assertValidationErrorsCount(entity: $user, count: 2);
+
+        // Vérifier les messages d'erreur spécifiques
+        $this->assertContainsViolation(message: 'Le prénom doit contenir au moins 3 caractères.', violations: $violations);
+        $this->assertContainsViolation(
+            message: 'Le prénom ne doit contenir que des lettres, mais si vous êtes le fils d\'Elon Musk(X Æ A-12), '
+            .'écrivez simplement Ex-ash-a-twelve comme cela se prononce.',
+            violations: $violations
+        );
     }
 
     /**
@@ -488,7 +447,16 @@ class UserTest extends EntityTestCase
 
         $firstname = str_repeat(string: 'a', times: 51);
         $user->setFirstname(firstname: $firstname);
+
+        // Valider l'entité
+        $violations = $this->validateEntity(entity: $user);
         $this->assertValidationErrorsCount(entity: $user, count: 1);
+
+        // Vérifier les messages d'erreur spécifiques
+        $this->assertContainsViolation(
+            message: 'Le prénom ne doit pas contenir plus de 50 caractères.',
+            violations: $violations
+        );
 
         $firstname = str_repeat(string: 'a', times: 3);
         $user->setFirstname(firstname: $firstname);

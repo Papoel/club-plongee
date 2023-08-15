@@ -53,9 +53,13 @@ class CalendarTest extends EntityTestCase
 
         $calendar->setTitle(title: '');
 
-        $this->assertValidationErrorsCount($calendar, count: 2 ,
-            expectedMessage: 'Le titre doit contenir au moins 3 caractères'
-        );
+        // Valider l'entité
+        $violations = $this->validateEntity(entity: $calendar);
+        $this->assertValidationErrorsCount(entity: $calendar, count: 2);
+
+        // Vérifier les messages d'erreur spécifiques
+        $this->assertContainsViolation(message: 'Cette valeur ne doit pas être vide.', violations: $violations);
+        $this->assertContainsViolation(message: 'Le titre doit contenir au moins 3 caractères', violations: $violations);
     }
 
     /**
@@ -68,9 +72,12 @@ class CalendarTest extends EntityTestCase
 
         $calendar->setTitle(title: 'aa');
 
-        $this->assertValidationErrorsCount($calendar, count: 1 ,
-            expectedMessage: 'Le titre doit contenir au moins 3 caractères'
-        );
+        // Valider l'entité
+        $violations = $this->validateEntity(entity: $calendar);
+        $this->assertValidationErrorsCount(entity: $calendar, count: 1);
+
+        // Vérifier les messages d'erreur spécifiques
+        $this->assertContainsViolation(message: 'Le titre doit contenir au moins 3 caractères', violations: $violations);
     }
 
     /**
@@ -83,9 +90,12 @@ class CalendarTest extends EntityTestCase
 
         $calendar->setTitle(title: str_repeat(string: 'a', times: 101));
 
-        $this->assertValidationErrorsCount($calendar, count: 1 ,
-            expectedMessage: 'Le titre doit contenir au maximum 100 caractères'
-        );
+        // Valider l'entité
+        $violations = $this->validateEntity(entity: $calendar);
+        $this->assertValidationErrorsCount(entity: $calendar, count: 1);
+
+        // Vérifier les messages d'erreur spécifiques
+        $this->assertContainsViolation(message: 'Le titre doit contenir au maximum 100 caractères', violations: $violations);
     }
 
     /**
