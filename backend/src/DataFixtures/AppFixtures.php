@@ -51,7 +51,7 @@ class AppFixtures extends Fixture
         // Ajouter une licence à l'admin
         $licence = new Licence();
         $licence
-            ->setNumber(number: '123456')
+            ->setNumber(number: 'A-17-776251')
             ->setUserLicence(user_licence: $admin);
 
         $manager->persist($licence);
