@@ -122,6 +122,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $account_deletion_request = null;
 
+    /**
+     * @throws \Exception
+     */
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable(timezone: new \DateTimeZone(timezone: self::TIMEZONE));
@@ -130,6 +133,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if (empty($this->roles)) {
             $this->roles = [self::ROLE_ADHERENT];
         }
+    }
+
+    public function getFullname(): string
+    {
+        // Capitalize the first letter of the firstname and the lastname
+        $firstname = ucfirst(strtolower($this->firstname));
+        $lastname = ucfirst(strtolower($this->lastname));
+
+        return $firstname.' '.$lastname;
     }
 
     public function getId(): ?int
