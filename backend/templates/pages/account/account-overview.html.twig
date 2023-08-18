@@ -76,16 +76,52 @@
                                         </tr>
                                     </table>
                                 </div>
+                                {# --------------------------Composant Licence FFESSM------------------------ #}
+
                                 <div class="col-md-6 d-md-flex justify-content-end">
-                                    <div class="w-100 border rounded-3 p-4" style="max-width: 212px;">
-                                        <img class="d-block mb-2"
-                                             width="48" alt="Entrainement piscine icône"
-                                             src="{{ asset('assets/img/site/compte/icon-swim.png') }}">
-                                        <h4 class="h5 lh-base mb-0">Entrainement</h4>
-                                        <p class="fs-sm text-muted mb-0">Mardi à 19h00</p>
-                                        <p class="fs-sm text-muted mb-0">Jeudi à 20h00</p>
+                                    <div class="card w-100 rounded-0 bg-light" style="max-width: 212px;">
+                                        <div class="mt-3">
+                                            <img class="mx-auto d-block" src="{{ asset('assets/img/logo/logo-ffessm.png') }}" alt="Logo FFESSM">
+                                            <p class="m-0 text-center text-primary" style="font-size: 5px">IMMERSION & EMOTION</p>
+                                        </div>
+                                        <div class="mt-3">
+                                            <div class="text-uppercase text-primary bold h4 text-center">licence</div>
+                                            <img class="d-block mx-auto" src="{{ asset('assets/img/site/compte/troll-qr-code.jpg') }}" width="50" alt="troll qr-code">
+                                            <h2 class="h6 my-1 text-center">{{ app.user.fullname }}</h2>
+                                            {% if app.user.divingLevel is null %}
+                                                <div class="text-center my-1" style="font-size: 12px;">
+                                                    <i class="ai-triangle-alert text-primary"></i> <!-- Icône pour le niveau débutant -->
+                                                    <span class="text-primary" style="font-size: 12px; font-weight: 700; text-align: center">Plongeur débutant</span>
+                                                </div>
+                                            {% else %}
+                                                <div class="text-center" style="font-size: 12px;">
+                                                    {% if app.user.divingLevel == 1 %}
+                                                        <i class="ai-star text-success"></i> <!-- Icône pour le niveau 1 -->
+                                                    {% elseif app.user.divingLevel == 2 %}
+                                                        <i class="ai-star text-primary"></i> <!-- Icône pour le niveau 2 -->
+                                                        <i class="ai-star text-primary"></i> <!-- Icône pour le niveau 2 -->
+                                                    {% elseif app.user.divingLevel == 3 %}
+                                                        <i class="ai-star text-danger"></i> <!-- Icône pour le niveau expert -->
+                                                        <i class="ai-star text-danger"></i> <!-- Icône pour le niveau expert -->
+                                                        <i class="ai-star text-danger"></i> <!-- Icône pour le niveau expert -->
+                                                    {% endif %}
+                                                </div>
+                                            {% endif %}
+                                            <h3 style="font-size: 12px; font-weight: 700; text-align: center">{{ app.user.licence }}</h3>
+                                            <hr>
+                                        </div>
+                                        <div class="card-footer">
+                                            <div class="d-flex flex-column m-0" style="font-size: 12px">
+                                                <span class="mx-auto" style="font-size: 9px">Club de plongée maubeugeois <br></span>
+                                                <strong class="text-center" style="font-size: 10px">09590020</strong>
+                                                <span class="mx-auto m-0" style="font-size: 9px">Piscine tournesol épinette</span>
+                                                <strong class="text-center" style="font-size: 10px">59600 Maubeuge.</strong>
+                                                <span class="mx-auto m-0" style="font-size: 9px">Tel: +33 3 27 65 03 72</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+
                             </div>
                             <div class="alert alert-info d-flex mb-0" role="alert"><i class="ai-circle-info fs-xl"></i>
                                 <div class="ps-2">En cas de problème, veuillez contacter le responsable du club.
