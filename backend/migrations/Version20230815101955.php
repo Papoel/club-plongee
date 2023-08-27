@@ -14,7 +14,7 @@ final class Version20230815101955 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Ajout de la propriété is_active dans la table user';
     }
 
     public function up(Schema $schema): void

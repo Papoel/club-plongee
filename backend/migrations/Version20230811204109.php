@@ -14,7 +14,7 @@ final class Version20230811204109 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Ajout de la colonne genre dans la table user';
     }
 
     public function up(Schema $schema): void
