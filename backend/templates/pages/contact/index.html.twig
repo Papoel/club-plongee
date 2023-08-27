@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formulaire de contact{% endblock %}
+
+{% block body %}
+    <main class="page-wrapper">
+        <!-- Navbar. Remove 'fixed-top' class to make the navigation bar scrollable with the page-->
+        {% include ('pages/header/navbar.html.twig') %}
+        <!-- Page title + contact form-->
+        <section class="container pt-5 pb-lg-2 pb-xl-4 py-xxl-5 my-5">
+            <div class="row pb-1 pb-sm-3 pb-lg-4 mt-5">
+                <!-- Page title-->
+                <div class="col-lg-4 pe-xxl-4">
+                    <h1 class="display-2">Contacts</h1>
+                    <p class="fs-lg pb-4 mb-0 mb-sm-2">
+                        Prenez contact avec nous en remplissant le formulaire ci-contre ou appelez-nous dès maintenant.
+                    </p>
+                </div>
+                <div class="col-lg-8 col-xl-7 offset-xl-1">
+                    {{ form_start(form, {'attr': {'class': 'row g-4', 'novalidate': ''}}) }}
+                        {% include('partials/_flash-messages.html.twig') %}
+
+                        <div class="col-sm-6">
+                            {{ form_label(form.fullname, null, {'label_attr': {'class': 'form-label fs-base w-100'}}) }}
+                            {{ form_widget(form.fullname, {'attr': {'class': 'form-control form-control-lg'}}) }}
+                            {{ form_errors(form.fullname) }}
+                        </div>
+
+                        <div class="col-sm-6">
+                            {{ form_label(form.email, null, {'label_attr': {'class': 'form-label fs-base w-100'}}) }}
+                            {{ form_widget(form.email, {'attr': {'class': 'form-control form-control-lg'}}) }}
+                            {{ form_errors(form.email, {'attr': {'class': 'invalid-feedback'}}) }}
+                        </div>
+
+                        <div class="col-sm-6">
+                            {{ form_label(form.subject, null, {'label_attr': {'class': 'form-label fs-base w-100'}}) }}
+                            {{ form_widget(form.subject, {'attr': {'class': 'form-control form-control-lg'}}) }}
+                            {{ form_errors(form.subject, {'attr': {'class': 'invalid-feedback'}}) }}
+                        </div>
+
+                        <div class="col-sm-12">
+                            {{ form_label(form.message, null, {'label_attr': {'class': 'form-label fs-base w-100'}}) }}
+                            {{ form_widget(form.message, {'attr': {'class': 'form-control form-control-lg'}}) }}
+                            {{ form_errors(form.message, {'attr': {'class': 'invalid-feedback'}}) }}
+                        </div>
+
+                        <div class="col-sm-12 pt-2">
+                            <button class="btn btn-primary w-100" type="submit">Soumettre ma demande</button>
+                        </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </section>
+        <!-- Contact details-->
+        <section class="bg-secondary py-1">
+            <div class="container py-lg-3 py-xl-3 py-xxl-4">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4 py-sm-2 py-md-3 py-lg-4">
+                    <div class="col">
+                        <div class="mb-4">
+                            <span class="h4">Yves</span>
+                            <span class="badge badge-pill bg-primary">Président</span>
+                        </div>
+                        <ul class="list-unstyled mb-0">
+                            <li class="d-flex mb-3">
+                                <i class="ai-phone lead text-primary me-2"></i>
+                                <a class="nav-link fw-normal p-0 mt-n1" href="tel:+178632256040">
+                                    +33 (6) 13 06 32 78
+                                </a>
+                            </li>
+                            <li class="d-flex mb-3">
+                                <i class="ai-mail lead text-primary me-2"></i>
+                                <a class="nav-link fw-normal p-0 mt-n1" href="mailto:orlando@example.com">
+                                    yves.zumstein@free.fr
+                                </a>
+                            </li>
+                            {# <li class="d-flex mb-3">
+                                <i class="ai-map-pin lead text-primary me-2"></i>
+                                <a class="nav-link fw-normal p-0 mt-n1" href="#">
+                                    514 S. Magnolia St. Orlando, FL 32806
+                                </a>
+                            </li> #}
+                        </ul>
+                    </div>
+                    <div class="col">
+                        <div class="mb-4">
+                            <span class="h4">Chantal</span>
+                            <span class="badge badge-pill bg-purple">Vice-Président</span>
+                        </div>
+                        <ul class="list-unstyled mb-0">
+                            <li class="d-flex mb-3">
+                                <i class="ai-phone lead text-primary me-2"></i>
+                                <a class="nav-link fw-normal p-0 mt-n1" href="tel:+178632256040">
+                                    +33 (6) 13 07 56 32
+                                </a>
+                            </li>
+                            <li class="d-flex mb-3">
+                                <i class="ai-mail lead text-primary me-2"></i>
+                                <a class="nav-link fw-normal p-0 mt-n1" href="mailto:chicago@example.com">
+                                    {# TODO: Mettre Email de chantal #}
+                                    xxxx@free.fr
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col">
+                        <div class="mb-4">
+                            <span class="h4">Thierry</span>
+                            <span class="badge badge-pill bg-metal">Secrétaire</span>
+                        </div>
+                        <ul class="list-unstyled mb-0">
+                            <li class="d-flex mb-3">
+                                <i class="ai-phone lead text-primary me-2"></i>
+                                <a class="nav-link fw-normal p-0 mt-n1" href="tel:+178632256040">
+                                    {# TODO: Récupérer le tel de Thierry + MAJ attribut href #}
+                                    +33 (6) xx xx xx xx
+                                </a>
+                            </li>
+                            <li class="d-flex mb-3">
+                                <i class="ai-mail lead text-primary me-2"></i>
+                                <a class="nav-link fw-normal p-0 mt-n1" href="mailto:chicago@example.com">
+                                    {# TODO: Récupérer le mail de Thierry #}
+                                    xxx@free.fr
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}
