@@ -14,7 +14,7 @@ final class Version20230811202940 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Ajout de la colonne bio dans la table user';
     }
 
     public function up(Schema $schema): void
