@@ -46,6 +46,7 @@ class HoneyPotType extends AbstractType
 
     /**
      * @description: Configuration des champs cachés
+     *
      * @return array<string, array<string, string>|false>
      */
     protected function setHoneyPotFieldsConfiguration(): array
