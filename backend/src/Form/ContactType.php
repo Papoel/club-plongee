@@ -3,17 +3,21 @@
 namespace App\Form;
 
 use App\Entity\Contact;
-use Symfony\Component\Form\AbstractType;
+use App\Form\FormExtension\HoneyPotType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ContactType extends AbstractType
+class ContactType extends HoneyPotType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        // On appelle la méthode buildForm() de la classe parente (HoneyPotType) pour ajouter les champs 'phone' et 'ville'
+        // Cela permet d'éviter la soumission du formulaire par un robot.
+        parent::buildForm($builder, $options);
+
         $builder
             ->add(child: 'fullname', type: TextType::class, options: [
                 'attr' => [
