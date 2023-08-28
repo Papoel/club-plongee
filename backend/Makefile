@@ -404,6 +404,9 @@ first-install: ## Première installation du Projet (Activer ce qui est necessair
 	# $(YARN)     dev-server # Lance le serveur de développement de Yarn
 .PHONY: first-install
 
+send-mail: ## Envoi un mail de test | php bin/console messenger:consume -vv
+	$(SYMFONY) messenger:consume -vv
+
 # --------------------
 # Canvas
 # --------------------

@@ -6,6 +6,7 @@ use App\Entity\Contact;
 use App\Entity\User;
 use App\Form\ContactType;
 use App\Repository\UserRepository;
+use App\Services\MailerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,8 +16,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class ContactController extends AbstractController
 {
     #[Route('/contact', name: 'app_contact')]
-    public function index(Request $request, EntityManagerInterface $manager, UserRepository $userRepository): Response
-    {
+    public function index(
+        Request $request,
+        EntityManagerInterface $manager,
+        UserRepository $userRepository,
+        MailerService $mailer
+    ): Response {
         $contact = new Contact();
         $userConnected = $this->getUser();
         if ($userConnected instanceof User) {
@@ -38,7 +43,13 @@ class ContactController extends AbstractController
                 $manager->persist($contact);
                 $manager->flush();
 
-                $this->addFlash(type: 'success', message: 'Votre message a bien été envoyé !');
+                $mailer->sendEmail(
+                    from: $contact->getEmail(),
+                    to: 'no-reply@club-plongee-maubeugeois.fr',
+                    subject: $contact->getSubject(),
+                    template: 'emails/contact.html.twig',
+                    context: compact(var_name: 'contact')
+                );
 
                 return $this->redirectToRoute(route: 'app_contact');
             }
