@@ -20,33 +20,46 @@
                     {{ form_start(form, {'attr': {'class': 'row g-4', 'novalidate': ''}}) }}
                         {% include('partials/_flash-messages.html.twig') %}
 
-                        <div class="col-sm-6">
+                        <fieldset class="col-sm-6">
                             {{ form_label(form.fullname, null, {'label_attr': {'class': 'form-label fs-base w-100'}}) }}
                             {{ form_widget(form.fullname, {'attr': {'class': 'form-control form-control-lg'}}) }}
                             {{ form_errors(form.fullname) }}
-                        </div>
+                        </fieldset>
 
-                        <div class="col-sm-6">
+                        <fieldset class="col-sm-6">
                             {{ form_label(form.email, null, {'label_attr': {'class': 'form-label fs-base w-100'}}) }}
                             {{ form_widget(form.email, {'attr': {'class': 'form-control form-control-lg'}}) }}
                             {{ form_errors(form.email, {'attr': {'class': 'invalid-feedback'}}) }}
-                        </div>
+                        </fieldset>
 
-                        <div class="col-sm-6">
+                        <fieldset class="col-sm-6">
                             {{ form_label(form.subject, null, {'label_attr': {'class': 'form-label fs-base w-100'}}) }}
                             {{ form_widget(form.subject, {'attr': {'class': 'form-control form-control-lg'}}) }}
                             {{ form_errors(form.subject, {'attr': {'class': 'invalid-feedback'}}) }}
-                        </div>
+                        </fieldset>
 
-                        <div class="col-sm-12">
+                        <fieldset class="col-sm-12">
                             {{ form_label(form.message, null, {'label_attr': {'class': 'form-label fs-base w-100'}}) }}
                             {{ form_widget(form.message, {'attr': {'class': 'form-control form-control-lg'}}) }}
                             {{ form_errors(form.message, {'attr': {'class': 'invalid-feedback'}}) }}
-                        </div>
+                        </fieldset>
 
-                        <div class="col-sm-12 pt-2">
+                        {# Les champs avec la classe sweet-candy permettent d"éviter les robots spammeurs #}
+                        <fieldset class="sweet-candy">
+                            {{ form_label(form.phone) }}
+                            {{ form_widget(form.phone) }}
+                            {{ form_errors(form.phone) }}
+                        </fieldset>
+
+                        <fieldset class="sweet-candy">
+                            {{ form_label(form.ville) }}
+                            {{ form_widget(form.ville) }}
+                            {{ form_errors(form.ville) }}
+                        </fieldset>
+
+                        <fieldset class="col-sm-12 pt-2">
                             <button class="btn btn-primary w-100" type="submit">Soumettre ma demande</button>
-                        </div>
+                        </fieldset>
                     {{ form_end(form) }}
                 </div>
             </div>
