@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Entity\Contact;
+use App\Entity\User;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -16,7 +17,7 @@ class MailerService
     {
     }
 
-    /** @param array<string, Contact> $context */
+    /** @param array<string, Contact|User|string> $context */
     public function sendEmail(string $from, string $to, ?string $subject, string $template, array $context): void
     {
         $email = (new TemplatedEmail())
@@ -28,8 +29,6 @@ class MailerService
 
         try {
             $this->mailer->send(message: $email);
-            /* @phpstan-ignore-next-line */
-            $this->requestStack->getSession()->getFlashBag()->add(type: 'success', message: 'Votre message a bien été envoyé.');
         } catch (TransportExceptionInterface $e) {
             /* @phpstan-ignore-next-line */
             $this->requestStack->getSession()->getFlashBag()->add(type: 'danger', message: 'Une erreur est survenue lors de l\'envoi de votre message.');
