@@ -2,6 +2,11 @@
 
 {% block title %} Compte {% endblock %}
 
+{% block body_attributes %}
+    {{ parent() }}
+    class="bg-secondary"
+{% endblock %}
+
 {% block body %}
     <main class="page-wrapper">
         <!-- Navbar. Remove 'fixed-top' class to make the navigation bar scrollable with the page-->

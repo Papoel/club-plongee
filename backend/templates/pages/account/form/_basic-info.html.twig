@@ -91,29 +91,25 @@
                 <div class="col-12 mt-2">
                     {{ form_label(basicInfoForm.bio, null, {'label_attr': {'class': 'custom-form-label d-block w-100'}}) }}
                     {{ form_widget(basicInfoForm.bio, {'attr': {'placeholder':
-                        app.user.firstname|capitalize ~', présentez-vous en quelques mots si vous le souhaitez.'}})
-                    }}
+                        app.user.firstname|capitalize ~', présentez-vous en quelques mots si vous le souhaitez.'}}) }}
                     {{ form_errors(basicInfoForm.bio) }}
                 </div>
             {% endif %}
             <div class="col-12 d-sm-flex align-items-center pt-sm-2 pt-md-3">
                 {{ form_label(basicInfoForm.genre, null, {'label_attr': {'class': 'custom-form-label'}}) }}
-                <div class="d-flex">
-                    {% for choice in basicInfoForm.genre %}
-                        <div class="form-check form-check-inline text-capitalize">
-                            {{ form_widget(choice) }}
-                            {{ form_label(choice) }}
-                        </div>
-                    {% endfor %}
-                </div>
+                {% for choice in basicInfoForm.genre %}
+                    <div class="form-check form-check-inline text-capitalize">
+                        {{ form_widget(choice, {'attr': {'class': 'form-check-input'}}) }}
+                        {{ form_label(choice, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                    </div>
+                {% endfor %}
             </div>
 
+            <div class="col-12 d-flex justify-content-end pt-3">
+                <button class="btn btn-secondary" type="button">Annuler</button>
+                <button class="btn btn-primary ms-3" type="submit">Sauvegarder</button>
+            </div>
         </div>
 
-        <div class="col-12 d-flex justify-content-end pt-3">
-            <button class="btn btn-secondary" type="button">Annuler</button>
-            <button class="btn btn-primary ms-3" type="submit">Sauvegarder</button>
-        </div>
     {{ form_end(basicInfoForm) }}
-
 </div>

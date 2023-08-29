@@ -51,6 +51,8 @@ class ContactController extends AbstractController
                     context: compact(var_name: 'contact')
                 );
 
+                $this->addFlash(type: 'success', message: 'Votre message a bien été envoyé.');
+
                 return $this->redirectToRoute(route: 'app_contact');
             }
         }

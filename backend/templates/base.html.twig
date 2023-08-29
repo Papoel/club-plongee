@@ -143,7 +143,7 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-    <body>
+    <body {% block body_attributes %}{% endblock %}>
         <!-- Page loading spinner -->
         <div class="page-loading active">
             <div class="page-loading-inner">

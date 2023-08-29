@@ -2,6 +2,11 @@
 
 {% block title %}Paramètre du compte {% endblock %}
 
+{% block body_attributes %}
+    {{ parent() }}
+    class="bg-secondary"
+{% endblock %}
+
 {% block body %}
     <!-- Code ok-->
     <main class="page-wrapper">
@@ -22,17 +27,17 @@
                     <section class="card border-0 py-1 p-md-2 p-xl-3 p-xxl-4 mb-4">
                         {% include('pages/account/form/_basic-info.html.twig') %}
                     </section>
+
+                    <!-- Password change-->
+                    <section class="card border-0 py-1 p-md-2 p-xl-3 p-xxl-4 mb-4">
+                        {{ include('pages/account/form/_password-change.html.twig') }}
+                    </section>
+
+                    <!-- Delete account-->
+                    <section class="card border-0 py-1 p-md-2 p-xl-3 p-xxl-4">
+                        {{ include('pages/account/form/_account-delete.html.twig') }}
+                    </section>
                 </div>
-
-                <!-- Password change-->
-                <section class="card border-0 py-1 p-md-2 p-xl-3 p-xxl-4 mb-4">
-                    {{ include('pages/account/form/_password-change.html.twig') }}
-                </section>
-
-                <!-- Delete account-->
-                <section class="card border-0 py-1 p-md-2 p-xl-3 p-xxl-4">
-                    {{ include('pages/account/form/_account-delete.html.twig') }}
-                </section>
             </div>
         </div>
         <!-- Divider for dark mode only-->
