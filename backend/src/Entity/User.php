@@ -122,6 +122,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $account_deletion_request = null;
 
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $resetToken = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $reset_token_requested_at = null;
+
     /**
      * @throws \Exception
      */
@@ -405,6 +411,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAccountDeletionRequest(?\DateTimeImmutable $account_deletion_request): static
     {
         $this->account_deletion_request = $account_deletion_request;
+
+        return $this;
+    }
+
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): static
+    {
+        $this->resetToken = $resetToken;
+
+        return $this;
+    }
+
+    public function getResetTokenRequestedAt(): ?\DateTimeImmutable
+    {
+        return $this->reset_token_requested_at;
+    }
+
+    public function setResetTokenRequestedAt(?\DateTimeImmutable $reset_token_requested_at): static
+    {
+        $this->reset_token_requested_at = $reset_token_requested_at;
 
         return $this;
     }

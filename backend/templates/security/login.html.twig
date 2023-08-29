@@ -20,6 +20,8 @@
                         <a href='#'>s'inscrire maintenant</a>
                     </p>
 
+                    {% include('partials/_flash-messages.html.twig') %}
+
                     <form method="post" class="needs-validation" novalidate id="login_form" name="login_form">
                         {% if error %}
                             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -85,7 +87,7 @@
                                 <label class="form-check-label ms-1" for="keep-signedin">Rester connecté</label>
                             </form-check>
                             {# TODO: Mettre le path vers la route mot de passe oublié #}
-                            <a class="fs-sm fw-semibold text-decoration-none my-1" href="#">
+                            <a class="fs-sm fw-semibold text-decoration-none my-1" href={{ path('security_reset_password') }}>
                                 Mot de passe oublié ?
                             </a>
                         </div>
