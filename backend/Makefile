@@ -100,6 +100,9 @@ server-restart: ## Redémarrer le serveur | stop + start
 	stop start
 .PHONY: server-restart
 
+certificat: ## Installer le certificat | symfony server:ca:install
+	$(SYMFONY_BIN) server:ca:install
+
 # --------------------
 # Commandes de création avec le MakerBundle
 # --------------------
@@ -284,6 +287,9 @@ cc-test: ## Vider le cache de test | symfony console cache:clear --env=test
 
 cc-warmup: ## Précharger le cache | symfony console cache:warmup
 	$(SYMFONY) cache:warmup
+
+purge: ## Supprimer le cache | rm -rf var/cache/* var/logs/*
+	@rm -rf var/cache/* var/log/*
 
 # --------------------
 # Qualité du code
