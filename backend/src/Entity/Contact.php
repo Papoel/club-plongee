@@ -2,14 +2,18 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\CreatedAtAndUpdatedAtTrait;
 use App\Repository\ContactRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
+#[ORM\Table(name: 'contacts')]
+#[ORM\HasLifecycleCallbacks]
 class Contact
 {
+    use CreatedAtAndUpdatedAtTrait;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -50,16 +54,6 @@ class Contact
         minMessage: 'Votre message doit contenir au moins {{ limit }} caractères'
     )]
     private string $message;
-
-    #[ORM\Column]
-    #[Assert\NotNull]
-    private \DateTimeImmutable $createdAt;
-
-    public function __construct()
-    {
-        $timeZone = new \DateTimeZone(timezone: 'Europe/Paris');
-        $this->createdAt = new \DateTimeImmutable(datetime: 'now', timezone: $timeZone);
-    }
 
     public function getId(): ?int
     {
@@ -110,18 +104,6 @@ class Contact
     public function setMessage(string $message): static
     {
         $this->message = $message;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): \DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
 
         return $this;
     }
