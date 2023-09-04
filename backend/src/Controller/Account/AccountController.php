@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Account;
 
 use App\Entity\User;
+use App\Form\AvatarType;
 use App\Form\BasicInfoType;
 use App\Form\DeleteAccountType;
 use App\Repository\UserRepository;
@@ -12,6 +13,7 @@ use App\Services\PasswordManagerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -42,10 +44,13 @@ class AccountController extends AbstractController
         $formBasicInfo = $this->createForm(type: BasicInfoType::class, data: $user);
         // Récupération du formulaire de suppression de compte
         $deleteForm = $this->createForm(type: DeleteAccountType::class, data: $user);
+        // Récupération du formulaire d'ajout d'avatar
+        $avatarForm = $this->createForm(type: AvatarType::class, data: $user);
 
         $form->handleRequest($request);
         $formBasicInfo->handleRequest($request);
         $deleteForm->handleRequest($request);
+        $avatarForm->handleRequest($request);
 
         // Validation du formulaire de modification des informations de base
         if ($formBasicInfo->isSubmitted() && $formBasicInfo->isValid()) {
@@ -105,18 +110,52 @@ class AccountController extends AbstractController
             $this->addFlash(type: 'warning', message: 'Votre compte est désormais inactif. Votre demande de suppression sera traitée dans les plus brefs délais.');
         }
 
+        // Validation du formulaire d'ajout d'avatar
+        if ($avatarForm->isSubmitted() && $avatarForm->isValid()) {
+            // Récupérer le fichier
+            $avatarFile = $avatarForm->get('avatarFile')->getData();
+
+            if (null !== $avatarFile) {
+                // Récupérer le type mime du fichier
+                /** @phpstan-ignore-next-line */
+                $avatarMimeType = $avatarFile->getMimeType();
+                // Lister les types de fichiers autorisés
+                $allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+
+                // Vérifier si le type mime du fichier est autorisé
+                if (!in_array(needle: $avatarMimeType, haystack: $allowedMimeTypes, strict: true)) {
+                    $this->addFlash(type: 'danger', message: 'Le type de fichier n\'est pas autorisé, un avatar par défaut a été appliqué.');
+                    // Définir AvatarFile à null dans la base de données
+                    $user->setAvatar(avatar: null);
+                    $entityManager->flush();
+                    // REDIRECTION
+                    return $this->redirectToRoute(route: 'account_settings');
+                }
+
+                // Enregistrer l'avatar.
+                /* @var UploadedFile $avatarFile */
+                /* @phpstan-ignore-next-line */
+                $user->setAvatarFile(avatarFile: $avatarFile);
+                $entityManager->flush();
+                $this->addFlash(type: 'success', message: 'Votre avatar a bien été modifié.');
+            } else {
+                $this->addFlash(type: 'danger', message: 'Veuillez sélectionner un fichier avant de valider.');
+            }
+        }
+
         return $this->render(view: 'pages/account/account-settings.html.twig', parameters: [
             'changePasswordForm' => $form->createView(),
             'basicInfoForm' => $formBasicInfo->createView(),
             'deleteForm' => $deleteForm->createView(),
+            'avatarForm' => $avatarForm->createView(),
         ]);
     }
 
     #[Route(path: '/cancel-deletion', name: 'cancel_deletion')]
     public function cancelDelete(EntityManagerInterface $entityManager): Response
     {
-        $user = $this->getUser();
         /** @var User $user */
+        $user = $this->getUser();
         if ($user->getAccountDeletionRequest()) {
             // Annuler la demande de suppression en supprimant la date de demande de suppression
             $user->setAccountDeletionRequest(account_deletion_request: null);
@@ -126,6 +165,38 @@ class AccountController extends AbstractController
             $this->addFlash(type: 'success', message: 'La demande de suppression de compte a été annulée.');
         } else {
             $this->addFlash(type: 'danger', message: 'Aucune demande de suppression de compte en attente.');
+        }
+
+        return $this->redirectToRoute(route: 'account_settings');
+    }
+
+    #[Route(path: '/delete-avatar', name: 'delete_avatar')]
+    public function deleteAvatar(EntityManagerInterface $entityManager): Response
+    {
+        /* @var User|null $user */
+        $user = $this->getUser();
+
+        if ($user instanceof User) {
+            // Récupérer le nom de l'avatar puis le supprimer du dossier public
+            $avatar = $user->getAvatar();
+            $uploadBasePath = $this->getParameter(name: 'upload_base_path');
+            $avatarPath = '';
+
+            if (null !== $uploadBasePath && null !== $avatar) {
+                /** @phpstan-ignore-next-line */
+                $avatarPath = sprintf('%s/%s', (string) $uploadBasePath, (string) $avatar);
+                // Vérifier si le fichier existe
+                if (file_exists(filename: 'assets'.$avatarPath)) {
+                    // Supprimer le fichier
+                    unlink(filename: 'assets'.$avatarPath);
+                    // Supprimer l'avatar de la base de données
+                    $user->setAvatar(avatar: null);
+                    $entityManager->flush();
+                    $this->addFlash(type: 'purple', message: 'Votre avatar a bien été supprimé.');
+                }
+            }
+        } else {
+            $this->addFlash(type: 'danger', message: 'Une erreur est survenue lors de la suppression de votre avatar.');
         }
 
         return $this->redirectToRoute(route: 'account_settings');

@@ -2,14 +2,18 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\CreatedAtAndUpdatedAtTrait;
 use App\Repository\CalendarRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CalendarRepository::class)]
+#[ORM\Table(name: 'calendars')]
+#[ORM\HasLifecycleCallbacks]
 class Calendar
 {
+    use CreatedAtAndUpdatedAtTrait;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER)]

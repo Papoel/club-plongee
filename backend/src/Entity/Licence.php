@@ -2,12 +2,16 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\CreatedAtAndUpdatedAtTrait;
 use App\Repository\LicenceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LicenceRepository::class)]
+#[ORM\Table(name: 'licences')]
+#[ORM\HasLifecycleCallbacks]
 class Licence
 {
+    use CreatedAtAndUpdatedAtTrait;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

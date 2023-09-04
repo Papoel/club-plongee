@@ -11,26 +11,38 @@
                href="#"
                data-bs-toggle="dropdown"
                aria-expanded="false"
-               style="width: 80px; height: 80px; background-image: url( {{ asset('assets/img/site/default-avatar.png') }} );">
+               style="width: 80px; height: 80px; background-image:url( {{ asset('assets/uploads/avatar/' ~ app.user.avatar ?? 'default-avatar.png') }} )">
                 <span class="d-block text-light text-center lh-1 pb-1"
                       style="background-color: rgba(0,0,0,.5)">
                     <i class="ai-camera"></i>
                 </span>
             </a>
-            <div class="dropdown-menu my-1">
-                <a class="dropdown-item fw-normal" href="#">
-                    <i class="ai-camera fs-base opacity-70 me-2"></i>
-                    Télécharger une photo
-                </a>
-                <a class="dropdown-item text-danger fw-normal" href="#">
+            <div class="dropdown-menu my-1" style="width: 350px">
+                <span class="dropdown-item fw-normal" href="#">
+                    <fieldset>
+                        {{ form_start(avatarForm) }}
+                            <div class="d-flex justify-content-between align-items-center">
+                                <i class="ai-camera fs-base opacity-70 me-2"></i>
+                                {{ form_widget(avatarForm.avatarFile, {'attr': {'class': 'form-control form-control-sm'}}) }}
+                                <button class="ms-2 avatar-submit" type="submit">
+                                    <i class="ai-save fs-base opacity-70 me-2"></i>
+                                </button>
+                            </div>
+                            <div class="form-errors">
+                                {{ form_errors(avatarForm.avatarFile) }}
+                            </div>
+                        {{ form_end(avatarForm) }}
+                    </fieldset>
+                </span>
+                <a class="dropdown-item text-danger fw-normal" href="{{ path('account_delete_avatar') }}">
                     <i class="ai-trash fs-base me-2"></i>
-                    Effacer la photo
+                    Effacer l'avatar
                 </a>
             </div>
         </div>
         <div class="ps-3">
             <h3 class="h6 mb-1">Image de profil</h3>
-            <p class="fs-sm text-muted mb-0">PNG ou JPG accepté</p>
+            <p class="fs-sm text-muted mb-0">JPG/JPEG ou PNG, max. 2 Mo</p>
         </div>
     </div>
 
@@ -113,3 +125,7 @@
 
     {{ form_end(basicInfoForm) }}
 </div>
+
+<script>
+    // Retirer du DOM l'élément ayant l'ID
+</script>
