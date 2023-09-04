@@ -13,6 +13,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+/**
+ * Supprimer les tokens de réinitialisation de mot de passe qui ont été demandés il y a plus de 24 heures.
+ * Cette commande est à exécuter tous les jours à 03H00.
+ * Un Email est envoyé à l'utilisateur pour l'avertir que sa demande de réinitialisation de mot de passe a expiré.
+ */
 class DeleteResetPasswordToken extends Command
 {
     public const CMD_NAME = 'app:delete-reset-password-token';
