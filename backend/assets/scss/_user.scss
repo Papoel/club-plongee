@@ -20,3 +20,14 @@ fieldset.sweet-candy {
   height: 0;
   z-index: -1;
 }
+
+.avatar-submit {
+  border: none;
+  background-color: transparent;
+  transition: color 0.3s ease;
+  color: black;
+
+  &:hover {
+    color: red
+  }
+}

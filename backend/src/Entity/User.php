@@ -2,22 +2,27 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\CreatedAtAndUpdatedAtTrait;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: '`user`')]
+#[ORM\Table(name: '`users`')]
 #[UniqueEntity(fields: ['email'], message: 'Un compte existe déjà avec cette adresse email.')]
+#[ORM\HasLifecycleCallbacks]
+#[Vich\Uploadable]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    use CreatedAtAndUpdatedAtTrait;
     public const ROLE_ADHERENT = 'ROLE_ADHERENT';
     public const ROLE_ADMIN = 'ROLE_ADMIN';
-    public const TIMEZONE = 'Europe/Paris';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -98,12 +103,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         message: 'Le numéro de téléphone doit contenir 10 chiffres et commencer par 0, ou il peut être vide.')]
     private ?string $phone = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $updatedAt = null;
-
     #[ORM\Column(nullable: true)]
     private ?int $diving_level = null;
 
@@ -128,12 +127,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $reset_token_requested_at = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $avatar = null;
+
+    #[Vich\UploadableField(mapping: 'user_avatar', fileNameProperty: 'avatar')]
+    private ?File $avatarFile = null;
+
     /**
      * @throws \Exception
      */
     public function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable(timezone: new \DateTimeZone(timezone: self::TIMEZONE));
         $this->isActive = true;
 
         if (empty($this->roles)) {
@@ -319,30 +323,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
     public function getDivingLevel(): ?int
     {
         return $this->diving_level;
@@ -437,5 +417,89 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->reset_token_requested_at = $reset_token_requested_at;
 
         return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): void
+    {
+        $this->avatar = $avatar;
+    }
+
+    public function getAvatarFile(): ?File
+    {
+        return $this->avatarFile;
+    }
+
+    /**
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
+     */
+    public function setAvatarFile(File $avatarFile = null): void
+    {
+        $this->avatarFile = $avatarFile;
+
+        if (null !== $avatarFile) {
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function __serialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'email' => $this->email,
+            'roles' => $this->roles,
+            'password' => $this->password,
+            'firstname' => $this->firstname,
+            'lastname' => $this->lastname,
+            'address' => $this->address,
+            'zipCode' => $this->zipCode,
+            'city' => $this->city,
+            'certificateMedical' => $this->certificateMedical,
+            'licence' => $this->licence,
+            'phone' => $this->phone,
+            'diving_level' => $this->diving_level,
+            'country' => $this->country,
+            'bio' => $this->bio,
+            'genre' => $this->genre,
+            'isActive' => $this->isActive,
+            'account_deletion_request' => $this->account_deletion_request,
+            'resetToken' => $this->resetToken,
+            'reset_token_requested_at' => $this->reset_token_requested_at,
+            'avatar' => $this->avatar,
+        ];
+    }
+
+    /** @phpstan-ignore-next-line  */
+    public function __unserialize(array $serialized): void
+    {
+        $this->id = $serialized['id'];
+        $this->email = $serialized['email'];
+        $this->roles = $serialized['roles'];
+        $this->password = $serialized['password'];
+        $this->firstname = $serialized['firstname'];
+        $this->lastname = $serialized['lastname'];
+        $this->address = $serialized['address'];
+        $this->zipCode = $serialized['zipCode'];
+        $this->city = $serialized['city'];
+        $this->certificateMedical = $serialized['certificateMedical'];
+        $this->licence = $serialized['licence'];
+        $this->phone = $serialized['phone'];
+        $this->diving_level = $serialized['diving_level'];
+        $this->country = $serialized['country'];
+        $this->bio = $serialized['bio'];
+        $this->genre = $serialized['genre'];
+        $this->isActive = $serialized['isActive'];
+        $this->account_deletion_request = $serialized['account_deletion_request'];
+        $this->resetToken = $serialized['resetToken'];
+        $this->reset_token_requested_at = $serialized['reset_token_requested_at'];
+        $this->avatar = $serialized['avatar'];
     }
 }
