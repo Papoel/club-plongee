@@ -88,6 +88,12 @@ Encore
         from: './assets/js/vendor',
         to: 'js/vendor/[path][name].[ext]',
     })
+
+    // Copy files uploads from assets to public
+    .copyFiles({
+        from: './assets/uploads',
+        to: 'uploads/[path][name].[ext]',
+    })
 ;
 
 module.exports = Encore.getWebpackConfig();
