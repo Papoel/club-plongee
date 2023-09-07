@@ -36,15 +36,6 @@ class UserFixtures extends Fixture
             ->setBio(bio: 'Je suis le super admin')
         ;
 
-        /** @param array $certificats */
-        $certificats = [
-            'certificat_medical_2021.pdf',
-            'certificat_medical_2022.pdf',
-            'certificat_medical_2023.pdf',
-        ];
-        // /* @phpstan-ignore-next-line */
-        $admin->setCertificateMedical(certificateMedical: $faker->randomElement($array = $certificats));
-
         $hash = $this->passwordHasher->hashPassword(user: $admin, plainPassword: 'admin1234');
         $admin->setPassword(password: $hash);
 
@@ -80,15 +71,6 @@ class UserFixtures extends Fixture
                 ->setDivingLevel(diving_level: (int) $divingLevel)
                 ->setPhone(phone: $faker->phoneNumber())
             ;
-
-            // /** @param array $certificats */
-            $certificats = [
-                'certificat_medical_2021.pdf',
-                'certificat_medical_2022.pdf',
-                'certificat_medical_2023.pdf',
-            ];
-            // /* @phpstan-ignore-next-line */
-            $admin->setCertificateMedical(certificateMedical: $faker->randomElement($array = $certificats));
             $hash = $this->passwordHasher->hashPassword(user: $user, plainPassword: 'plongee');
             $user->setPassword(password: $hash);
 
