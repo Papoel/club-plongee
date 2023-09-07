@@ -34,7 +34,7 @@
                         {{ form_end(avatarForm) }}
                     </fieldset>
                 </span>
-                <a class="dropdown-item text-danger fw-normal" href="{{ path('account_delete_avatar') }}">
+                <a class="dropdown-item text-danger fw-normal" href="{{ path('account_delete_avatar', {'id': app.user.id}) }}">
                     <i class="ai-trash fs-base me-2"></i>
                     Effacer l'avatar
                 </a>

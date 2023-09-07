@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Account;
 
+use App\Entity\Certificate;
 use App\Entity\User;
-use App\Form\AvatarType;
-use App\Form\BasicInfoType;
-use App\Form\DeleteAccountType;
+use App\Form\Account\AvatarType;
+use App\Form\Account\BasicInfoType;
+use App\Form\Account\DeleteAccountType;
+use App\Form\CertificateType;
+use App\Repository\CertificateRepository;
+use App\Repository\LicenceRepository;
 use App\Repository\UserRepository;
 use App\Services\PasswordManagerService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,15 +24,87 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[isGranted('ROLE_ADHERENT')]
-#[Route(path: '/mon-compte', name: 'account_')]
+#[Route(path: '/mon-compte/{id}', name: 'account_')]
 class AccountController extends AbstractController
 {
+    /**
+     * @throws \Exception
+     */
     #[Route(path: '/', name: 'overview')]
-    public function accountOverview(): Response
-    {
-        return $this->render(view: 'pages/account/account-overview.html.twig');
+    public function accountOverview(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        UserRepository $userRepository,
+        LicenceRepository $licenceRepository,
+        CertificateRepository $certificateRepository,
+    ): Response {
+        /** @var User $user */
+        $user = $this->getUser();
+        // Récupérer la Licence de l'utilisateur
+        $licence = $licence = $user->getLicence();
+        // Récupération des certificats médicaux
+        $medicalCertificates = $certificateRepository->findBy(['user' => $user], ['expireAt' => 'DESC'], 3);
+
+        // Créez une instance vide de Certificate pour le formulaire (ou une instance existante si nécessaire)
+        $medicalCertificate = new Certificate();
+
+        // Récupération du formulaire de gestion des certificats médicaux
+        $medicalForm = $this->createForm(type: CertificateType::class, data: $medicalCertificate);
+        $medicalForm->handleRequest($request);
+
+        // Validation du formulaire de gestion des certificats médicaux
+        if ($medicalForm->isSubmitted() && $medicalForm->isValid()) {
+            // Récupérer le fichier
+            $certificateFile = $medicalForm->get('medicalCertificateFile')->getData();
+
+            if (null !== $certificateFile) {
+                // Récupérer le type mime du fichier
+                /** @phpstan-ignore-next-line */
+                $certificateMimeType = $certificateFile->getMimeType();
+                // Lister les types de fichiers autorisés
+                $allowedMimeTypes = ['application/pdf', 'application/x-pdf'];
+                // Récupérer le nom du fichier
+                /** @phpstan-ignore-next-line */
+                $originalFileName = $certificateFile->getClientOriginalName();
+
+                // Vérifier si le type mime du fichier est autorisé
+                if (!in_array(needle: $certificateMimeType, haystack: $allowedMimeTypes, strict: true)) {
+                    $this->addFlash(
+                        type: 'danger',
+                        message: 'Le type de fichier n\'est pas autorisé, veuillez sélectionner un fichier au format PDF.'
+                    );
+                    // REDIRECTION
+                    return $this->redirectToRoute(route: 'account_overview', parameters: ['id' => $user->getId()]);
+                }
+
+                // Enregistrer le certificat médical.
+                /* @var UploadedFile $certificateFile */
+                /* @phpstan-ignore-next-line */
+                $medicalCertificate->setMedicalCertificateFile(medicalCertificateFile: $certificateFile);
+                $medicalCertificate->setOriginalFileName(originalFileName: $originalFileName);
+                $medicalCertificate->setUser(user: $user);
+
+                $entityManager->persist($medicalCertificate);
+                $entityManager->flush();
+
+                $this->addFlash(type: 'success', message: 'Votre certificat médical a bien été enregistré.');
+
+                return $this->redirectToRoute(route: 'account_overview', parameters: ['id' => $user->getId()]);
+            } else {
+                $this->addFlash(type: 'info', message: 'Veuillez sélectionner un fichier avant de valider.');
+            }
+        }
+
+        return $this->render(view: 'pages/account/account-overview.html.twig', parameters: [
+            'medicalForm' => $medicalForm->createView(),
+            'medicalCertificates' => $medicalCertificates,
+            'licence' => $licence,
+        ]);
     }
 
+    /**
+     * @throws \Exception
+     */
     #[Route(path: '/profil', name: 'settings')]
     public function accountSettings(
         Request $request,
@@ -129,7 +205,7 @@ class AccountController extends AbstractController
                     $user->setAvatar(avatar: null);
                     $entityManager->flush();
                     // REDIRECTION
-                    return $this->redirectToRoute(route: 'account_settings');
+                    return $this->redirectToRoute(route: 'account_settings', parameters: ['id' => $user->getId()]);
                 }
 
                 // Enregistrer l'avatar.
@@ -167,7 +243,7 @@ class AccountController extends AbstractController
             $this->addFlash(type: 'danger', message: 'Aucune demande de suppression de compte en attente.');
         }
 
-        return $this->redirectToRoute(route: 'account_settings');
+        return $this->redirectToRoute(route: 'account_settings', parameters: ['id' => $user->getId()]);
     }
 
     #[Route(path: '/delete-avatar', name: 'delete_avatar')]
@@ -196,9 +272,62 @@ class AccountController extends AbstractController
                 }
             }
         } else {
-            $this->addFlash(type: 'danger', message: 'Une erreur est survenue lors de la suppression de votre avatar.');
+            $this->addFlash(type: 'danger', message: 'Vous devez être connecté pour effectuer cette action.');
+
+            return $this->redirectToRoute(route: 'app_login');
         }
 
-        return $this->redirectToRoute(route: 'account_settings');
+        return $this->redirectToRoute(route: 'account_settings', parameters: ['id' => $user->getId()]);
+    }
+
+    #[Route(path: '/delete-certificate/', name: 'delete_certificate')]
+    public function deleteCertificate(
+        Certificate $id,
+        EntityManagerInterface $entityManager,
+        CertificateRepository $certificateRepository
+    ): Response {
+        $user = $this->getUser();
+
+        if ($user instanceof User) {
+            // Récupérer le certificat médical par son ID
+            $certificate = $certificateRepository->find($id);
+
+            if ($certificate instanceof Certificate) {
+                // Vérifier si le certificat appartient à l'utilisateur connecté
+                if ($certificate->getUser() === $user) {
+                    // Récupérer le chemin du certificat
+                    $certificatePath = $certificate->getMedicalCertificate();
+
+                    if ($certificatePath) {
+                        // Supprimer le fichier du certificat
+                        $uploadBasePath = $this->getParameter(name: 'upload_medical_certificate_path');
+                        /** @phpstan-ignore-next-line */
+                        $fullCertificatePath = sprintf('%s/%s', $uploadBasePath, $certificatePath);
+
+                        if (file_exists($fullCertificatePath)) {
+                            unlink($fullCertificatePath);
+                        }
+
+                        // Supprimer le certificat de la base de données
+                        $entityManager->remove($certificate);
+                        $entityManager->flush();
+
+                        $this->addFlash(type: 'purple', message: 'Votre certificat médical a bien été supprimé.');
+                    } else {
+                        $this->addFlash(type: 'danger', message: 'Le certificat médical n\'a pas été trouvé.');
+                    }
+                } else {
+                    $this->addFlash(type: 'danger', message: 'Vous n\'êtes pas autorisé à supprimer ce certificat.');
+                }
+            } else {
+                $this->addFlash(type: 'danger', message: 'Le certificat médical n\'a pas été trouvé.');
+            }
+        } else {
+            $this->addFlash(type: 'danger', message: 'Vous devez être connecté pour effectuer cette action.');
+
+            return $this->redirectToRoute(route: 'app_login');
+        }
+
+        return $this->redirectToRoute(route: 'account_overview', parameters: ['id' => $user->getId()]);
     }
 }

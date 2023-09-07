@@ -3,6 +3,7 @@
 namespace App\Tests\Controller;
 
 use App\Entity\Calendar;
+use App\Entity\User;
 use App\Repository\CalendarRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -38,7 +39,6 @@ class CalendarControllerTest extends WebTestCase
         // Vérifier que je suis sur la page de connexion
         self::assertResponseIsSuccessful();
         self::assertResponseStatusCodeSame(expectedCode: Response::HTTP_OK);
-
         // 2. Remplir le formulaire de connexion
         $form = $crawler->filter(selector: '#login_form')->form([
             'email' => 'papoel@admin.fr',

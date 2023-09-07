@@ -12,3 +12,12 @@ vich_uploader:
             inject_on_load: false
             delete_on_update: true
             delete_on_remove: true
+
+        user_medical_certificate:
+            uri_prefix: '%upload_medical_certificate_path%'
+            upload_destination: '%kernel.project_dir%/public/assets/%upload_medical_certificate_path%'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true

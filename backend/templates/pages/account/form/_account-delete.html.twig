@@ -53,7 +53,7 @@
             <div class="mb-0">
                 {% if app.user.accountDeletionRequest %}
                     Si vous souhaitez annuler la suppression de votre compte, cliquez sur le lien ci-contre :
-                    <a href="{{ path('account_cancel_deletion') }}" class="text-primary mt-2">
+                    <a class="text-primary mt-2" href="{{ path('account_cancel_deletion', {'id': app.user.id}) }}">
                         Annuler la suppression du compte
                     </a>
                 {% endif %}

@@ -45,11 +45,11 @@
 
                 <div class="dropdown-menu dropdown-menu-end my-1">
                     <h6 class="dropdown-header fs-xs fw-medium text-muted text-uppercase pb-1">Compte</h6>
-                    <a class="dropdown-item" href="{{ path('account_overview') }}">
+                    <a class="dropdown-item" href="{{ path('account_overview', {'id': app.user.id}) }}">
                         <i class="ai-user-check fs-lg opacity-70 me-2"></i>
                         Mon compte
                     </a>
-                    <a class="dropdown-item" href="{{ path('account_settings') }}">
+                    <a class="dropdown-item" href="{{ path('account_settings', {'id': app.user.id}) }}">
                         <i class="ai-settings fs-lg opacity-70 me-2"></i>
                         Mes informations
                     </a>

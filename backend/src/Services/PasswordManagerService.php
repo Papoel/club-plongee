@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Entity\User;
-use App\Form\ChangePasswordType;
+use App\Form\Account\ChangePasswordType;
 use App\Repository\UserRepository;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -42,7 +42,7 @@ class PasswordManagerService
             /* @phpstan-ignore-next-line */
             $this->requestStack->getSession()->getFlashBag()->add(type: 'danger', message: $errorMessage);
 
-            return new RedirectResponse(url: $this->urlGenerator->generate(name: 'account_settings'));
+            return new RedirectResponse(url: $this->urlGenerator->generate(name: 'account_settings', parameters: ['id' => $user->getId()]));
         }
 
         // Modification du mot de passe
@@ -58,7 +58,7 @@ class PasswordManagerService
 
         // Redirection vers la page de profil
         // déconnecter l'utilisateur puis le rediriger vers la page de connexion
-        return new RedirectResponse(url: $this->urlGenerator->generate(name: 'account_settings'));
+        return new RedirectResponse(url: $this->urlGenerator->generate(name: 'account_settings', parameters: ['id' => $user->getId()]));
     }
 
     public function getChangePasswordForm(User $user): FormInterface

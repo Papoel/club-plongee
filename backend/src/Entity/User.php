@@ -3,7 +3,10 @@
 namespace App\Entity;
 
 use App\Entity\Traits\CreatedAtAndUpdatedAtTrait;
+use App\Entity\Traits\UuidTrait;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -20,14 +23,10 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[Vich\Uploadable]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    use UuidTrait;
     use CreatedAtAndUpdatedAtTrait;
     public const ROLE_ADHERENT = 'ROLE_ADHERENT';
     public const ROLE_ADMIN = 'ROLE_ADMIN';
-
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\Length(
@@ -75,7 +74,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         maxMessage: 'Le nom ne doit pas contenir plus de {{ limit }} caractères.')]
     #[Assert\NotBlank(message: 'Le nom est une information obligatoire.')]
     #[Assert\Regex(
-        pattern: '/^[A-Za-zÀ-ÿ|-]{2,}$/',
+        pattern: '/^[A-Za-zÀ-ÿ\s|-]{2,}$/',
         message: 'Le nom ne doit contenir que des lettres.')]
     private string $lastname;
 
@@ -90,9 +89,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 80, nullable: true)]
     private ?string $city = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $certificateMedical = null;
 
     #[ORM\OneToOne(inversedBy: 'user_licence', cascade: ['persist', 'remove'])]
     private ?Licence $licence = null;
@@ -134,6 +130,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?File $avatarFile = null;
 
     /**
+     * @var Collection<int, Certificate>
+     */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Certificate::class)]
+    private Collection $certificates;
+
+    /**
      * @throws \Exception
      */
     public function __construct()
@@ -143,6 +145,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if (empty($this->roles)) {
             $this->roles = [self::ROLE_ADHERENT];
         }
+        $this->certificates = new ArrayCollection();
     }
 
     public function getFullname(): string
@@ -152,11 +155,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $lastname = ucfirst(strtolower($this->lastname));
 
         return $firstname.' '.$lastname;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getEmail(): string
@@ -283,18 +281,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCity(?string $city): static
     {
         $this->city = $city;
-
-        return $this;
-    }
-
-    public function getCertificateMedical(): ?string
-    {
-        return $this->certificateMedical;
-    }
-
-    public function setCertificateMedical(?string $certificateMedical): static
-    {
-        $this->certificateMedical = $certificateMedical;
 
         return $this;
     }
@@ -440,14 +426,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
      * must be able to accept an instance of 'File' as the bundle will inject one here
      * during Doctrine hydration.
+     *
+     * @throws \Exception
      */
     public function setAvatarFile(File $avatarFile = null): void
     {
         $this->avatarFile = $avatarFile;
 
         if (null !== $avatarFile) {
-            $this->updatedAt = new \DateTimeImmutable();
+            $timezone = new \DateTimeZone(timezone: 'Europe/Paris');
+            $this->updatedAt = new \DateTimeImmutable(timezone: $timezone);
         }
+    }
+
+    /**
+     * @return Collection<int, Certificate>
+     */
+    public function getCertificates(): Collection
+    {
+        return $this->certificates;
+    }
+
+    public function addCertificate(Certificate $certificate): static
+    {
+        if (!$this->certificates->contains($certificate)) {
+            $this->certificates->add($certificate);
+            $certificate->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCertificate(Certificate $certificate): static
+    {
+        if ($this->certificates->removeElement($certificate)) {
+            // set the owning side to null (unless already changed)
+            if ($certificate->getUser() === $this) {
+                $certificate->setUser(null);
+            }
+        }
+
+        return $this;
     }
 
     public function __serialize(): array
@@ -462,7 +481,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             'address' => $this->address,
             'zipCode' => $this->zipCode,
             'city' => $this->city,
-            'certificateMedical' => $this->certificateMedical,
             'licence' => $this->licence,
             'phone' => $this->phone,
             'diving_level' => $this->diving_level,
@@ -489,7 +507,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->address = $serialized['address'];
         $this->zipCode = $serialized['zipCode'];
         $this->city = $serialized['city'];
-        $this->certificateMedical = $serialized['certificateMedical'];
         $this->licence = $serialized['licence'];
         $this->phone = $serialized['phone'];
         $this->diving_level = $serialized['diving_level'];
