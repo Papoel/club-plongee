@@ -17,11 +17,20 @@ class Licence
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 15)]
+    #[ORM\Column(type: 'string', length: 15, nullable: true)]
     private ?string $number = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $expireAt = null;
 
     #[ORM\OneToOne(mappedBy: 'licence', cascade: ['persist', 'remove'])]
     private ?User $user_licence = null;
+
+    public function __toString(): string
+    {
+        /* phpstan ignore-next-line */
+        return $this->number ?? '';
+    }
 
     public function getId(): ?int
     {
@@ -31,11 +40,6 @@ class Licence
     public function getNumber(): ?string
     {
         return $this->number;
-    }
-
-    public function __toString(): string
-    {
-        return $this->number ?? '';
     }
 
     public function setNumber(?string $number): static
@@ -63,6 +67,18 @@ class Licence
         }
 
         $this->user_licence = $user_licence;
+
+        return $this;
+    }
+
+    public function getExpireAt(): ?\DateTimeImmutable
+    {
+        return $this->expireAt;
+    }
+
+    public function setExpireAt(?\DateTimeImmutable $expireAt): static
+    {
+        $this->expireAt = $expireAt;
 
         return $this;
     }
