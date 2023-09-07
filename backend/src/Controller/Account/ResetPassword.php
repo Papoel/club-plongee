@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Account;
 
 use App\Entity\User;
-use App\Form\ResetPasswordRequestType;
-use App\Form\ResetPasswordType;
+use App\Form\Account\ResetPasswordRequestType;
+use App\Form\Account\ResetPasswordType;
 use App\Repository\UserRepository;
 use App\Services\MailerService;
 use Doctrine\ORM\EntityManagerInterface;

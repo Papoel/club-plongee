@@ -21,11 +21,11 @@
                 </div>
                 <nav class="nav flex-column pb-2 pb-lg-4 mb-3">
                     <h4 class="fs-xs fw-medium text-muted text-uppercase pb-1 mb-2">Compte</h4>
-                    <a class="nav-link fw-semibold py-2 px-0" href="{{ path('account_overview') }}">
+                    <a class="nav-link fw-semibold py-2 px-0" href="{{ path('account_overview', {'id': app.user.id}) }}">
                         <i class="ai-user-check fs-5 opacity-60 me-2"></i>
                         Vue d'ensemble
                     </a>
-                    <a class="nav-link fw-semibold py-2 px-0" href="{{ path('account_settings') }}">
+                    <a class="nav-link fw-semibold py-2 px-0" href="{{ path('account_settings', {'id': app.user.id}) }}">
                         <i class="ai-settings fs-5 opacity-60 me-2"></i>
                         Paramètres
                     </a>
