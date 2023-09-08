@@ -23,6 +23,9 @@ class Licence
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $expireAt = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $diving_level = null;
+
     #[ORM\OneToOne(mappedBy: 'licence', cascade: ['persist', 'remove'])]
     private ?User $user_licence = null;
 
@@ -52,6 +55,18 @@ class Licence
     public function getUserLicence(): ?User
     {
         return $this->user_licence;
+    }
+
+    public function getDivingLevel(): ?int
+    {
+        return $this->diving_level;
+    }
+
+    public function setDivingLevel(?int $diving_level): static
+    {
+        $this->diving_level = $diving_level;
+
+        return $this;
     }
 
     public function setUserLicence(?User $user_licence): static

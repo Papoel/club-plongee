@@ -99,9 +99,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         message: 'Le numéro de téléphone doit contenir 10 chiffres et commencer par 0, ou il peut être vide.')]
     private ?string $phone = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $diving_level = null;
-
     #[ORM\Column(length: 150, nullable: true)]
     private ?string $country = null;
 
@@ -146,6 +143,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $this->roles = [self::ROLE_ADHERENT];
         }
         $this->certificates = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->getFullname();
+    }
+
+    public function fullAddress(): string
+    {
+        return $this->address.' '.$this->zipCode.' '.$this->city;
     }
 
     public function getFullname(): string
@@ -305,18 +312,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhone(?string $phone): static
     {
         $this->phone = $phone;
-
-        return $this;
-    }
-
-    public function getDivingLevel(): ?int
-    {
-        return $this->diving_level;
-    }
-
-    public function setDivingLevel(?int $diving_level): static
-    {
-        $this->diving_level = $diving_level;
 
         return $this;
     }
@@ -483,7 +478,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             'city' => $this->city,
             'licence' => $this->licence,
             'phone' => $this->phone,
-            'diving_level' => $this->diving_level,
             'country' => $this->country,
             'bio' => $this->bio,
             'genre' => $this->genre,
@@ -509,7 +503,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->city = $serialized['city'];
         $this->licence = $serialized['licence'];
         $this->phone = $serialized['phone'];
-        $this->diving_level = $serialized['diving_level'];
         $this->country = $serialized['country'];
         $this->bio = $serialized['bio'];
         $this->genre = $serialized['genre'];
