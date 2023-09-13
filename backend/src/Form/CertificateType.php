@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class CertificateType extends AbstractType
@@ -21,6 +22,17 @@ class CertificateType extends AbstractType
                 'mapped' => false,
                 'allow_delete' => false,
                 'download_uri' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '2M',
+                        'mimeTypes' => [
+                            'application/pdf',
+                            'application/x-pdf',
+                        ],
+                        'mimeTypesMessage' => 'Le fichier doit être au format PDF',
+                        'maxSizeMessage' => 'Le fichier ne doit pas dépasser 2 Mo',
+                    ]),
+                ],
             ])
 
             // Afficher le champ expireAt en Année uniquement puis transformer la date en DateTimeImmutable
