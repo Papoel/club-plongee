@@ -48,8 +48,8 @@
                                                 <i class="ai-mail me-1"></i>
                                                 {{ app.user.email }}
                                             </div>
-                                            <div class="d-flex align-items-center text-nowrap"><i
-                                                        class="ai-map-pin me-1"></i>
+                                            <div class="d-flex align-items-center text-nowrap">
+                                                <i class="ai-map-pin me-1"></i>
                                                 {{ app.user.city }}
                                             </div>
                                         </div>
@@ -73,7 +73,7 @@
                                                  src="{{ asset('assets/img/site/compte/troll-qr-code.jpg') }}"
                                                  width="50" alt="troll qr-code">
                                             <h2 class="h6 my-1 text-center">{{ app.user.fullname }}</h2>
-                                            {% if app.user.divingLevel is null %}
+                                            {% if licence.divingLevel is null %}
                                                 <div class="text-center my-1" style="font-size: 12px;">
                                                     <i class="ai-triangle-alert text-primary"></i>
                                                     <!-- Icône pour le niveau débutant -->
@@ -82,12 +82,12 @@
                                                 </div>
                                             {% else %}
                                                 <div class="text-center" style="font-size: 12px;">
-                                                    {% if app.user.divingLevel == 1 %}
+                                                    {% if licence.divingLevel == 1 %}
                                                         <i class="ai-star text-success"></i> <!-- Icône pour le niveau 1 -->
-                                                    {% elseif app.user.divingLevel == 2 %}
+                                                    {% elseif licence.divingLevel == 2 %}
                                                         <i class="ai-star text-primary"></i> <!-- Icône pour le niveau 2 -->
                                                         <i class="ai-star text-primary"></i> <!-- Icône pour le niveau 2 -->
-                                                    {% elseif app.user.divingLevel == 3 %}
+                                                    {% elseif licence.divingLevel == 3 %}
                                                         <i class="ai-star text-danger"></i> <!-- Icône pour le niveau expert -->
                                                         <i class="ai-star text-danger"></i> <!-- Icône pour le niveau expert -->
                                                         <i class="ai-star text-danger"></i> <!-- Icône pour le niveau expert -->
@@ -118,7 +118,7 @@
                                 <!-- Informations Générales -->
                                 <div class="col-md-9 mb-4 mb-md-0">
                                     <div class="card">
-                                        <h5 class="card-header">Plongeur de niveau {{ app.user.divingLevel }}</h5>
+                                        <h5 class="card-header">Plongeur de niveau {{ licence.divingLevel }}</h5>
                                         <div class="card-body">
                                             <h5 class="card-title text-primary">Licence N° {{ licence.number }}</h5>
                                             <p class="card-text">
@@ -170,8 +170,8 @@
                             </div>
                         </section>
 
+                        <!-- Certificats médicaux -->
                         <section class="col">
-                            <!-- Certificats médicaux -->
                             <div class="card h-100 border-0 py-1 p-md-2 p-xl-3 p-xxl-4">
                                 <div class="card-body">
 
@@ -193,19 +193,19 @@
                                             {% for certificate in medicalCertificates %}
                                                 <tr>
                                                     <td>
-                                                            <span class="badge bg-faded-primary text-primary">
-                                                                {{ certificate.originalFileName }}
-                                                            </span>
+                                                        <span class="badge bg-faded-primary text-primary">
+                                                            {{ certificate.originalFileName }}
+                                                        </span>
                                                     </td>
                                                     <td>
                                                         <div class="d-flex justify-content-between align-items-center">
                                                             <a href="{{ asset('assets/uploads/medical_certificate/' ~ certificate.medicalCertificate) }}"
                                                                target="_blank" class="btn btn-sm btn-outline-primary">
-                                                                <i class="ai-file fs-base opacity-70 me-2"></i>
+                                                                <i class="ai-file fs-base opacity-70"></i>
                                                             </a>
                                                             <a href="{{ path('account_delete_certificate', {'id': certificate.id}) }}"
                                                                class="btn btn-sm btn-outline-danger">
-                                                                <i class="ai-trash fs-base opacity-70 mx-2"></i>
+                                                                <i class="ai-trash fs-base opacity-70"></i>
                                                             </a>
                                                         </div>
                                                     </td>
@@ -224,20 +224,23 @@
                                                 Ajouter un certificat médical
                                             </legend>
                                             {{ form_start(medicalForm) }}
-                                            <div class="col-12">
-                                                <span class="ms-2">Fichier</span>
-                                                {{ form_widget(medicalForm.medicalCertificateFile, {'attr': {'class': 'form-control form-control-sm mt-2'}}) }}
-                                            </div>
-                                            <div class="mt-4 col-12">
-                                                <span class="ms-2">Année d'expiration</span>
-                                                {{ form_widget(medicalForm.expireAt, {'attr': {'class': 'form-control form-control-sm mt-2'}}) }}
-                                            </div>
-                                            <button class="btn btn-sm btn-outline-primary ms-3 my-3" type="submit">
-                                                Sauvegarder
-                                            </button>
-                                            <div class="form-errors">
-                                                {{ form_errors(medicalForm.medicalCertificateFile) }}
-                                            </div>
+                                                {% if medicalForm.vars.errors|length > 0 %}
+                                                    <div class="alert alert-danger">
+                                                        {{ form_errors(medicalForm) }}
+                                                    </div>
+                                                {% endif %}
+                                                <div class="col-12">
+                                                    <span class="ms-2">Fichier</span>
+                                                    {{ form_widget(medicalForm.medicalCertificateFile, {'attr':{'class': 'form-control form-control-sm mt-2'}}) }}
+                                                    {{ form_errors(medicalForm.medicalCertificateFile) }}
+                                                </div>
+                                                <div class="mt-4 col-12">
+                                                    <span class="ms-2">Année d'expiration</span>
+                                                    {{ form_widget(medicalForm.expireAt, {'attr': {'class': 'form-control form-control-sm mt-2'}}) }}
+                                                </div>
+                                                <button class="btn btn-sm btn-outline-primary my-3" type="submit">
+                                                    Sauvegarder
+                                                </button>
                                             {{ form_end(medicalForm) }}
                                         </fieldset>
                                         {% endif %}

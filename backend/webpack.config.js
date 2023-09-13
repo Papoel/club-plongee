@@ -94,6 +94,13 @@ Encore
         from: './assets/uploads',
         to: 'uploads/[path][name].[ext]',
     })
+
+    // Copy files uploads/medical_certificates from assets to public even if the folder is empty
+    .copyFiles({
+        from: './assets/uploads/medical_certificates',
+        to: 'uploads/medical_certificates/[path][name].[ext]',
+    })
+
 ;
 
 module.exports = Encore.getWebpackConfig();

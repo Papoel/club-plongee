@@ -67,8 +67,6 @@ class UserFixtures extends Fixture
                 ->setCity(city: $faker->city())
                 /* @phpstan-ignore-next-line */
                 ->setCountry(country: (string) $country)
-                /* @phpstan-ignore-next-line */
-                ->setDivingLevel(diving_level: (int) $divingLevel)
                 ->setPhone(phone: $faker->phoneNumber())
             ;
             $hash = $this->passwordHasher->hashPassword(user: $user, plainPassword: 'plongee');

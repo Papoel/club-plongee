@@ -16,6 +16,7 @@ use App\Repository\UserRepository;
 use App\Services\PasswordManagerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,6 +52,12 @@ class AccountController extends AbstractController
         // Récupération du formulaire de gestion des certificats médicaux
         $medicalForm = $this->createForm(type: CertificateType::class, data: $medicalCertificate);
         $medicalForm->handleRequest($request);
+
+        // Vérifier si le formulaire contient des erreurs
+        if ($medicalForm->isSubmitted() && !$medicalForm->isValid()) {
+            // Récupérer les erreurs du formulaire
+            $errors = $medicalForm->getErrors(deep: true, flatten: true);
+        }
 
         // Validation du formulaire de gestion des certificats médicaux
         if ($medicalForm->isSubmitted() && $medicalForm->isValid()) {
@@ -90,9 +97,9 @@ class AccountController extends AbstractController
                 $this->addFlash(type: 'success', message: 'Votre certificat médical a bien été enregistré.');
 
                 return $this->redirectToRoute(route: 'account_overview', parameters: ['id' => $user->getId()]);
-            } else {
-                $this->addFlash(type: 'info', message: 'Veuillez sélectionner un fichier avant de valider.');
             }
+
+            $this->addFlash(type: 'info', message: 'Veuillez sélectionner un fichier avant de valider.');
         }
 
         return $this->render(view: 'pages/account/account-overview.html.twig', parameters: [
@@ -251,6 +258,37 @@ class AccountController extends AbstractController
     {
         /* @var User|null $user */
         $user = $this->getUser();
+
+        // Vérifier si l'utilisateur est connecté
+        if (null === $user) {
+            $this->addFlash(type: 'danger', message: 'Vous devez être connecté pour effectuer cette action.');
+
+            return $this->redirectToRoute(route: 'app_login');
+        }
+
+        /** @phpstan-ignore-next-line */
+        $directory = $this->getParameter(name: 'kernel.project_dir').'/public/assets/uploads/avatar';
+
+        // Utiliser Finder pour lister les fichiers dans le dossier
+        $finder = new Finder();
+        $finder->in($directory);
+
+        $files = [];
+        foreach ($finder->files() as $file) {
+            $files[] = $file->getRelativePathname();
+        }
+
+        // Rechercher les fichiers manquants
+        $missingFiles = [];
+        foreach ($files as $file) {
+            /** @var User $user */
+            $avatarFileName = $user->getAvatar();
+            if (!in_array(needle: $avatarFileName, haystack: $files, strict: true)) {
+                // Mettre en base de données l'avatar à null
+                $user->setAvatar(avatar: null);
+                $entityManager->flush();
+            }
+        }
 
         if ($user instanceof User) {
             // Récupérer le nom de l'avatar puis le supprimer du dossier public
