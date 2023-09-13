@@ -1,0 +1,115 @@
+{% extends '@EasyAdmin/layout.html.twig' %}
+
+{% block main %}
+    <h1 class="my-3 text-center text-muted text-uppercase">Liste des certificats médicaux</h1>
+    {% for certificate in certificates %}
+        {% set expireAt = certificate.expireAt|date('Y-m-d') %}
+        {% set today = 'now'|date('Y-m-d') %}
+        {% set diff = expireAt|date('U') - today|date('U') %}
+        {% set days = diff / 86400 %}
+        {% set badgeColor = days > 90 ? 'success' : (days >= 30 ? 'warning' : 'danger') %}
+        {% set cardBackgroundColor = badgeColor == 'danger' ? 'bg-danger bg-opacity-25' : 'bg-white' %}
+
+        <div class="card my-2 {{ cardBackgroundColor }}">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">{{ certificate.user }}</h5>
+                    {% if certificate.expireAt %}
+                        <div>
+                            <span class="px-2 py-1 text-white badge badge-pill bg-{{ badgeColor }}">{{ certificate.expireAt|date('d/m/Y') }}</span>
+                            {% if days <= 30 %}
+                                <i class="fas fa-clock text-danger ml-2" title="Expire bientôt"></i>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div>
+                            <span class="px-2 py-1 text-white badge badge-pill bg-danger">Pas de date d'expiration</span>
+                            <i class="fas fa-exclamation-triangle text-danger ml-2" title="Pas de date d'expiration"></i>
+                        </div>
+                    {% endif %}
+                </div>
+                <p class="card-text">{{ certificate.medicalCertificate }}</p>
+                {% if certificate.medicalCertificate %}
+                    <button class="btn btn-primary view-pdf-button"
+                            data-pdf-url="{{ asset('assets/uploads/medical_certificate/' ~ certificate.medicalCertificate) }}"
+                            data-fullname="{{ certificate.user.fullname }}">
+                        Voir le certificat médical
+                    </button>
+                {% else %}
+                    <button class="btn btn-primary" disabled>
+                        Pas de certificat médical
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+
+    {% if message %}
+        <div class="alert alert-danger mt-3">
+            <span class="fw-bold">{{ message }}</span>
+            <ul class="my-3">
+                {% for missingFile in missingFiles %}
+                    <li>{{ missingFile.user }} - {{ missingFile.certificateFileName }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+        {# Désactiver le bouton si des fichiers manquent #}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const viewPdfButtons = document.querySelectorAll('.view-pdf-button');
+                const missingFiles = {{ missingFiles | json_encode| raw }};
+                viewPdfButtons.forEach(function(button) {
+                    const pdfUrl = button.getAttribute('data-pdf-url');
+                    const certificateFileName = pdfUrl.split('/').pop(); // Obtient le nom du fichier du lien
+
+                    // Vérifie si le certificat est manquant dans la liste des fichiers manquants
+                    const isMissing = missingFiles.some(function(missingFile) {
+                        return missingFile.certificateFileName === certificateFileName;
+                    });
+
+                    if (isMissing) {
+                        button.disabled = true;
+                        button.textContent = 'Problème avec le certificat médical';
+                        button.classList.remove('btn-primary');
+                        button.classList.add('btn-danger');
+                    } else {
+                        // Gérer l'ouverture du modal lorsque le bouton est cliqué
+                        button.addEventListener('click', function() {
+                            const pdfUrl = button.getAttribute('data-pdf-url');
+                            const fullname = button.getAttribute('data-fullname');
+                            const modalTitle = document.getElementById('pdfModalLabel');
+                            const viewPdf = document.getElementById('view-pdf');
+
+                            // Mettre le nom complet dans le titre du modal
+                            modalTitle.textContent = `Certificat médical de ${fullname}`;
+                            viewPdf.setAttribute('src', pdfUrl);
+
+                            // Afficher le modal
+                            const pdfModal = new bootstrap.Modal(document.getElementById('pdfModal'));
+                            pdfModal.show();
+                        });
+                    }
+                });
+            });
+        </script>
+
+
+
+    <div id="pdfModal" class="modal fade" tabindex="-1" aria-labelledby="pdfModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pdfModalLabel"></h5>
+                </div>
+                <div class="modal-body">
+                    <embed id="view-pdf" src="" width="100%" height="600px" onerror="handlePdfError()" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
