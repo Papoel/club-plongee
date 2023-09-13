@@ -152,7 +152,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function fullAddress(): string
     {
-        return $this->address.' '.$this->zipCode.' '.$this->city;
+        return $this->address.' '.$this->zipCode.' '.$this->city.' ('.$this->country.')';
     }
 
     public function getFullname(): string
